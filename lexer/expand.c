@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/05/06 15:40:09 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:03:50 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*expand_str(char *s, t_data *data)
 			new = new_expand(s, i, len, data);
 			free(s);
 			s = new;
-			// i = 0;
+			//i = 0;
 		}
 		else
 			i++;
@@ -88,6 +88,7 @@ static char	*expand_str_quotes(char *s, t_data *data)
 	char	quotes;
 
 	i = 0;
+	quotes = -1;
 	while (s && s[i] && s[i] != 34 && s[i] != 39)
 		i++;
 	while (s && s[i])
@@ -99,7 +100,7 @@ static char	*expand_str_quotes(char *s, t_data *data)
 		}
 		while (s && s[i] && s[i] != quotes)
 		{
-			if (quotes == 34)
+			if (quotes == 34 || quotes == -1)
 			{
 				len = get_new_expand(s, i);
 				if (s[i] == '$' && len > 0)
@@ -108,8 +109,6 @@ static char	*expand_str_quotes(char *s, t_data *data)
 					free(s);
 					s = new;
 				}
-				else
-					i++;
 			}
 			i++;
 		}

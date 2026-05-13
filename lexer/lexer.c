@@ -6,26 +6,19 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/13 15:07:59 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/13 16:37:28 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// fork et dc execve
 
 #include "minishell.h"
 
 int	verif_line(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != 32 && (str[i] < 9 || str[i] > 13))
-			return (1);
-		i++;
-	}
-	return (0);
+    if (!str[0] || str[0] == '\n')
+    {
+        return (0);
+    }
+	return (1);
 }
 
 /*void    exec_command(char *str, t_data *data)
