@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:09:36 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/21 14:40:52 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/05/15 15:22:34 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	handle_redirs_out(t_redir *redirs)
 {
 	int	fd;
 
-	fd = open(redirs->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(redirs->file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -48,7 +48,7 @@ static void	handle_redirs_append(t_redir *redirs)
 {
 	int	fd;
 
-	fd = open(redirs->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	fd = open(redirs->file, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (fd == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
