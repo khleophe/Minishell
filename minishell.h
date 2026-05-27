@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 14:45:45 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/27 15:40:50 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,13 @@ char				*expand_str(char *s, t_data *data);
 void				rm_quotes_token(t_token *tokens);
 int					check_syntax(t_data *data);
 
+/*parsing.c*/
+int parsing(t_data *data); // ANOUS
+
 /*exec.c*/
 int					execute(t_cmd *cmd, t_data *data);
 void				status_return_code(t_data *data, int status);
+int exec(t_data *data, t_token *tokens);// ANOUS
 /*pipe.c*/
 void				verif_dup2(int old_fd, int new_fd);
 void				child_write(t_pipe *p, char *path, t_cmd *cmd,

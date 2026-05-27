@@ -8,7 +8,7 @@ SRCS = lexer/init_tokens.c main.c lexer/lexer.c lexer/tokens.c lexer/utils_token
 		exec/builtins/builtins.c exec/builtins/cd.c exec/builtins/echo.c exec/builtins/env.c \
 		exec/builtins/exit.c exec/builtins/export.c exec/builtins/export_helper.c exec/builtins/print_export.c \
 		exec/builtins/pwd.c exec/builtins/unset.c exec/free.c exec/signals.c exec/childs.c exec/heredoc.c \
-		exec/path.c lexer/quotes.c lexer/syntax.c env_shell.c exec/exec.c 
+		exec/path.c lexer/quotes.c lexer/syntax.c env_shell.c exec/exec.c parsing/parsing.c
 		
 
 OBJS = $(SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 14:55:46 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/27 15:46:53 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void    read_line(t_token **tokens, t_data *data)
                     printf("%i, %s\n", tmp->type, tmp->s);
                     tmp = tmp->next;
                 }
+                if (tokens)
+                    parsing(data);
                 free_tokens(*tokens);
                 *tokens = NULL;
             }

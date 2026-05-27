@@ -1,17 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_args.c                                         :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 15:08:29 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/27 15:43:45 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int parsing_cmd(t_data *data, t_token *tokens)
+{
+    while (tokens)
+    {
+        if (tokens->type == WORD)
+        {
+            exec(data, tokens);
+            while (tokens && tokens->type == WORD)
+                tokens = tokens->next;
+        }
+        else
+            tokens = tokens->next;
+    }
+    return (0);
+}
 int parsing(t_data *data)
 {
     t_token *tmp;
@@ -21,16 +36,7 @@ int parsing(t_data *data)
         ;
     else
     {
-        
+        return (parsing_cmd(data, tmp));
     }
-}
-
-int parsing_cmd(t_data *data, t_token *tokens)
-{
-    while (tokens)
-    {
-        if (tokens->type == WORD)
-            ;
-        tokens = tokens->next;
-    }
+    return (0);
 }
