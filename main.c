@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 10:45:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/06 15:35:49 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/27 14:56:43 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,17 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_token	*token;
-	t_data	*data;
+	t_data	data;
 
 	(void)argc;
-	(void)argv;
-	token = NULL;
-	data = malloc(sizeof(t_data));
-	if (!data)
+	(void)argv;	
+	data.tokens = NULL;
+	data.env = dup_env(envp);
+    data.return_code = 0;
+	if (!data.env)
 		return (1);
-	data->env = dup_env(envp);
-    data->return_code = 0;
-	if (!data->env)
-		return (free(data), 1);
-	read_line(&token, data);
-	free_tokens(token);
+	read_line(&data.tokens, &data);
+	free_tokens(data.tokens);
 	// rl_clear_history
 	// free
 	return (0);

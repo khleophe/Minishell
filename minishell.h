@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/06 15:38:43 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/27 14:45:45 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_data
 {
 	char			**env;
 	int				return_code;
-
+	t_token			*tokens;
+	int				pipe_nb;
 }					t_data;
 
 typedef struct s_redir
@@ -86,7 +87,7 @@ void				exec_command(char *str, t_data *data);
 void				expand_all_tokens(t_token *token, t_data *data);
 char				*expand_str(char *s, t_data *data);
 void				rm_quotes_token(t_token *tokens);
-int					check_syntax(t_token *tokens);
+int					check_syntax(t_data *data);
 
 /*exec.c*/
 int					execute(t_cmd *cmd, t_data *data);

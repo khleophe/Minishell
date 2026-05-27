@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/13 16:37:28 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/27 14:55:46 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void    read_line(t_token **tokens, t_data *data)
 
     while (1)
     {
+        data->pipe_nb = 0;
         line = readline("minishell>");
         if (line == NULL)
             exit (1);
@@ -61,7 +62,7 @@ void    read_line(t_token **tokens, t_data *data)
         {
             add_history(line);
             *tokens = lexer(line);
-            if (check_syntax(*tokens))
+            if (check_syntax(data))
             {
                 ft_printf("syntax error\n");
                 data->return_code = 2;
@@ -80,6 +81,7 @@ void    read_line(t_token **tokens, t_data *data)
                 free_tokens(*tokens);
                 *tokens = NULL;
             }
+            printf("pipe_nb = %i\n", data->pipe_nb);
             /*if (tokens)
             {
                 parser + exec ;
