@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/05/13 17:03:50 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/29 13:41:24 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,16 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	char	*result;
 
 	pre_var = ft_substr(s, 0, i);
-	key = ft_substr(s, i + 1, len - 1);
-	post_var = ft_strdup(s + i + len);
+	if (len > 1)
+	{
+		key = ft_substr(s, i + 1, len - 1);
+		post_var = ft_strdup(s + i + len);
+	}
+	else
+	{
+		key = ft_substr(s, i + 1, len);
+		post_var = ft_strdup(s + i + len + 1);
+	}
 	if (!pre_var || !key || !post_var)
 	{
 		free(pre_var);
@@ -47,7 +55,12 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 		free(post_var);
 		return (NULL);
 	}
-	value = get_env_value(key, data->env);
+	if (ft_strcmp(key, "?") == 0)
+		value = ft_itoa(data->return_code);
+	else if (ft_strcmp(key, "$") == 0)
+		value = get_env_value("MANAGERPID", data->env);
+	else
+		value = get_env_value(key, data->env);
 	if (!value)
 		value = "";
 	free(key);
@@ -68,7 +81,6 @@ char	*expand_str(char *s, t_data *data)
 		len = get_new_expand(s, i);
 		if (s[i] == '$' && len > 0)
 		{
-			
 			new = new_expand(s, i, len, data);
 			free(s);
 			s = new;
