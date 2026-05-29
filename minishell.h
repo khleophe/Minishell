@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 15:40:50 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/28 14:30:57 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int					check_syntax(t_data *data);
 int parsing(t_data *data); // ANOUS
 
 /*exec.c*/
-int					execute(t_cmd *cmd, t_data *data);
+// int					execute(t_cmd *cmd, t_data *data);
 void				status_return_code(t_data *data, int status);
 int exec(t_data *data, t_token *tokens);// ANOUS
 /*pipe.c*/

@@ -6,11 +6,51 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 15:50:39 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/28 14:57:45 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	exec_fail(char *path, char **cmd, t_data *data)// faire une fonction shellerror qui librere tout (tokens, etc)
+{
+	if (ft_strnstr(cmd[0], "/", 1))
+	{
+		ft_printf("minishell: %s: Is a directory\n", cmd[0]);
+		free(path);
+        ft_freetab(data->env);
+        ft_freetab(cmd);
+        exit(126);
+	}
+	else
+	{
+		ft_printf("%s: command not found: \n", cmd[0]);
+		free(path);
+        ft_freetab(data->env);
+        ft_freetab(cmd);
+        exit(127);
+	}
+}
+
+static int     execute(t_data *data, char *path, char **cmd)
+{
+    pid_t pid;
+    int status;
+    
+    pid = fork();
+    if (!pid)
+    {
+        execve(path, cmd, data->env);
+        exec_fail(path, cmd, data);
+    }
+    else
+    {
+        waitpid(pid, &status, 0);
+        if (WIFEXITED(status))
+		    return (WEXITSTATUS(status));
+    }
+    return (0);
+}
 
 static int count_args(t_token *tokens)
 {
@@ -57,15 +97,19 @@ static char    **create_cmd(t_token *tokens)
 int exec(t_data *data, t_token *tokens)
 {
     char    **cmd;
+    char    *path;
 
     (void)data;
     cmd = create_cmd(tokens);
     if (!cmd)
         return (1);
-    for (int i = 0; cmd[i]; i++)
-        printf("%s ", cmd[i]);
-    printf("\n");
-    printf("%s\n", find_path(cmd[0], data->env));
+    path = find_path(cmd[0], data->env);
+    // for (int i = 0; cmd[i]; i++)
+    //     printf("%s ", cmd[i]);
+    // printf("\n");
+    // printf("%s\n", path);
+    data->return_code = execute(data, path, cmd);
     ft_freetab(cmd);
+    free(path);
     return (0);
 }
