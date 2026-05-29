@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/28 14:57:45 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/29 15:25:32 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static int     execute(t_data *data, char *path, char **cmd)
     pid = fork();
     if (!pid)
     {
+        data->sig_quit.sa_handler = SIG_DFL;
+        sigaction(SIGQUIT, &data->sig_quit, 0);
         execve(path, cmd, data->env);
         exec_fail(path, cmd, data);
     }

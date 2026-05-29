@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/28 14:30:57 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/05/29 15:15:50 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_data
 	int				return_code;
 	t_token			*tokens;
 	int				pipe_nb;
+	struct sigaction	sig_int;
+	struct sigaction	sig_quit;
 }					t_data;
 
 typedef struct s_redir
@@ -145,7 +147,7 @@ void				ft_free_tab(t_data *data);
 void				free_redirs(t_redir *redirs);
 void				free_cmds(t_cmd *cmd);
 /*signals*/
-extern int			g_signal;
+void				init_sign(struct sigaction *sig_int, struct sigaction *sig_quit); // ANOUS
 void				interactive_signals(void);
 void				exec_signals(void);
 /*heredoc*/

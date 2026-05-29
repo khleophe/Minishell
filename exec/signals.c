@@ -3,40 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 15:47:26 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/20 15:44:33 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/05/29 15:18:32 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*2. g_signal — jamais lu
-Tu le set à 130 dans le handler SIGINT mais tu ne l'utilises nulle part. 
-Il sert normalement à transmettre le code de retour 130 au main après un Ctrl+C.
-C'est un morceau manquant.
-*/
-int	g_signal;
-
 static void	handle_sigint(int sig)
 {
-	g_signal = 130;
+	(void)sig;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
-	(void)sig;
+	rl_redisplay(); // voir man de ces fonctions
 }
 
-void	interactive_signals(void)
+void	init_sign(struct sigaction *sig_int, struct sigaction *sig_quit)
 {
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	sigemptyset(&sig_int->sa_mask);
+	sig_int->sa_handler = handle_sigint;
+	sig_int->sa_flags = SA_RESTART; // a voir les flags
+	sigemptyset(&sig_quit->sa_mask);
+	sig_quit->sa_handler = SIG_IGN;
+	sig_quit->sa_flags = SA_RESTART;
 }
 
-void	exec_signals(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}

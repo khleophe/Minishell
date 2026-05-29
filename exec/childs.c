@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 17:50:58 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/21 12:21:44 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/05/29 15:03:05 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,6 @@ void	child_read(t_pipe *p, char *path, t_cmd *cmd, t_data *data)
 		status_return_code(data, status);
 		while (waitpid(-1, NULL, 0) > 0)
 			;
-		interactive_signals();
+		//interactive_signals();
 	}
 }

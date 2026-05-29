@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 05:13:29 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/21 11:35:37 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/05/29 15:03:22 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	exec_pipeline(t_cmd *cmd, t_pipe *p, t_data *data)
 {
 	char	*path;
 
-	exec_signals();
+//	exec_signals();
 	while (cmd != NULL)
 	{
 		path = find_path(cmd->args[0], data->env);
