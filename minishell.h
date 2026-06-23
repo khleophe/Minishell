@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/29 15:15:50 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/23 13:40:33 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void				rm_quotes_token(t_token *tokens);
 int					check_syntax(t_data *data);
 
 /*parsing.c*/
+int exec_pipe(t_data *data);
+int parsing_cmd(t_data *data, t_token *tokens);
 int parsing(t_data *data); // ANOUS
 
 /*exec.c*/

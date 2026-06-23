@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/05/29 13:41:24 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/15 15:32:10 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ char	*expand_str(char *s, t_data *data)
 			new = new_expand(s, i, len, data);
 			free(s);
 			s = new;
-			//i = 0;
 		}
 		else
 			i++;

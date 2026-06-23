@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/29 15:16:07 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/23 13:34:21 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	verif_line(char *str)
 void    read_line(t_token **tokens, t_data *data)
 {
     char    *line;
-    t_token *tmp;
+    // t_token *tmp;
 
     while (1)
     {
@@ -72,18 +72,17 @@ void    read_line(t_token **tokens, t_data *data)
             else 
             {
                 expand_all_tokens(*tokens, data);
-                tmp = *tokens;
-                while (tmp)
-                {
-                    printf("%i, %s\n", tmp->type, tmp->s);
-                    tmp = tmp->next;
-                }
+                // tmp = *tokens;
+                // while (tmp)
+                // {
+                //     printf("%i, %s\n", tmp->type, tmp->s);
+                //     tmp = tmp->next;
+                // }
                 if (tokens)
-                    parsing(data);
+                    exec_pipe(data);
                 free_tokens(*tokens);
                 *tokens = NULL;
             }
-            printf("pipe_nb = %i\n", data->pipe_nb);
             /*if (tokens)
             {
                 parser + exec ;

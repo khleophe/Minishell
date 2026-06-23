@@ -6,15 +6,15 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 15:43:45 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/23 13:40:42 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int parsing_cmd(t_data *data, t_token *tokens)
+int parsing_cmd(t_data *data, t_token *tokens)
 {
-    while (tokens)
+    while (tokens && tokens->type != PIPE)
     {
         if (tokens->type == WORD)
         {
