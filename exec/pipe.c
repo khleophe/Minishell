@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/23 14:56:51 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/23 15:57:10 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void exit_pipe(t_token *token, int pipe_fd[2], int return_value, char *s)
     close(pipe_fd[0]);
     close(pipe_fd[1]);
     free_tokens(token);
+    token = NULL;
     exit(return_value);
 }
 
@@ -48,9 +49,11 @@ static int create_child(t_data *data, t_token **token)
     {
         if (dup2(pipe_fd[0], 0) < 0)
             exit_pipe((*token), pipe_fd, 1, "error dup2\n");
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
         while ((*token) && (*token)->type != PIPE)
             (*token) = (*token)->next;
-        if ((*token)->next && (*token)->type == PIPE)
+        if ((*token) && (*token)->type == PIPE)
             (*token) = (*token)->next;
     }
     return(close(pipe_fd[0]), close(pipe_fd[1]), 0);
