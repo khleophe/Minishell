@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 17:26:42 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/24 18:24:51 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	file_check(char *fd_arg, int mode)
 	{
 		ft_putstr_fd("minishell: ", 2); 
         ft_putstr_fd(fd_arg, 2);
+        ft_putstr_fd(" ", 2);
         ft_putstr_fd(strerror(errno), 2);
         ft_putstr_fd("\n", 2);	
         if (mode == 0)
@@ -77,7 +78,7 @@ static int	append_redir(char *file)
 	return (0);
 }
 
-int apply_redirs(t_token *tokens)
+int apply_redirs(t_token *tokens, int *return_code)
 {
     t_token *tmp;
 
@@ -87,16 +88,16 @@ int apply_redirs(t_token *tokens)
         if (is_redirs(tmp->type))
         {
             if (tmp->type == APPEND)
-                append_redir(tmp->next->s);
+                *return_code = append_redir(tmp->next->s);
             else if (tmp->type == REDIR_IN)
-                input_redir(tmp->next->s);
+                *return_code = input_redir(tmp->next->s);
             else if (tmp->type == REDIR_OUT)
-                output_redir(tmp->next->s);
+                *return_code = output_redir(tmp->next->s);
             else if (tmp->type == HEREDOC)
                 printf("c'est la merde\n");
         }    
         tmp = tmp->next;
     }
-    return 0;
+    return (*return_code);
 }
 

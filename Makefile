@@ -4,7 +4,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS = lexer/init_tokens.c main.c lexer/lexer.c lexer/tokens.c lexer/utils_tokens.c \
-		parsing/pipe.c parsing/redirs.c exec/redirs_delete.c lexer/expand.c \
+		parsing/pipe.c parsing/redirs.c lexer/expand.c \
 		builtins/builtins.c builtins/cd.c builtins/echo.c builtins/env.c \
 		builtins/exit.c builtins/export.c builtins/export_helper.c builtins/print_export.c \
 		builtins/pwd.c builtins/unset.c exec/free.c exec/signals.c exec/heredoc.c \
