@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 16:01:39 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/20 22:15:08 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/06/24 16:50:02 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ void	handle_redir_heredoc(t_redir *redirs, t_data *data)
 		mess_heredoc(redirs, count);
 	free(line);
 	close(fd[1]);
-	verif_dup2(fd[0], STDIN_FILENO);
+	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 15:53:04 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/24 17:43:11 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ static char    **create_cmd(t_token *tokens)
     i = 0;
     tmp = tokens;
     len = count_args(tokens);
-    cmd = malloc(sizeof(char *) * len);
+    printf("%i\n", len);
+    cmd = malloc(sizeof(char *) * (len + 1));
     if (!cmd)
         return (NULL);
     while (tmp && tmp->type == WORD && i < len)
@@ -93,6 +94,7 @@ static char    **create_cmd(t_token *tokens)
         i++;
         tmp = tmp->next;
     }
+    cmd[i] = NULL;
     return (cmd);
 }
 

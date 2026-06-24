@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 13:50:03 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/24 17:03:39 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,12 @@ t_token				*new_token(t_token_type type, char *value);
 void				add_token(t_token **tokens, t_token *new);
 t_token				*lexer(char *line);
 int					verif_line(char *str);
-void				exec_command(char *str, t_data *data);
 void				expand_all_tokens(t_token *token, t_data *data);
 char				*expand_str(char *s, t_data *data);
 void				rm_quotes_token(t_token *tokens);
 int					check_syntax(t_data *data);
+int					is_redirs(int type);
+
 
 /*parsing.c*/
 int exec_pipe(t_data *data);
@@ -97,17 +98,10 @@ int parsing_cmd(t_data *data, t_token *tokens);
 
 /*exec.c*/
 // int					execute(t_cmd *cmd, t_data *data);
-void				status_return_code(t_data *data, int status);
 int exec(t_data *data, t_token *tokens);// ANOUS
-/*pipe.c*/
-void				verif_dup2(int old_fd, int new_fd);
-void				child_write(t_pipe *p, char *path, t_cmd *cmd,
-						t_data *data);
-void				child_read(t_pipe *p, char *path, t_cmd *cmd, t_data *data);
-void				exec_pipeline(t_cmd *cmd, t_pipe *p, t_data *data);
-void				mess_execve(t_cmd *cmd);
+
 /*redirs.c*/
-void				apply_redirs(t_redir *redirs, t_data *data);
+int apply_redirs(t_token *tokens);
 
 /*builtins.c*/
 int					init_builtins(t_data *data, t_cmd *cmd);
@@ -149,8 +143,7 @@ void				free_redirs(t_redir *redirs);
 void				free_cmds(t_cmd *cmd);
 /*signals*/
 void				init_sign(struct sigaction *sig_int, struct sigaction *sig_quit); // ANOUS
-void				interactive_signals(void);
-void				exec_signals(void);
+
 /*heredoc*/
 void				handle_redir_heredoc(t_redir *redirs, t_data *data);
 void				mess_heredoc(t_redir *redirs, int count);

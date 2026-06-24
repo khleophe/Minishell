@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 15:55:13 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/24 16:59:12 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ static int  get_return_code(pid_t pid)
         {
             if (WIFEXITED(status))
                 return_code = (WEXITSTATUS(status));
+            //	if (WIFSIGNALED(status))
+		//       data->return_code = 128 + WTERMSIG(status);
         }
         last_pid = wait(&status);
     }
@@ -85,10 +87,11 @@ static int  get_return_code(pid_t pid)
 int exec_pipe(t_data *data)
 {
     int pipeddone;
-    t_token *tmp = data->tokens;
+    t_token *tmp;
     int fd_in;
     pid_t last_pid;
     
+    tmp = data->tokens;
     fd_in = 0;
     pipeddone = 0;
     while (pipeddone <= data->pipe_nb)
