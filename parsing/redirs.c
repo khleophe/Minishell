@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 18:24:51 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/29 14:58:30 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	append_redir(char *file)
 	return (0);
 }
 
-int apply_redirs(t_token *tokens, int *return_code)
+int apply_redirs(t_token *tokens, int *return_code, t_data *data)
 {
     t_token *tmp;
 
@@ -94,7 +94,7 @@ int apply_redirs(t_token *tokens, int *return_code)
             else if (tmp->type == REDIR_OUT)
                 *return_code = output_redir(tmp->next->s);
             else if (tmp->type == HEREDOC)
-                printf("c'est la merde\n");
+				*return_code = heredoc_redir(tmp->next->s, data);
         }    
         tmp = tmp->next;
     }

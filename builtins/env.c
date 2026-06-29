@@ -3,36 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 17:56:52 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/13 17:42:12 by nolwenng         ###   ########.fr       */
+/*   Created: 2026/06/29 16:37:03 by sdabbas           #+#    #+#             */
+/*   Updated: 2026/06/29 17:28:15 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	env_builtin(t_data *path)
+static void env_builtin(t_data *data)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (path->env[i] != NULL)
-	{
-		ft_putstr_fd(path->env[i], 1);
-		write(1, "\n", 1);
-		i++;
-	}
-	return (0);
+    i = 0;
+    while (data->env[i])
+    {
+        if (ft_strchr(data->env[i], '='))
+            ft_printf_fd(1, "%s\n", data->env[i]);
+        i++;
+    }
 }
 
-/*int	main(int ac, char **av, char **env)
+int parsing_env(t_data *data, t_token **token)
 {
-	(void)av;
-	(void)ac;
-	t_data	path;
-	path.env = env;
-	path.return_code = 0;
-	env_builtin(&path);
-	return (0);
-}*/
+    t_token *tmp;
+
+    tmp = (*token)->next;
+    if ((tmp) && tmp->type == WORD)
+    {
+        (*token) = (*token)->next;
+        return (0);
+    }
+    env_builtin(data);
+    (*token) = (*token)->next;
+    return (0);
+}

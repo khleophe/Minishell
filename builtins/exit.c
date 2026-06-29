@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:56:55 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/20 22:07:49 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/06/29 16:51:44 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,34 +43,34 @@ int	atol_minishell(const char *str)
 	return (EXIT_SUCCESS);
 }
 
-int	exit_builtin(t_cmd *cmd, t_data *data)
-{
-	if (cmd->args[1] == NULL)
-	{
-		ft_putstr_fd("exit\n", 2);
-		exit(data->return_code);
-	}
-	if (atol_minishell(cmd->args[1]) == EXIT_FAILURE)
-	{
-		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(cmd->args[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		exit (2);
-	}
-	if (cmd->args[2] != NULL)
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		data->return_code = 1;
-		return (data->return_code);
-	}
-	else
-	{
-		ft_putstr_fd("exit\n", 2);
-		exit((unsigned char)ft_atol(cmd->args[1]));
-	}
-	return (0);
-}
+// int	exit_builtin(t_cmd *cmd, t_data *data)
+// {
+// 	if (cmd->args[1] == NULL)
+// 	{
+// 		ft_putstr_fd("exit\n", 2);
+// 		exit(data->return_code);
+// 	}
+// 	if (atol_minishell(cmd->args[1]) == EXIT_FAILURE)
+// 	{
+// 		ft_putstr_fd("exit\n", 2);
+// 		ft_putstr_fd("minishell: exit: ", 2);
+// 		ft_putstr_fd(cmd->args[1], 2);
+// 		ft_putstr_fd(": numeric argument required\n", 2);
+// 		exit (2);
+// 	}
+// 	if (cmd->args[2] != NULL)
+// 	{
+// 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+// 		data->return_code = 1;
+// 		return (data->return_code);
+// 	}
+// 	else
+// 	{
+// 		ft_putstr_fd("exit\n", 2);
+// 		exit((unsigned char)ft_atol(cmd->args[1]));
+// 	}
+// 	return (0);
+// }
 
 /*int main(void)
 {
