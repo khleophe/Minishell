@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 18:32:25 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/25 14:46:05 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int exec(t_data *data, t_token *tokens);// ANOUS
 
 /*redirs.c*/
 int apply_redirs(t_token *tokens, int *return_code);
+int heredoc(char *eof);
 
 /*builtins.c*/
 int					init_builtins(t_data *data, t_cmd *cmd);

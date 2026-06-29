@@ -1,42 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putnbr_u_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 09:21:26 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/06/25 14:49:47 by sdabbas          ###   ########.fr       */
+/*   Created: 2025/11/25 12:03:22 by jdelmott          #+#    #+#             */
+/*   Updated: 2026/06/25 14:50:01 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putnbr_fd(int i, int fd)
+int	ft_putnbr_u_fd(unsigned int i, int fd)
 {
 	static int	k;
-	int			neg;
+	int			j;
 
-	neg = 0;
 	k = 0;
-	if (i == -2147483648)
-	{
-		ft_putstr_fd("-2147483648", fd);
-		return (11);
-	}
-	if (i < 0)
-	{
-		neg++;
-		if (ft_putchar_fd('-', fd) == -1)
-			return (-1);
-		i = -i;
-	}
 	if (i >= 10)
-		ft_putnbr_fd(i / 10, fd);
-	if (neg != 0)
-		k++;
-	if (ft_putchar_fd((i % 10) + '0', fd) == -1)
+		ft_putnbr_u_fd(i / 10, fd);
+	j = ft_putchar_fd((i % 10) + '0', fd);
+	if (j == -1)
 		return (-1);
-	k++;
+	k += j;
 	return (k);
 }

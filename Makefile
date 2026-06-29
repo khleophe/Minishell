@@ -7,7 +7,7 @@ SRCS = lexer/init_tokens.c main.c lexer/lexer.c lexer/tokens.c lexer/utils_token
 		parsing/pipe.c parsing/redirs.c lexer/expand.c \
 		builtins/builtins.c builtins/cd.c builtins/echo.c builtins/env.c \
 		builtins/exit.c builtins/export.c builtins/export_helper.c builtins/print_export.c \
-		builtins/pwd.c builtins/unset.c exec/free.c exec/signals.c exec/heredoc.c \
+		builtins/pwd.c builtins/unset.c exec/free.c exec/signals.c exec/heredoc_delete.c parsing/heredoc.c \
 		exec/path.c lexer/quotes.c lexer/syntax.c env_shell.c exec/exec.c parsing/parsing.c
 		
 
