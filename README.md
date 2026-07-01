@@ -4,6 +4,8 @@
 
 ## Instructions
 
+je tente un truc
+
 ## Ressources
 &emsp;Articles utiles: <br />
 -https://linuxize.com/series/bash-scripting-fundamentals/ <br />
