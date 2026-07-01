@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 16:16:27 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/04/20 15:53:42 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/06/25 15:01:14 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,8 @@ char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
+int		ft_putstr_fd(char *str, int fd);
 void	ft_putendl_fd(char *s, int fd);
-void	ft_putnbr_fd(int n, int fd);
 int		ft_strcmp(char *s1, char *s2);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
@@ -87,5 +85,16 @@ int		ft_putnbr_base_p(unsigned long n);
 int		ft_putnbr_u(unsigned int n);
 int		ft_putstr(char *str);
 int		ft_printf(const char *str, ...);
+
+// printf_fd
+
+int	ft_printf_fd(int fd, const char *str, ...);
+int	ft_putchar_fd(char c, int fd);
+int	ft_putnbr_u_fd(unsigned int i, int fd);
+int	ft_putnbr_p_fd(unsigned long s, int fd);
+int	ft_putnbr_fd(int i, int fd);
+int	ft_putnbr_base_fd(unsigned int i, char *base, int fd);
+
+
 
 #endif

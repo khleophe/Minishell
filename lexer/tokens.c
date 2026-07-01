@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:41:37 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/06 14:04:14 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/15 15:27:29 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ static t_token *words(char *line, int *i)
 	word = extract_word_quotes(&line[*i]);
 	if (!word)
 		return (NULL);
-	// if (ft_strnstr(word, "'", ft_strlen(word)) || ft_strnstr(word, "\"", ft_strlen(word)))
-	// 	new = new_token(D_QUOTE, word);
 	if (which_quotes(line, i) == 34)
 		new = new_token(D_QUOTE, word);
 	else if (which_quotes(line, i) == 39)

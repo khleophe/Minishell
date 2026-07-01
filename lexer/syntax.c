@@ -6,13 +6,13 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 16:31:00 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/27 14:55:04 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/24 17:00:26 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_redirs(int type)
+int	is_redirs(int type)
 {
 	if (type == APPEND || type == HEREDOC || type == REDIR_IN
 		|| type == REDIR_OUT)

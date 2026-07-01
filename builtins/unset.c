@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:57:03 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/13 17:43:08 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/06/29 16:52:09 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,26 @@ int	find_index(char *index, char **env)
 	return (-1);
 }
 
-int	unset_builtin(t_cmd *cmd, t_data *data)
-{
-	int	i;
-	int	idx;
+// int	unset_builtin(t_cmd *cmd, t_data *data)
+// {
+// 	int	i;
+// 	int	idx;
 
-	i = 1;
-	while (cmd->args[i] != NULL)
-	{
-		idx = find_index(cmd->args[i], data->env);
-		if (idx != -1)
-		{
-			free(data->env[idx]);
-			while (data->env[idx + 1] != NULL)
-			{
-				data->env[idx] = data->env[idx + 1];
-				idx++;
-			}
-			data->env[idx] = NULL;
-		}
-		i++;
-	}
-	return (0);
-}
+// 	i = 1;
+// 	while (cmd->args[i] != NULL)
+// 	{
+// 		idx = find_index(cmd->args[i], data->env);
+// 		if (idx != -1)
+// 		{
+// 			free(data->env[idx]);
+// 			while (data->env[idx + 1] != NULL)
+// 			{
+// 				data->env[idx] = data->env[idx + 1];
+// 				idx++;
+// 			}
+// 			data->env[idx] = NULL;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }

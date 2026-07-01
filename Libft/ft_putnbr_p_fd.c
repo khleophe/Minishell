@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putnbr_p_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 09:21:26 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/06/25 14:49:47 by sdabbas          ###   ########.fr       */
+/*   Created: 2025/11/25 10:37:05 by jdelmott          #+#    #+#             */
+/*   Updated: 2026/06/25 14:49:54 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putnbr_fd(int i, int fd)
+static int	ft_print(unsigned long i, int fd)
 {
+	char		*base;
 	static int	k;
-	int			neg;
+	int			j;
 
-	neg = 0;
 	k = 0;
-	if (i == -2147483648)
-	{
-		ft_putstr_fd("-2147483648", fd);
-		return (11);
-	}
-	if (i < 0)
-	{
-		neg++;
-		if (ft_putchar_fd('-', fd) == -1)
-			return (-1);
-		i = -i;
-	}
-	if (i >= 10)
-		ft_putnbr_fd(i / 10, fd);
-	if (neg != 0)
-		k++;
-	if (ft_putchar_fd((i % 10) + '0', fd) == -1)
+	base = "0123456789abcdef";
+	if (i > 15)
+		ft_print(i / 16, fd);
+	j = ft_putchar_fd(base[i % 16], fd);
+	if (j == -1)
 		return (-1);
-	k++;
+	k += j;
 	return (k);
+}
+
+int	ft_putnbr_p_fd(unsigned long s, int fd)
+{
+	if (s == 0)
+		return (ft_putstr_fd("(nil)", fd));
+	ft_putstr_fd("0x", fd);
+	return (ft_print(s, fd) + 2);
 }
