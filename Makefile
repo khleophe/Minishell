@@ -24,10 +24,10 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 %.o: %.c minishell.h
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) -I/opt/homebrew/opt/readline/include -D_DEFAULT_SOURCE -c -g3 $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -Iinclude -lreadline -g3 -o $(NAME)
+	$(CC) $(CFLAGS) -L/opt/homebrew/opt/readline/lib $(OBJS) $(LIBFT) -D_DEFAULT_SOURCE -Iinclude -lreadline -g3 -o $(NAME)
 
 clean:
 	rm -f $(OBJS)
