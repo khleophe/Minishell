@@ -17,7 +17,7 @@ Tu le set à 130 dans le handler SIGINT mais tu ne l'utilises nulle part.
 Il sert normalement à transmettre le code de retour 130 au main après un Ctrl+C.
 C'est un morceau manquant.
 */
-int	g_signal;
+// int	g_signal;
 
 static void	handle_sigint(int sig)
 {
