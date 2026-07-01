@@ -54,6 +54,8 @@ typedef struct s_data
 	int					pipe_nb;
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
+	int old_stdin;
+	int old_stdout;
 }						t_data;
 
 /* * * * * * INITIALISATION * * * * * */
@@ -89,6 +91,7 @@ void					init_sign(struct sigaction *sig_int,
 
 /* * * * * * BUILTINS * * * * * */
 int parsing_env(t_data *data, t_token **token);
+int parsing_unset(t_data *data, t_token **tokens);
 //int						init_builtins(t_data *data, t_cmd *cmd);
 //int						cmp_builtins(t_cmd *cmd);
 
@@ -107,9 +110,7 @@ int						atol_minishell(const char *str);
 //int						exit_builtin(t_cmd *cmd, t_data *data);
 /*pwd.c*/
 int						pwd_builtin(void);
-/*unset.c*/
-int						find_index(char *index, char **env);
-//int						unset_builtin(t_cmd *cmd, t_data *data);
+
 /*all export*/
 void					print_export(char *value);
 void					export_no_args(t_data *data);

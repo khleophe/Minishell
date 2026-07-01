@@ -43,25 +43,25 @@ char	**dup_env(char **env)
 	return (dup);
 }
 
-void	update_env(char *key, char *value, t_data *data)
-{
-	int		cd;
-	char	*tmp;
-	char	*res;
+// void	update_env(char *key, char *value, t_data *data)
+// {
+// 	int		cd;
+// 	char	*tmp;
+// 	char	*res;
 
-	tmp = ft_strjoin(key, "=");
-	if (!tmp)
-		return ;
-	res = ft_strjoin(tmp, value);
-	free(tmp);
-	if (!res)
-		return ;
-	cd = find_index(key, data->env);
-	if (cd == -1)
-	{
-		free(res);
-		return ;
-	}
-	free(data->env[cd]);
-	data->env[cd] = res;
-}
+// 	tmp = ft_strjoin(key, "=");
+// 	if (!tmp)
+// 		return ;
+// 	res = ft_strjoin(tmp, value);
+// 	free(tmp);
+// 	if (!res)
+// 		return ;
+// 	cd = find_index(key, data->env);
+// 	if (cd == -1)
+// 	{
+// 		free(res);
+// 		return ;
+// 	}
+// 	free(data->env[cd]);
+// 	data->env[cd] = res;
+// }

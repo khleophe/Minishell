@@ -16,6 +16,8 @@ int parsing_builtin(t_data *data, t_token **token)
 {
     if (ft_strcmp((*token)->s, "env") == 0)
         return (parsing_env(data, token));
+    if (ft_strcmp((*token)->s, "unset") == 0)
+        return (parsing_unset(data, token));
     else
         return (0);
 }

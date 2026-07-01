@@ -10,86 +10,86 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
 
-static void	sort_env(char **sorted, int n)
-{
-	int		i;
-	int		j;
-	char	*tmp;
+// static void	sort_env(char **sorted, int n)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*tmp;
 
-	i = 0;
-	while (i < n - 1)
-	{
-		j = 0;
-		while (j < n - 1 - i)
-		{
-			if (ft_strcmp(sorted[j], sorted[j + 1]) > 0)
-			{
-				tmp = sorted[j];
-				sorted[j] = sorted[j + 1];
-				sorted[j + 1] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < n - 1)
+// 	{
+// 		j = 0;
+// 		while (j < n - 1 - i)
+// 		{
+// 			if (ft_strcmp(sorted[j], sorted[j + 1]) > 0)
+// 			{
+// 				tmp = sorted[j];
+// 				sorted[j] = sorted[j + 1];
+// 				sorted[j + 1] = tmp;
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
-void	export_no_args(t_data *data)
-{
-	int		i;
-	int		n;
-	char	**sorted;
+// void	export_no_args(t_data *data)
+// {
+// 	int		i;
+// 	int		n;
+// 	char	**sorted;
 
-	n = 0;
-	while (data->env[n] != NULL)
-		n++;
-	sorted = malloc(sizeof(char *) * (n + 1));
-	if (!sorted)
-		return ;
-	i = 0;
-	while (i < n)
-	{
-		sorted[i] = data->env[i];
-		i++;
-	}
-	sorted[n] = NULL;
-	sort_env(sorted, n);
-	i = 0;
-	while (sorted[i] != NULL)
-		print_export(sorted[i++]);
-	free(sorted);
-}
+// 	n = 0;
+// 	while (data->env[n] != NULL)
+// 		n++;
+// 	sorted = malloc(sizeof(char *) * (n + 1));
+// 	if (!sorted)
+// 		return ;
+// 	i = 0;
+// 	while (i < n)
+// 	{
+// 		sorted[i] = data->env[i];
+// 		i++;
+// 	}
+// 	sorted[n] = NULL;
+// 	sort_env(sorted, n);
+// 	i = 0;
+// 	while (sorted[i] != NULL)
+// 		print_export(sorted[i++]);
+// 	free(sorted);
+// }
 
-int	export_no_value(char *args, t_data *data, int *n)
-{
-	char	**tmp;
+// int	export_no_value(char *args, t_data *data, int *n)
+// {
+// 	char	**tmp;
 
-	if (find_index(args, data->env) == -1)
-	{
-		tmp = realloc(data->env, sizeof(char *) * (*n + 2));
-		if (!tmp)
-			return (0);
-		data->env = tmp;
-		data->env[*n] = ft_strdup(args);
-		if (data->env[*n] == NULL)
-			return (1);
-		data->env[*n + 1] = NULL;
-		(*n)++;
-	}
-	return (1);
-}
+// 	// if (find_index(args, data->env) == -1)
+// 	// {
+// 	// 	tmp = realloc(data->env, sizeof(char *) * (*n + 2));
+// 	// 	if (!tmp)
+// 	// 		return (0);
+// 	// 	data->env = tmp;
+// 	// 	data->env[*n] = ft_strdup(args);
+// 	// 	if (data->env[*n] == NULL)
+// 	// 		return (1);
+// 	// 	data->env[*n + 1] = NULL;
+// 	// 	(*n)++;
+// 	// }
+// 	return (1);
+// }
 
-int	count_env(t_data *data)
-{
-	int	n;
+// int	count_env(t_data *data)
+// {
+// 	int	n;
 
-	n = 0;
-	while (data->env[n] != NULL)
-		n++;
-	return (n);
-}
+// 	n = 0;
+// 	while (data->env[n] != NULL)
+// 		n++;
+// 	return (n);
+// }
 
 // int	export_builtin(t_cmd *cmd, t_data *data)
 // {

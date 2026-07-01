@@ -80,6 +80,8 @@ void    read_line(t_token **tokens, t_data *data)
                 // }
                 if (tokens)
                     exec_pipe(data);
+                dup2(data->old_stdin, STDIN_FILENO);
+                dup2(data->old_stdout, STDOUT_FILENO);//a secu lol
                 free_tokens(*tokens);
                 *tokens = NULL;
             }

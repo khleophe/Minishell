@@ -18,6 +18,8 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;	
+	data.old_stdin = dup(STDIN_FILENO);
+	data.old_stdout = dup(STDOUT_FILENO);
 	data.tokens = NULL;
 	data.env = dup_env(envp);
     data.return_code = 0;
@@ -28,6 +30,8 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	read_line(&data.tokens, &data);
 	free_tokens(data.tokens);
+	close(data.old_stdin);
+	close(data.old_stdout);
 	// rl_clear_history
 	// free
 	return (0);

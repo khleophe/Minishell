@@ -1,60 +1,65 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 17:57:03 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/06/29 16:52:09 by sdabbas          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-/*    Without options, unset first tries to unset a variable, and if that fails,
-    tries to unset a function.
-*/
-//parcours env pour chercher et trouver l index
-int	find_index(char *index, char **env)
+static void unset(t_data *data, char *arg)
 {
-	int	i;
-	int	index_len;
+    int i;
 
-	i = 0;
-	index_len = ft_strlen(index);
-	if (env == NULL)
-		return (-1);
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], index, index_len) == 0
-			&& env[i][index_len] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
+    i = 0;
+    while (data->env[i])
+    {
+        if (ft_strnstr(data->env[i], arg, ft_strlen(arg)))
+        {
+            free(data->env[i]);
+            while (data->env[i + 1])
+            {
+                data->env[i] = data->env[i + 1];
+                i++;
+            }
+            data->env[i] = NULL;
+        }
+        else
+            i++;
+    }
 }
 
-// int	unset_builtin(t_cmd *cmd, t_data *data)
-// {
-// 	int	i;
-// 	int	idx;
+static int  verif_args(char *arg)
+{
+    int i;
 
-// 	i = 1;
-// 	while (cmd->args[i] != NULL)
-// 	{
-// 		idx = find_index(cmd->args[i], data->env);
-// 		if (idx != -1)
-// 		{
-// 			free(data->env[idx]);
-// 			while (data->env[idx + 1] != NULL)
-// 			{
-// 				data->env[idx] = data->env[idx + 1];
-// 				idx++;
-// 			}
-// 			data->env[idx] = NULL;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
+    i = 0;
+	if (!arg)
+		return (0);
+	if ((!ft_isalpha(arg[0]) && arg[0] != '_') || ft_strchr(arg, '-'))
+		return (printf("minishell: unset: `%s': not a valid identifier\n", arg),
+			0);
+	while (arg[i])
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '=')
+			return (printf("minishell: unset: `%s': not a valid identifier\n",
+					arg), 0);
+		i++;
+	}
+	return (1);
+}
+
+int parsing_unset(t_data *data, t_token **tokens)
+{
+    int return_code;
+
+    return_code = 0;
+    (*tokens) = (*tokens)->next;
+    if (!(*tokens))
+    {
+        ft_printf_fd(2, "unset: not enough arguments\n");
+        return (1);
+    }
+    while ((*tokens) && (*tokens)->type == WORD)
+    {
+        if (verif_args((*tokens)->s))
+            unset(data, (*tokens)->s);
+        else
+            return_code = 1;
+        (*tokens) = (*tokens)->next;
+    }
+    return (return_code);
+}

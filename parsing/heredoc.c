@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 
-// signaux avec Marius + ne fonctionne pas avec les pipes
+// signaux avec Marius + ne marche pas avec les pipes
 
 static int  print_heredoc(char *line, int fd[2], t_data *data)
 {

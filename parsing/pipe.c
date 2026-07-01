@@ -23,82 +23,133 @@ static void exit_pipe(t_token *token, int pipe_fd[2], int return_value, char *s)
     exit(return_value);
 }
 
-static pid_t create_child(t_data *data, t_token **token, int last, int *fd_in)
+// static pid_t create_child(t_data *data, t_token **token, int last, int *fd_in)
+// {
+//     int pipe_fd[2];
+//     int return_code;
+//     pid_t pid;
+
+//     if (last > 0)
+//         pipe(pipe_fd);
+//     pid = fork();
+//     if (pid == 0)
+//     {            
+//         if (*fd_in != 0)
+//         {
+//             dup2(*fd_in, 0);
+//             close(*fd_in);
+//         }
+//         if (last > 0)
+//         {
+//             if (dup2(pipe_fd[1], 1) < 0)
+//                 exit_pipe((*token), pipe_fd, 1, "error dup2\n");
+//         }
+//         return_code = parsing_cmd(data, (*token));
+//         exit_pipe((*token), pipe_fd, return_code, NULL);
+//     }
+//     else
+//     {
+//         if (last > 0)
+//         {
+//             *fd_in = pipe_fd[0];
+//             close(pipe_fd[1]);
+//         }
+//         while ((*token) && (*token)->type != PIPE)
+//             (*token) = (*token)->next;
+//         if ((*token) && (*token)->type == PIPE)
+//             (*token) = (*token)->next;
+//     }
+//     return(pid);
+// }
+
+// static int  get_return_code(pid_t pid)
+// {
+//     pid_t last_pid;
+//     int status;
+//     int return_code;
+
+//     return_code = 0;
+//     last_pid = wait(&status);
+//     while (last_pid > 0)
+//     {
+//         if (last_pid == pid)
+//         {
+//             if (WIFEXITED(status))
+//                 return_code = (WEXITSTATUS(status));
+//             //	if (WIFSIGNALED(status))
+// 		//       data->return_code = 128 + WTERMSIG(status);
+//         }
+//         last_pid = wait(&status);
+//     }
+//     return (return_code);
+// }
+
+// int exec_pipe(t_data *data)
+// {
+//     int pipeddone;
+//     t_token *tmp;
+//     int fd_in;
+//     pid_t last_pid;
+    
+//     tmp = data->tokens;
+//     fd_in = 0;
+//     pipeddone = 0;
+//     while (pipeddone <= data->pipe_nb)
+//     {
+//         last_pid = create_child(data, &tmp, data->pipe_nb - pipeddone, &fd_in);
+//         pipeddone++;
+//     }
+//     data->return_code = get_return_code(last_pid);
+//     // if (tmp)
+//     //     data->return_code = parsing_cmd(data, tmp);
+//     return (0);
+//}
+
+static int create_child(t_data *data, t_token **token)
 {
+    pid_t child;
     int pipe_fd[2];
-    int return_code;
-    pid_t pid;
-
-    if (last > 0)
-        pipe(pipe_fd);
-    pid = fork();
-    if (pid == 0)
-    {            
-        if (*fd_in != 0)
-        {
-            dup2(*fd_in, 0);
-            close(*fd_in);
-        }
-        if (last > 0)
-        {
-            if (dup2(pipe_fd[1], 1) < 0)
-                exit_pipe((*token), pipe_fd, 1, "error dup2\n");
-        }
-        return_code = parsing_cmd(data, (*token));
-        exit_pipe((*token), pipe_fd, return_code, NULL);
-    }
-    else
-    {
-        if (last > 0)
-        {
-            *fd_in = pipe_fd[0];
-            close(pipe_fd[1]);
-        }
-        while ((*token) && (*token)->type != PIPE)
-            (*token) = (*token)->next;
-        if ((*token) && (*token)->type == PIPE)
-            (*token) = (*token)->next;
-    }
-    return(pid);
-}
-
-static int  get_return_code(pid_t pid)
-{
-    pid_t last_pid;
-    int status;
     int return_code;
 
     return_code = 0;
-    last_pid = wait(&status);
-    while (last_pid > 0)
+    pipe(pipe_fd);
+    child = fork();
+    if (!child)
     {
-        if (last_pid == pid)
-        {
-            if (WIFEXITED(status))
-                return_code = (WEXITSTATUS(status));
-            //	if (WIFSIGNALED(status))
-		//       data->return_code = 128 + WTERMSIG(status);
-        }
-        last_pid = wait(&status);
+        if (dup2(pipe_fd[1], 1) < 0)
+            exit_pipe(*token, pipe_fd, return_code, "dup2: error\n");
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
+        return_code = parsing_cmd(data, *token);
+        exit(return_code);
     }
-    return (return_code);
+    else
+    {
+        if (dup2(pipe_fd[0], 0) < 0)
+            exit_pipe(*token, pipe_fd, return_code, "dup2: error\n");
+        while ((*token) && (*token)->type != PIPE)
+            (*token) = (*token)->next;
+        if ((*token)->type == PIPE)
+            (*token) = (*token)->next;
+    }
+    return (close(pipe_fd[1]), close(pipe_fd[0]), 0);
 }
+
 
 int exec_pipe(t_data *data)
 {
-    int pipeddone;
     t_token *tmp;
-    int fd_in;
-    pid_t last_pid;
+    int pipeddone;
     
-    tmp = data->tokens;
-    fd_in = 0;
     pipeddone = 0;
-    while (pipeddone <= data->pipe_nb)
+    tmp = data->tokens;
+    while (pipeddone < data->pipe_nb)
     {
-        last_pid = create_child(data, &tmp, data->pipe_nb - pipeddone, &fd_in);
+        data->return_code = create_child(data, &tmp);
+        if (data->return_code != 0)
+            return (data->return_code);
         pipeddone++;
     }
-    data->return_code = get_return_code(last_pid);
-    return (0);
+    data->return_code = parsing_cmd(data, tmp);
+    return (data->return_code);
 }
