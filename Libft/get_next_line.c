@@ -13,7 +13,7 @@
 #include "libft.h"
 #define BUFFER_SIZE 1000
 
-static char	*join_tab(char *mid_tab, char *temp)
+char	*join_tab(char *mid_tab, char *temp)
 {
 	char	*mid_tab_temp;
 

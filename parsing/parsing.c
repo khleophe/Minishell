@@ -33,7 +33,7 @@ int parsing_cmd(t_data *data, t_token *tokens)
     {
         if (is_redirs(tokens->type))
             tokens = tokens->next->next;
-        if (tokens->type == WORD)
+        if (tokens && tokens->type == WORD)
         {
             return_code = parsing_builtin(data, &tokens);
             if (tokens && tokens->type == WORD)
@@ -41,7 +41,7 @@ int parsing_cmd(t_data *data, t_token *tokens)
             while (tokens && tokens->type == WORD)
                 tokens = tokens->next;
         }
-        else
+        else if (tokens && tokens->type != WORD)
             tokens = tokens->next;
     }
     return (return_code);

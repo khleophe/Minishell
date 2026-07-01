@@ -20,16 +20,37 @@ static int  print_heredoc(char *line, int fd[2], t_data *data)
     char    *expand;
     char    *new;
     
-    expand = ft_strjoin(line, "\n");
+    expand = ft_strdup(line);
     new = expand_str(expand, data);
     ft_printf_fd(fd[1], "%s", new);
     free(new);
     return (0);
 }
 
+static void    read_heredoc(char *eof, int fd[2], t_data *data)
+{
+    char    *scan;
+    char    *nl;
+
+    nl = ft_strjoin(eof, "\n");
+    ft_printf_fd(2, "heredoc> ");
+    scan = get_next_line(0);
+    while (scan && ft_strcmp(scan, nl) != 0)
+    {
+        ft_printf_fd(2, "heredoc> ");
+        free(scan);
+        scan = get_next_line(0);
+        if (!scan || ft_strcmp(scan, nl) == 0)
+            break ;
+        print_heredoc(scan, fd, data);
+    }
+    free(nl);
+    free(scan);
+}
+
 int heredoc_redir(char *eof, t_data *data)
 {
-    char    *line;
+    // char    *line;
     int     fd[2];
     int     signal;
     pid_t   pid;
@@ -38,17 +59,18 @@ int heredoc_redir(char *eof, t_data *data)
     pid = fork();
     if (!pid)
     {
-        close(fd[0]);
-        line = readline("heredoc> ");
-        while (line && ft_strcmp(line, eof) != 0)
-        {
-            print_heredoc(line, fd, data);
-            free(line);
-            line = readline("heredoc> ");
-        }
-        free(line);
+        read_heredoc(eof, fd, data);
+        // line = readline("heredoc> ");
+        // while (line && ft_strcmp(line, eof) != 0)
+        // {
+        //     print_heredoc(line, fd, data);
+        //     free(line);
+        //     line = readline("heredoc> ");
+        // }
+        // free(line);
         ft_printf_fd(fd[1], "\0");
         close(fd[1]);
+        close(fd[0]);
         exit (0);
     }
     else

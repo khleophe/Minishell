@@ -73,6 +73,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 char	*get_next_line(int fd);
+char	*join_tab(char *mid_tab, char *temp);
 int		ft_putstr(char *str);
 char	**ft_freetab(char **dest);
 
