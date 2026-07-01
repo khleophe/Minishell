@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:56:48 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/21 11:31:04 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/06/29 16:51:25 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,31 +73,31 @@ int	many_args_mess(void)
 }
 
 // revenir dessus ^pour changer la maj de PWD/OLDPWD avec export
-int	cd_builtin(t_cmd *cmd, t_data *data)
-{
-	int		res;
-	char	*old_pwd;
-	char	*tmp;
+// int	cd_builtin(t_cmd *cmd, t_data *data)
+// {
+// 	int		res;
+// 	char	*old_pwd;
+// 	char	*tmp;
 
-	if (cmd->args[1] != NULL && cmd->args[2] != NULL)
-		return (many_args_mess());
-	tmp = get_env_value("PWD", data->env);
-	if (tmp)
-		old_pwd = ft_strdup(tmp);
-	else
-		old_pwd = NULL;
-	if (cmd->args[1] == NULL)
-		res = cd_null(data);
-	else if (ft_strcmp(cmd->args[1], "-") == 0)
-		res = cd_helper(data);
-	else
-	{
-		res = chdir(cmd->args[1]);
-		if (res == -1)
-			message_cd(cmd->args[1]);
-	}
-	if (res != -1)
-		update_pwd(old_pwd, data);
-	free(old_pwd);
-	return (res == -1);
-}
+// 	if (cmd->args[1] != NULL && cmd->args[2] != NULL)
+// 		return (many_args_mess());
+// 	tmp = get_env_value("PWD", data->env);
+// 	if (tmp)
+// 		old_pwd = ft_strdup(tmp);
+// 	else
+// 		old_pwd = NULL;
+// 	if (cmd->args[1] == NULL)
+// 		res = cd_null(data);
+// 	else if (ft_strcmp(cmd->args[1], "-") == 0)
+// 		res = cd_helper(data);
+// 	else
+// 	{
+// 		res = chdir(cmd->args[1]);
+// 		if (res == -1)
+// 			message_cd(cmd->args[1]);
+// 	}
+// 	if (res != -1)
+// 		update_pwd(old_pwd, data);
+// 	free(old_pwd);
+// 	return (res == -1);
+// }

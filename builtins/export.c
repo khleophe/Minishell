@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:56:58 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/20 00:01:02 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/06/29 16:51:57 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,31 +91,31 @@ int	count_env(t_data *data)
 	return (n);
 }
 
-int	export_builtin(t_cmd *cmd, t_data *data)
-{
-	int		i;
-	int		n;
+// int	export_builtin(t_cmd *cmd, t_data *data)
+// {
+// 	int		i;
+// 	int		n;
 
-	i = 1;
-	if (cmd->args[1] == NULL)
-		return (export_no_args(data), 0);
-	n = count_env(data);
-	while (cmd->args[i] != NULL)
-	{
-		if (export_error(cmd->args[i], data))
-		{
-			i++;
-			continue ;
-		}
-		if (ft_strchr(cmd->args[i], '=') == NULL)
-		{
-			if (export_no_value(cmd->args[i], data, &n) == 0)
-				return (0);
-			i++;
-			continue ;
-		}
-		export_helper(cmd->args[i], data, &n);
-		i++;
-	}
-	return (0);
-}
+// 	i = 1;
+// 	if (cmd->args[1] == NULL)
+// 		return (export_no_args(data), 0);
+// 	n = count_env(data);
+// 	while (cmd->args[i] != NULL)
+// 	{
+// 		if (export_error(cmd->args[i], data))
+// 		{
+// 			i++;
+// 			continue ;
+// 		}
+// 		if (ft_strchr(cmd->args[i], '=') == NULL)
+// 		{
+// 			if (export_no_value(cmd->args[i], data, &n) == 0)
+// 				return (0);
+// 			i++;
+// 			continue ;
+// 		}
+// 		export_helper(cmd->args[i], data, &n);
+// 		i++;
+// 	}
+// 	return (0);
+// }

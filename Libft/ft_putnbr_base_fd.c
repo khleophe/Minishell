@@ -1,42 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putnbr_base_fd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 09:21:26 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/06/25 14:49:47 by sdabbas          ###   ########.fr       */
+/*   Created: 2025/11/24 10:39:49 by jdelmott          #+#    #+#             */
+/*   Updated: 2026/06/25 14:49:39 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putnbr_fd(int i, int fd)
+int	ft_putnbr_base_fd(unsigned int i, char *base, int fd)
 {
-	static int	k;
-	int			neg;
+	static int		k;
+	unsigned int	len_base;
+	size_t			index;
 
-	neg = 0;
 	k = 0;
-	if (i == -2147483648)
-	{
-		ft_putstr_fd("-2147483648", fd);
-		return (11);
-	}
-	if (i < 0)
-	{
-		neg++;
-		if (ft_putchar_fd('-', fd) == -1)
-			return (-1);
-		i = -i;
-	}
-	if (i >= 10)
-		ft_putnbr_fd(i / 10, fd);
-	if (neg != 0)
-		k++;
-	if (ft_putchar_fd((i % 10) + '0', fd) == -1)
-		return (-1);
+	index = 0;
+	len_base = (unsigned int)ft_strlen(base);
+	if (i >= len_base)
+		ft_putnbr_base_fd(i / len_base, base, fd);
+	index = (i % len_base);
 	k++;
+	if (ft_putchar_fd(base[index], fd) == -1)
+		return (-1);
 	return (k);
 }

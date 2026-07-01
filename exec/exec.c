@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/28 14:57:45 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/06/24 18:15:29 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static int     execute(t_data *data, char *path, char **cmd)
     pid = fork();
     if (!pid)
     {
+        data->sig_quit.sa_handler = SIG_DFL;
+        sigaction(SIGQUIT, &data->sig_quit, 0);
         execve(path, cmd, data->env);
         exec_fail(path, cmd, data);
     }
@@ -47,7 +49,7 @@ static int     execute(t_data *data, char *path, char **cmd)
     {
         waitpid(pid, &status, 0);
         if (WIFEXITED(status))
-		    return (WEXITSTATUS(status));
+		    return (WEXITSTATUS(status));   
     }
     return (0);
 }
@@ -80,7 +82,7 @@ static char    **create_cmd(t_token *tokens)
     i = 0;
     tmp = tokens;
     len = count_args(tokens);
-    cmd = malloc(sizeof(char *) * len);
+    cmd = malloc(sizeof(char *) * (len + 1));
     if (!cmd)
         return (NULL);
     while (tmp && tmp->type == WORD && i < len)
@@ -91,6 +93,7 @@ static char    **create_cmd(t_token *tokens)
         i++;
         tmp = tmp->next;
     }
+    cmd[i] = NULL;
     return (cmd);
 }
 
@@ -111,5 +114,5 @@ int exec(t_data *data, t_token *tokens)
     data->return_code = execute(data, path, cmd);
     ft_freetab(cmd);
     free(path);
-    return (0);
+    return (data->return_code);
 }
