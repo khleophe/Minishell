@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/29 16:20:08 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/02 12:54:02 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static void    read_heredoc(char *eof, int fd[2], t_data *data)
 
 int heredoc_redir(char *eof, t_data *data)
 {
-    // char    *line;
     int     fd[2];
     int     signal;
     pid_t   pid;
@@ -60,14 +59,6 @@ int heredoc_redir(char *eof, t_data *data)
     if (!pid)
     {
         read_heredoc(eof, fd, data);
-        // line = readline("heredoc> ");
-        // while (line && ft_strcmp(line, eof) != 0)
-        // {
-        //     print_heredoc(line, fd, data);
-        //     free(line);
-        //     line = readline("heredoc> ");
-        // }
-        // free(line);
         ft_printf_fd(fd[1], "\0");
         close(fd[1]);
         close(fd[0]);
