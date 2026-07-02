@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/02 12:54:02 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/02 15:27:14 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void    read_heredoc(char *eof, int fd[2], t_data *data)
     char    *nl;
 
     nl = ft_strjoin(eof, "\n");
-    ft_printf_fd(2, "heredoc> ");
+    ft_printf_fd(1, "heredoc> ");
     scan = get_next_line(0);
     while (scan && ft_strcmp(scan, nl) != 0)
-    {
-        ft_printf_fd(2, "heredoc> ");
+    {        
+        print_heredoc(scan, fd, data);
+        ft_printf_fd(1, "heredoc> ");
         free(scan);
         scan = get_next_line(0);
         if (!scan || ft_strcmp(scan, nl) == 0)
             break ;
-        print_heredoc(scan, fd, data);
     }
     free(nl);
     free(scan);

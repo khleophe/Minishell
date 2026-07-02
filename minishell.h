@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/29 17:02:49 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/02 15:23:39 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,8 @@ void					init_sign(struct sigaction *sig_int,
 							struct sigaction *sig_quit);
 
 /* * * * * * BUILTINS * * * * * */
-int parsing_env(t_data *data, t_token **token);
 int parsing_unset(t_data *data, t_token **tokens);
-//int						init_builtins(t_data *data, t_cmd *cmd);
-//int						cmp_builtins(t_cmd *cmd);
+int parsing_env(t_data *data, t_token **token);
 
 /*cd.c*/
 int						cd_helper(t_data *data);
