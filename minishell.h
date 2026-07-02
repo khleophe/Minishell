@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/02 15:23:39 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/02 15:30:28 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ void					rm_quotes_token(t_token *tokens);
 int						check_syntax(t_data *data);
 int						is_redirs(int type);
 
+/* * * * * * BUILTINS * * * * * */
+int parsing_unset(t_data *data, t_token **tokens);
+int parsing_env(t_data *data, t_token **token);
+
 /* * * * * * * PARSING * * * * * */
 int						exec_pipe(t_data *data);
 int						parsing_cmd(t_data *data, t_token *tokens);
@@ -89,9 +93,7 @@ char					*path_helper(char *dir, char *cmd);
 void					init_sign(struct sigaction *sig_int,
 							struct sigaction *sig_quit);
 
-/* * * * * * BUILTINS * * * * * */
-int parsing_unset(t_data *data, t_token **tokens);
-int parsing_env(t_data *data, t_token **token);
+
 
 /*cd.c*/
 int						cd_helper(t_data *data);

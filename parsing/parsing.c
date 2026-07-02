@@ -6,18 +6,20 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/02 15:24:10 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/02 15:30:32 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// int parsing_unset(t_data *data, t_token **tokens);
+
 int parsing_builtin(t_data *data, t_token **token)
 {
     if (ft_strcmp((*token)->s, "env") == 0)
         return (parsing_env(data, token));
-   // if (ft_strcmp((*token)->s, "unset") == 0)
-     //   return (parsing_unset(data, token));
+   if (ft_strcmp((*token)->s, "unset") == 0)
+       return (parsing_unset(data, token));
     else
         return (0);
 }
