@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/03 16:22:32 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/03 17:21:49 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void    read_line(t_token **tokens, t_data *data)
 
     while (1)
     {
+        get_pwd(data);
         data->pipe_nb = 0;
         line = readline("minishell>");
         if (line == NULL)

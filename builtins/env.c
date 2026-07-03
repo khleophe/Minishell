@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 16:37:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/02 15:21:39 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/03 17:17:04 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ static void env_builtin(t_data *data)
     }
 }
 
-int parsing_env(t_data *data, t_token **token)
+int parsing_env(t_data *data, t_token **tokens)
 {
     t_token *tmp;
 
-    tmp = (*token)->next;
+    tmp = (*tokens)->next;
     if ((tmp) && tmp->type == WORD)
     {
-        (*token) = (*token)->next;
+        (*tokens) = (*tokens)->next;
         return (0);
     }
     env_builtin(data);
-    (*token) = (*token)->next;
+    (*tokens) = (*tokens)->next;
     return (0);
 }

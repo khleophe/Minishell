@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 10:45:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/03 16:25:38 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/03 17:08:35 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc, char **argv, char **envp)
 	t_data	data;
 
 	(void)argc;
-	(void)argv;	
+	(void)argv;
 	flag = 0;
 	data.old_stdin = dup(STDIN_FILENO);
 	data.old_stdout = dup(STDOUT_FILENO);
