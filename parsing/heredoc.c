@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/02 15:27:14 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/03 16:27:40 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int heredoc_redir(char *eof, t_data *data)
     pid = fork();
     if (!pid)
     {
+        sigaction(SIGINT, &data->sig_child_int, 0);
+        sigaction(SIGQUIT, &data->sig_child_quit, 0);
         read_heredoc(eof, fd, data);
         ft_printf_fd(fd[1], "\0");
         close(fd[1]);
@@ -67,6 +69,7 @@ int heredoc_redir(char *eof, t_data *data)
     else
     {
         waitpid(pid, &signal, 0);
+        write(1, "\n", 1);
         close(fd[1]);
         if (dup2(fd[0], 0) < 0)
             return (close(fd[0]), close(fd[1]), 1);

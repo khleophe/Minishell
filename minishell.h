@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/02 15:30:28 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/03 16:25:00 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+extern int flag;
 
 typedef enum e_token_type
 {
@@ -54,8 +56,10 @@ typedef struct s_data
 	int					pipe_nb;
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
-	int old_stdin;
-	int old_stdout;
+	struct sigaction	sig_child_int;
+	struct sigaction	sig_child_quit;
+	int					old_stdin;
+	int					old_stdout;
 }						t_data;
 
 /* * * * * * INITIALISATION * * * * * */
@@ -74,8 +78,8 @@ int						check_syntax(t_data *data);
 int						is_redirs(int type);
 
 /* * * * * * BUILTINS * * * * * */
-int parsing_unset(t_data *data, t_token **tokens);
-int parsing_env(t_data *data, t_token **token);
+int						parsing_unset(t_data *data, t_token **tokens);
+int						parsing_env(t_data *data, t_token **token);
 
 /* * * * * * * PARSING * * * * * */
 int						exec_pipe(t_data *data);
@@ -92,22 +96,22 @@ char					*access_path(char *cmd);
 char					*path_helper(char *dir, char *cmd);
 void					init_sign(struct sigaction *sig_int,
 							struct sigaction *sig_quit);
+void					init_sign_heredoc(struct sigaction *sig_child_int,
+							struct sigaction *sig_child_quit);
 
-
-
-/*cd.c*/
-int						cd_helper(t_data *data);
+	/*cd.c*/
+	int cd_helper(t_data *data);
 int						cd_null(t_data *data);
 void					update_pwd(char *old_pwd, t_data *data);
 int						many_args_mess(void);
-//int						cd_builtin(t_cmd *cmd, t_data *data);
+// int						cd_builtin(t_cmd *cmd, t_data *data);
 void					message_cd(char *path);
 /*echo.c*/
-//int						echo_builtin(t_cmd *cmd);
+// int						echo_builtin(t_cmd *cmd);
 /*env.c*/
 /*exit.c*/
 int						atol_minishell(const char *str);
-//int						exit_builtin(t_cmd *cmd, t_data *data);
+// int						exit_builtin(t_cmd *cmd, t_data *data);
 /*pwd.c*/
 int						pwd_builtin(void);
 
@@ -115,7 +119,7 @@ int						pwd_builtin(void);
 void					print_export(char *value);
 void					export_no_args(t_data *data);
 void					export_helper(char *arg, t_data *data, int *n);
-//int						export_builtin(t_cmd *cmd, t_data *data);
+// int						export_builtin(t_cmd *cmd, t_data *data);
 int						export_no_value(char *args, t_data *data, int *n);
 int						is_valid_id(char *arg);
 int						export_error(char *arg, t_data *data);

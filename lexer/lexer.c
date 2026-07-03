@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/23 16:34:24 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/03 16:22:32 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void    read_line(t_token **tokens, t_data *data)
             exit (1);
         if (verif_line(line))
         {
+            flag = 1;
             add_history(line);
             *tokens = lexer(line);
             if (check_syntax(data))
@@ -92,6 +93,7 @@ void    read_line(t_token **tokens, t_data *data)
                 tokens = NULL;
             }*/
         }
+        flag = 0;
         free(line);
     }
 }
