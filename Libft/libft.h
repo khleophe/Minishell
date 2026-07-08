@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 16:16:27 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/25 15:01:14 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/08 18:55:31 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	*get_next_line(int fd);
 char	*join_tab(char *mid_tab, char *temp);
 int		ft_putstr(char *str);
 char	**ft_freetab(char **dest);
+
+char    **ft_splitdup(char **str);
 
 // printf & utils
 

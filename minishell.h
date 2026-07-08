@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/03 17:23:10 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/08 19:02:16 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ int					parsing_unset(t_data *data, t_token **tokens);
 int					parsing_env(t_data *data, t_token **tokens);
 int					get_pwd(t_data *data);
 int					parsing_pwd(t_data *data, t_token **tokens);
+int					parsing_export(t_data *data, t_token **tokens);
+int					print_export(t_data *data, int option);
+int					verif_args_export(char *arg);
+int 				is_dash(char *arg);
+
 
 /* * * * * * * PARSING * * * * * */
 int					exec_pipe(t_data *data);
@@ -116,15 +121,6 @@ void				message_cd(char *path);
 int					atol_minishell(const char *str);
 // int						exit_builtin(t_cmd *cmd, t_data *data);
 
-/*all export*/
-void				print_export(char *value);
-void				export_no_args(t_data *data);
-void				export_helper(char *arg, t_data *data, int *n);
-// int						export_builtin(t_cmd *cmd, t_data *data);
-int					export_no_value(char *args, t_data *data, int *n);
-int					is_valid_id(char *arg);
-int					export_error(char *arg, t_data *data);
-int					count_env(t_data *data);
 /*env_shell.c*/
 void				update_env(char *key, char *value, t_data *data);
 char				**dup_env(char **env);

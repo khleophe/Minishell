@@ -3,119 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: soraya <soraya@2student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/26 17:56:58 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/06/29 16:51:57 by sdabbas          ###   ########.fr       */
+/*   Created: 2026/07/08 17:19:43 by soraya            #+#    #+#             */
+/*   Updated: 2026/07/08 17:43:14 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
+#include "minishell.h"
 
-// static void	sort_env(char **sorted, int n)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*tmp;
+static int  already_exist(t_data *data, char *arg)
+{
+    int i;
+    char    *temp;
 
-// 	i = 0;
-// 	while (i < n - 1)
-// 	{
-// 		j = 0;
-// 		while (j < n - 1 - i)
-// 		{
-// 			if (ft_strcmp(sorted[j], sorted[j + 1]) > 0)
-// 			{
-// 				tmp = sorted[j];
-// 				sorted[j] = sorted[j + 1];
-// 				sorted[j + 1] = tmp;
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
+    i = 0;
+    temp = ft_substr(arg, 0, is_dash(arg));
+    while (data->env[i])
+    {
+        if (ft_strnstr(data->env[i], temp, ft_strlen(temp)))
+        {
+            free(data->env[i]);
+            data->env[i] = ft_strdup(arg);
+            return (free(temp), 1);
+        }
+        i++;
+    }
+    return (0);
+}
 
-// void	export_no_args(t_data *data)
-// {
-// 	int		i;
-// 	int		n;
-// 	char	**sorted;
+static int add_arg(t_data *data, char *arg)
+{
+    char    **temp;
+    int     i;
 
-// 	n = 0;
-// 	while (data->env[n] != NULL)
-// 		n++;
-// 	sorted = malloc(sizeof(char *) * (n + 1));
-// 	if (!sorted)
-// 		return ;
-// 	i = 0;
-// 	while (i < n)
-// 	{
-// 		sorted[i] = data->env[i];
-// 		i++;
-// 	}
-// 	sorted[n] = NULL;
-// 	sort_env(sorted, n);
-// 	i = 0;
-// 	while (sorted[i] != NULL)
-// 		print_export(sorted[i++]);
-// 	free(sorted);
-// }
+    i = 0;
+    temp = malloc(sizeof(char *) * (print_export(data, 0) + 2));
+    if (!temp)
+        return (1);
+    while (data->env[i])
+    {
+        temp[i] = ft_strdup(data->env[i]);
+        if (!temp[i])
+            return (ft_freetab(temp), 1);
+        i++;
+    }
+    ft_freetab(data->env);
+    temp[i] = ft_strdup(arg);
+    i++;
+    temp[i] = NULL;
+    data->env = ft_splitdup(temp);
+    ft_freetab(temp);
+    return (0);
+}
 
-// int	export_no_value(char *args, t_data *data, int *n)
-// {
-// 	char	**tmp;
+static int export(t_data *data, char *arg)
+{
+    if (!data->env)
+        return (ft_printf_fd(2, "error: export: no env\n"), 1);
+    if (already_exist(data, arg))
+        return (0);
+    return (add_arg(data, arg));
+}
 
-// 	// if (find_index(args, data->env) == -1)
-// 	// {
-// 	// 	tmp = realloc(data->env, sizeof(char *) * (*n + 2));
-// 	// 	if (!tmp)
-// 	// 		return (0);
-// 	// 	data->env = tmp;
-// 	// 	data->env[*n] = ft_strdup(args);
-// 	// 	if (data->env[*n] == NULL)
-// 	// 		return (1);
-// 	// 	data->env[*n + 1] = NULL;
-// 	// 	(*n)++;
-// 	// }
-// 	return (1);
-// }
+int parsing_export(t_data *data, t_token **tokens)
+{
+    int return_code;
 
-// int	count_env(t_data *data)
-// {
-// 	int	n;
-
-// 	n = 0;
-// 	while (data->env[n] != NULL)
-// 		n++;
-// 	return (n);
-// }
-
-// int	export_builtin(t_cmd *cmd, t_data *data)
-// {
-// 	int		i;
-// 	int		n;
-
-// 	i = 1;
-// 	if (cmd->args[1] == NULL)
-// 		return (export_no_args(data), 0);
-// 	n = count_env(data);
-// 	while (cmd->args[i] != NULL)
-// 	{
-// 		if (export_error(cmd->args[i], data))
-// 		{
-// 			i++;
-// 			continue ;
-// 		}
-// 		if (ft_strchr(cmd->args[i], '=') == NULL)
-// 		{
-// 			if (export_no_value(cmd->args[i], data, &n) == 0)
-// 				return (0);
-// 			i++;
-// 			continue ;
-// 		}
-// 		export_helper(cmd->args[i], data, &n);
-// 		i++;
-// 	}
-// 	return (0);
-// }
+    return_code = 0;
+    (*tokens) = (*tokens) -> next;
+    if (!(*tokens))
+        return (print_export(data, 1), 0);
+    while ((*tokens) && (*tokens)->type == WORD)
+    {
+        if (verif_args_export((*tokens)->s))
+        {
+            if (export(data, (*tokens)->s) == 1)
+                return (1);
+        }
+        else
+            return_code = 1;
+        (*tokens) = (*tokens)->next;
+    }
+    return (return_code);
+}

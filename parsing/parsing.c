@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/03 17:18:14 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/08 19:00:11 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int parsing_builtin(t_data *data, t_token **token)
        return (parsing_unset(data, token));
     if (ft_strcmp((*token)->s, "pwd") == 0)
         return (parsing_pwd(data, token));
+    if (ft_strcmp((*token)->s, "export") == 0)
+        return (parsing_export(data, token));
     else
         return (0);
 }
