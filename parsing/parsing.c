@@ -6,7 +6,7 @@
 /*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/08 19:00:11 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/09 19:16:21 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int parsing_builtin(t_data *data, t_token **token)
         return (parsing_pwd(data, token));
     if (ft_strcmp((*token)->s, "export") == 0)
         return (parsing_export(data, token));
+    if (ft_strcmp((*token)->s, "exit") == 0)
+        return (parsing_exit(token));
     else
         return (0);
 }

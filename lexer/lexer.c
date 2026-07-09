@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/03 17:21:49 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/09 19:22:37 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,9 @@ int	verif_line(char *str)
 	return (1);
 }
 
-/*void    exec_command(char *str, t_data *data)
-{
-	char	**ret;
-	int		pid;
-
-    ret = ft_split(str, ' ');
-    if (!ret)
-        return ;
-    if (ret[0] == NULL)
-        ft_freetab(ret);
-    pid = fork();
-    if (pid == - 1)
-        exit(1);
-    else if (pid == 0)
-    {
-        execve("/bin/ls", ret, data->env);
-        ft_freetab(ret);
-        exit (127);
-    }
-    else if (pid > 0)
-    {
-        waitpid(pid, NULL, 0);
-        ft_freetab(ret);
-    }
-}*/
-
 void    read_line(t_token **tokens, t_data *data)
 {
     char    *line;
-    // t_token *tmp;
 
     while (1)
     {
@@ -74,12 +47,6 @@ void    read_line(t_token **tokens, t_data *data)
             else 
             {
                 expand_all_tokens(*tokens, data);
-                // tmp = *tokens;
-                // while (tmp)
-                // {
-                //     printf("%i, %s\n", tmp->type, tmp->s);
-                //     tmp = tmp->next;
-                // }
                 if (tokens)
                     exec_pipe(data);
                 dup2(data->old_stdin, STDIN_FILENO);
@@ -87,12 +54,6 @@ void    read_line(t_token **tokens, t_data *data)
                 free_tokens(*tokens);
                 *tokens = NULL;
             }
-            /*if (tokens)
-            {
-                parser + exec ;
-                free_tokens(tokens);
-                tokens = NULL;
-            }*/
         }
         flag = 0;
         free(line);

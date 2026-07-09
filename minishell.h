@@ -6,7 +6,7 @@
 /*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/08 19:02:16 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/09 19:18:49 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int					parsing_pwd(t_data *data, t_token **tokens);
 int					parsing_export(t_data *data, t_token **tokens);
 int					print_export(t_data *data, int option);
 int					verif_args_export(char *arg);
-int 				is_dash(char *arg);
-
+int 				is_dash(char *arg);\
+int					parsing_exit(t_token **tokens);
 
 /* * * * * * * PARSING * * * * * */
 int					exec_pipe(t_data *data);
@@ -114,12 +114,6 @@ void				update_pwd(char *old_pwd, t_data *data);
 int					many_args_mess(void);
 // int						cd_builtin(t_cmd *cmd, t_data *data);
 void				message_cd(char *path);
-/*echo.c*/
-// int						echo_builtin(t_cmd *cmd);
-/*env.c*/
-/*exit.c*/
-int					atol_minishell(const char *str);
-// int						exit_builtin(t_cmd *cmd, t_data *data);
 
 /*env_shell.c*/
 void				update_env(char *key, char *value, t_data *data);
