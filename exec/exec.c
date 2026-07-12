@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 18:15:29 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/12 19:05:07 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,6 @@ int exec(t_data *data, t_token *tokens)
     if (!cmd)
         return (1);
     path = find_path(cmd[0], data->env);
-    // for (int i = 0; cmd[i]; i++)
-    //     printf("%s ", cmd[i]);
-    // printf("\n");
-    // printf("%s\n", path);
     data->return_code = execute(data, path, cmd);
     ft_freetab(cmd);
     free(path);

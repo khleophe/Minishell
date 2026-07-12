@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/03 16:27:40 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/12 19:06:00 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-// signaux avec Marius + ne marche pas avec les pipes
 
 static int  print_heredoc(char *line, int fd[2], t_data *data)
 {

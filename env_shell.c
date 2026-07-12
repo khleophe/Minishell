@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_shell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nolwenng <nolwenng@student.42.fr>          +#+  +:+       +#+        */
+/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/04/20 15:50:03 by nolwenng         ###   ########.fr       */
+/*   Updated: 2026/07/12 19:03:56 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,3 @@ char	**dup_env(char **env)
 	return (dup);
 }
 
-// void	update_env(char *key, char *value, t_data *data)
-// {
-// 	int		cd;
-// 	char	*tmp;
-// 	char	*res;
-
-// 	tmp = ft_strjoin(key, "=");
-// 	if (!tmp)
-// 		return ;
-// 	res = ft_strjoin(tmp, value);
-// 	free(tmp);
-// 	if (!res)
-// 		return ;
-// 	cd = find_index(key, data->env);
-// 	if (cd == -1)
-// 	{
-// 		free(res);
-// 		return ;
-// 	}
-// 	free(data->env[cd]);
-// 	data->env[cd] = res;
-// }

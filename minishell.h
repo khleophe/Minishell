@@ -6,7 +6,7 @@
 /*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/09 19:18:49 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/12 20:02:09 by soraya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int					print_export(t_data *data, int option);
 int					verif_args_export(char *arg);
 int 				is_dash(char *arg);\
 int					parsing_exit(t_token **tokens);
+int					parsing_echo(t_token **tokens);
 
 /* * * * * * * PARSING * * * * * */
 int					exec_pipe(t_data *data);
@@ -116,7 +117,6 @@ int					many_args_mess(void);
 void				message_cd(char *path);
 
 /*env_shell.c*/
-void				update_env(char *key, char *value, t_data *data);
 char				**dup_env(char **env);
 /*free*/
 void				ft_free_tab(t_data *data);
