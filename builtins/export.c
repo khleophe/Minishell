@@ -57,7 +57,7 @@ static int add_arg(t_data *data, char *arg)
     return (0);
 }
 
-static int export(t_data *data, char *arg)
+int export(t_data *data, char *arg)
 {
     if (!data->env)
         return (ft_printf_fd(2, "error: export: no env\n"), 1);
@@ -71,7 +71,7 @@ int parsing_export(t_data *data, t_token **tokens)
     int return_code;
 
     return_code = 0;
-    (*tokens) = (*tokens) -> next;
+    (*tokens) = (*tokens)->next;
     if (!(*tokens))
         return (print_export(data, 1), 0);
     while ((*tokens) && (*tokens)->type == WORD)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/09 19:22:37 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/13 14:15:51 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	verif_line(char *str)
 void    read_line(t_token **tokens, t_data *data)
 {
     char    *line;
-
+ 
+    get_pwd(data);
     while (1)
-    {
-        get_pwd(data);
+    {      
         data->pipe_nb = 0;
         line = readline("minishell>");
         if (line == NULL)

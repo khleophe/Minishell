@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/12 20:02:09 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/13 14:09:26 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ int					parsing_unset(t_data *data, t_token **tokens);
 int					parsing_env(t_data *data, t_token **tokens);
 int					get_pwd(t_data *data);
 int					parsing_pwd(t_data *data, t_token **tokens);
+int 				export(t_data *data, char *arg);
 int					parsing_export(t_data *data, t_token **tokens);
 int					print_export(t_data *data, int option);
 int					verif_args_export(char *arg);
 int 				is_dash(char *arg);\
 int					parsing_exit(t_token **tokens);
 int					parsing_echo(t_token **tokens);
+int					parsing_cd(t_data *data, t_token **tokens);
 
 /* * * * * * * PARSING * * * * * */
 int					exec_pipe(t_data *data);

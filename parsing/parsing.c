@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/12 20:03:18 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/13 13:44:29 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int parsing_builtin(t_data *data, t_token **token)
         return (parsing_exit(token));
     if (ft_strcmp((*token)->s, "echo") == 0)
         return (parsing_echo(token));
+    if (ft_strcmp((*token)->s, "cd") == 0)
+        return (parsing_cd(data, token));
     else
         return (0);
 }
