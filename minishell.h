@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/13 14:09:26 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/13 14:40:58 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,6 @@ void				init_sign(struct sigaction *sig_int,
 						struct sigaction *sig_quit);
 void				init_sign_heredoc(struct sigaction *sig_child_int,
 						struct sigaction *sig_child_quit);
-
-/*cd.c*/
-int					cd_helper(t_data *data);
-int					cd_null(t_data *data);
-void				update_pwd(char *old_pwd, t_data *data);
-int					many_args_mess(void);
-// int						cd_builtin(t_cmd *cmd, t_data *data);
-void				message_cd(char *path);
 
 /*env_shell.c*/
 char				**dup_env(char **env);
