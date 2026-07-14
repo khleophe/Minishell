@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:47:43 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/13 15:35:37 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 15:43:07 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static char	*remove_quotes(char *s)
 		return (NULL);
 	while (s[i])
 	{
-
 		if (s[i] == 34 || s[i] == 39)
 		{
 			quote = s[i++];
@@ -34,7 +33,7 @@ static char	*remove_quotes(char *s)
 				new[j++] = s[i++];
 			if (s[i] == quote)
 				i++;
-		}		
+		}
 		else
 			new[j++] = s[i++];
 	}

@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_shell.c                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/07/12 19:03:56 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/14 15:44:56 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// appeler dup_env au démarrage dans le main pour que data->env 
-// soit une copie malloc'd dès le début.
-//duplique l'env
-char	**dup_env(char **env)
+static char	**dup_env(char **env)
 {
 	char	**dup;
 	int		n;
@@ -43,3 +40,25 @@ char	**dup_env(char **env)
 	return (dup);
 }
 
+void	init(t_data *data, char **env)
+{
+	data->old_stdin = -1;
+	data->old_stdout = -1;
+	data->tokens = NULL;
+	data->env = dup_env(env);
+	if (!data->env)
+		clean("error: dup_env", data, 1);
+	data->old_stdin = dup(STDIN_FILENO);
+	if (data->old_stdin == -1)
+		clean("error: dup", data, 1);
+	data->old_stdout = dup(STDOUT_FILENO);
+	if (data->old_stdout == -1)
+		clean("error: dup", data, 1);
+	data->return_code = 0;
+	init_sign(&data->sig_int, &data->sig_quit);
+	init_sign_heredoc(&data->sig_child_int, &data->sig_child_quit);
+	sigaction(SIGINT, &data->sig_int, NULL);
+	sigaction(SIGQUIT, &data->sig_quit, NULL);
+	if (get_pwd(data) == 1)
+		clean("error: get_pwd", data, 1);
+}

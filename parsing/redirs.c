@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/29 14:58:30 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 15:44:37 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static int	file_check(char *fd_arg, int mode)
 		fd = open(fd_arg, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (fd == -1)
 	{
-		ft_putstr_fd("minishell: ", 2); 
-        ft_putstr_fd(fd_arg, 2);
-        ft_putstr_fd(" ", 2);
-        ft_putstr_fd(strerror(errno), 2);
-        ft_putstr_fd("\n", 2);	
-        if (mode == 0)
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(fd_arg, 2);
+		ft_putstr_fd(" ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		if (mode == 0)
 			return (-1);
 		return (-1);
 	}
@@ -78,26 +78,25 @@ static int	append_redir(char *file)
 	return (0);
 }
 
-int apply_redirs(t_token *tokens, int *return_code, t_data *data)
+int	apply_redirs(t_token *tokens, int *return_code, t_data *data)
 {
-    t_token *tmp;
+	t_token	*tmp;
 
-    tmp = tokens; 
-    while (tmp && tmp->type != PIPE)
-    {
-        if (is_redirs(tmp->type))
-        {
-            if (tmp->type == APPEND)
-                *return_code = append_redir(tmp->next->s);
-            else if (tmp->type == REDIR_IN)
-                *return_code = input_redir(tmp->next->s);
-            else if (tmp->type == REDIR_OUT)
-                *return_code = output_redir(tmp->next->s);
-            else if (tmp->type == HEREDOC)
+	tmp = tokens;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (is_redirs(tmp->type))
+		{
+			if (tmp->type == APPEND)
+				*return_code = append_redir(tmp->next->s);
+			else if (tmp->type == REDIR_IN)
+				*return_code = input_redir(tmp->next->s);
+			else if (tmp->type == REDIR_OUT)
+				*return_code = output_redir(tmp->next->s);
+			else if (tmp->type == HEREDOC)
 				*return_code = heredoc_redir(tmp->next->s, data);
-        }    
-        tmp = tmp->next;
-    }
-    return (*return_code);
+		}
+		tmp = tmp->next;
+	}
+	return (*return_code);
 }
-

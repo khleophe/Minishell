@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 16:52:50 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/07/03 17:20:31 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/14 15:39:13 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int get_pwd(t_data *data)
+int	get_pwd(t_data *data)
 {
-    if (!getcwd(data->current_dir, 4096))
-    {
-        ft_printf_fd(2, "error: getcwd\n");
-        return (1);
-    }
-    return (0);
+	if (!getcwd(data->current_dir, 4096))
+	{
+		ft_printf_fd(2, "error: getcwd\n");
+		return (1);
+	}
+	return (0);
 }
 
-int parsing_pwd(t_data *data, t_token **tokens)
+int	parsing_pwd(t_data *data, t_token **tokens)
 {
-    ft_printf_fd(1, "%s\n", data->current_dir);
-    while ((*tokens) && (*tokens)->type == WORD)
-        (*tokens) = (*tokens)->next;
-    return (0);     
+	ft_printf_fd(1, "%s\n", data->current_dir);
+	while ((*tokens) && (*tokens)->type == WORD)
+		(*tokens) = (*tokens)->next;
+	return (0);
 }

@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_tokens.c                                     :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/25 15:42:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:43:41 by sdabbas          ###   ########.fr       */
+/*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
+/*   Updated: 2026/07/14 15:44:47 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tokens(t_token *tokens)
+void	clean(char *str, t_data *data, int return_code)
 {
-	t_token	*tmp;
-
-	tmp = NULL;
-	if (!tokens)
-		return ;
-	while (tokens)
-	{
-		tmp = tokens->next;
-		free(tokens->s);
-		free(tokens);
-		tokens = tmp;
-	}
-	tokens = NULL;
+	if (data->old_stdin != -1)
+		close(data->old_stdin);
+	if (data->old_stdout != -1)
+		close(data->old_stdout);
+	if (data->tokens)
+		free_tokens(data->tokens);
+	if (data->env)
+		ft_freetab(data->env);
+	if (str)
+		ft_printf_fd(2, "%s\n", str);
+	exit(return_code);
 }

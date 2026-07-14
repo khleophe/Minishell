@@ -4,11 +4,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS = lexer/init_tokens.c main.c builtins/unset.c lexer/lexer.c lexer/tokens.c lexer/utils_tokens.c \
-		parsing/pipe.c parsing/redirs.c lexer/expand.c \
-		builtins/builtins.c builtins/echo.c builtins/env.c builtins/cd.c \
+		parsing/pipe.c parsing/redirs.c lexer/expand.c clean.c\
+		builtins/echo.c builtins/env.c builtins/cd.c \
 		builtins/exit.c builtins/export.c builtins/utils_export.c\
 		builtins/pwd.c exec/free.c exec/signals.c parsing/heredoc.c\
-		exec/path.c lexer/quotes.c lexer/syntax.c env_shell.c exec/exec.c parsing/parsing.c
+		exec/path.c lexer/quotes.c lexer/syntax.c init.c exec/exec.c parsing/parsing.c
 		
 
 OBJS = $(SRCS:.c=.o)

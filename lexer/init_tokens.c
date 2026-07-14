@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:40:45 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/05/29 14:55:54 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 15:42:38 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*new_token(t_token_type type, char *value)
 
 void	add_token(t_token **tokens, t_token *new)
 {
-	t_token *current;
+	t_token	*current;
 
 	if (!new)
 		return ;

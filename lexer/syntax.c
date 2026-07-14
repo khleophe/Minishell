@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 16:31:00 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/06/24 17:00:26 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 15:49:04 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_redirs(int type)
 static void	count_pipe(t_data *data)
 {
 	t_token	*tmp;
-	
+
 	tmp = data->tokens;
 	while (tmp)
 	{
@@ -36,7 +36,7 @@ static void	count_pipe(t_data *data)
 
 int	check_syntax(t_data *data)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = data->tokens;
 	if (!tmp)
@@ -53,7 +53,6 @@ int	check_syntax(t_data *data)
 		}
 		if (tmp->type == PIPE)
 		{
-			
 			if (tmp->next == NULL || tmp->next->type == PIPE)
 				return (1);
 		}

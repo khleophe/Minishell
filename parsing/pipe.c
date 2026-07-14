@@ -3,70 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soraya <soraya@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/12 19:06:58 by soraya           ###   ########.fr       */
+/*   Updated: 2026/07/14 15:44:28 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void exit_pipe(t_token *token, int pipe_fd[2], int return_value, char *s)
+static void	exit_pipe(t_data *data, int pipe_fd[2], int return_value, char *s)
 {
-    if (s != NULL)
-        ft_printf("%s", s);
-    close(pipe_fd[0]);
-    close(pipe_fd[1]);
-    free_tokens(token);
-    token = NULL;
-    exit(return_value);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	clean(s, data, return_value);
 }
 
-static int create_child(t_data *data, t_token **token)
+static int	create_child(t_data *data, t_token **token)
 {
-    pid_t child;
-    int pipe_fd[2];
-    int return_code;
+	pid_t	child;
+	int		pipe_fd[2];
+	int		return_code;
 
-    return_code = 0;
-    pipe(pipe_fd);
-    child = fork();
-    if (!child)
-    {
-        if (dup2(pipe_fd[1], 1) < 0)
-            exit_pipe(*token, pipe_fd, return_code, "dup2: error\n");
-        close(pipe_fd[0]);
-        close(pipe_fd[1]);
-        return_code = parsing_cmd(data, *token);
-        exit(return_code);
-    }
-    else
-    {
-        if (dup2(pipe_fd[0], 0) < 0)
-            exit_pipe(*token, pipe_fd, return_code, "dup2: error\n");
-        while ((*token) && (*token)->type != PIPE)
-            (*token) = (*token)->next;
-        if ((*token)->type == PIPE)
-            (*token) = (*token)->next;
-    }
-    return (close(pipe_fd[1]), close(pipe_fd[0]), 0);
+	return_code = 0;
+	if (pipe(pipe_fd) == -1)
+		clean("error: pipe", data, 1);
+	child = fork();
+	if (!child)
+	{
+		if (dup2(pipe_fd[1], 1) < 0)
+			exit_pipe(data, pipe_fd, return_code, "dup2: error");
+		return_code = parsing_cmd(data, *token);
+		exit_pipe(data, pipe_fd, return_code, NULL);
+	}
+	else
+	{
+		if (dup2(pipe_fd[0], 0) < 0)
+			exit_pipe(data, pipe_fd, return_code, "dup2: error");
+		while ((*token) && (*token)->type != PIPE)
+			(*token) = (*token)->next;
+		if ((*token)->type == PIPE)
+			(*token) = (*token)->next;
+	}
+	return (close(pipe_fd[1]), close(pipe_fd[0]), 0);
 }
 
-int exec_pipe(t_data *data)
+int	exec_pipe(t_data *data)
 {
-    t_token *tmp;
-    int pipeddone;
-    
-    pipeddone = 0;
-    tmp = data->tokens;
-    while (pipeddone < data->pipe_nb)
-    {
-        data->return_code = create_child(data, &tmp);
-        if (data->return_code != 0)
-            return (data->return_code);
-        pipeddone++;
-    }
-    data->return_code = parsing_cmd(data, tmp);
-    return (data->return_code);
+	t_token	*tmp;
+	int		pipeddone;
+
+	pipeddone = 0;
+	tmp = data->tokens;
+	while (pipeddone < data->pipe_nb)
+	{
+		data->return_code = create_child(data, &tmp);
+		if (data->return_code != 0)
+			return (data->return_code);
+		pipeddone++;
+	}
+	data->return_code = parsing_cmd(data, tmp);
+	return (data->return_code);
 }
