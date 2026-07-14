@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:44:47 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 17:06:07 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,8 @@ void	clean(char *str, t_data *data, int return_code)
 		ft_freetab(data->env);
 	if (str)
 		ft_printf_fd(2, "%s\n", str);
+	close(0);
+	close(1);
+	close(2);
 	exit(return_code);
 }

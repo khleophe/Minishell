@@ -6,11 +6,13 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:54:07 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 18:13:13 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// gerer erreur memoire en cas de ^D  ou ^C dans le heredoc
 
 static void	exit_heredoc(int fd[2], t_data *data)
 {
@@ -38,13 +40,13 @@ static void	read_heredoc(char *eof, int fd[2], t_data *data)
 
 	nl = ft_strjoin(eof, "\n");
 	ft_printf_fd(1, "heredoc> ");
-	scan = get_next_line(0);
+	scan = get_next_line(0, nl);
 	while (scan && ft_strcmp(scan, nl) != 0)
 	{
 		print_heredoc(scan, fd, data);
 		ft_printf_fd(1, "heredoc> ");
 		free(scan);
-		scan = get_next_line(0);
+		scan = get_next_line(0, nl);
 		if (!scan || ft_strcmp(scan, nl) == 0)
 			break ;
 	}
@@ -71,7 +73,6 @@ int	heredoc_redir(char *eof, t_data *data)
 	else
 	{
 		waitpid(pid, &signal, 0);
-		write(1, "\n", 1);
 		close(fd[1]);
 		if (dup2(fd[0], 0) < 0)
 			return (close(fd[0]), 1);

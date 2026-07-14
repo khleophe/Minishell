@@ -1,24 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:48:06 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 16:52:07 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	verif_line(char *str)
+static int	verif_line(char *str)
 {
 	if (!str[0] || str[0] == '\n')
-	{
 		return (0);
-	}
 	return (1);
+}
+
+static void	read_line_next(t_token **tokens, t_data *data)
+{
+	expand_all_tokens(*tokens, data);
+	if (tokens)
+		exec_pipe(data);
+	if (dup2(data->old_stdin, STDIN_FILENO) == -1)
+		clean("error: dup2", data, 1);
+	if (dup2(data->old_stdout, STDOUT_FILENO) == -1)
+		clean("error: dup2", data, 1);
+	free_tokens(*tokens);
+	*tokens = NULL;
+}
+
+static void	print_error(t_token **tokens, t_data *data)
+{
+	ft_printf("syntax error\n");
+	data->return_code = 2;
+	free_tokens(*tokens);
+	*tokens = NULL;
 }
 
 void	read_line(t_token **tokens, t_data *data)
@@ -38,22 +57,9 @@ void	read_line(t_token **tokens, t_data *data)
 			*tokens = lexer(line);
 			free(line);
 			if (check_syntax(data))
-			{
-				ft_printf("syntax error\n");
-				data->return_code = 2;
-				free_tokens(*tokens);
-				*tokens = NULL;
-			}
+				print_error(tokens, data);
 			else
-			{
-				expand_all_tokens(*tokens, data);
-				if (tokens)
-					exec_pipe(data);
-				dup2(data->old_stdin, STDIN_FILENO);
-				dup2(data->old_stdout, STDOUT_FILENO); // a secu lol
-				free_tokens(*tokens);
-				*tokens = NULL;
-			}
+				read_line_next(tokens, data);
 		}
 		g_flag = 0;
 	}

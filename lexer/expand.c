@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/06/15 15:32:10 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 18:09:27 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,43 +30,25 @@ static int	get_new_expand(char *s, int i)
 
 static char	*new_expand(char *s, int i, int len, t_data *data)
 {
-	char	*pre_var;
-	char	*key;
-	char	*post_var;
-	char	*value;
-	char	*tmp;
-	char	*result;
+	t_expand	ex;
 
-	pre_var = ft_substr(s, 0, i);
-	if (len > 1)
-	{
-		key = ft_substr(s, i + 1, len - 1);
-		post_var = ft_strdup(s + i + len);
-	}
+	ex.pre = ft_substr(s, 0, i);
+	utils_expand(s, i, len, &ex);
+	if (ex.post == NULL || ex.key == NULL)
+		clean(NULL, data, 1);
+	if (!ex.pre || !ex.key || !ex.post)
+		return (free(ex.pre), free(ex.key), free(ex.post), NULL);
+	if (ft_strcmp(ex.key, "?") == 0)
+		ex.value = ft_itoa(data->return_code);
+	else if (ft_strcmp(ex.key, "$") == 0)
+		ex.value = get_env_value("MANAGERPID", data->env);
 	else
-	{
-		key = ft_substr(s, i + 1, len);
-		post_var = ft_strdup(s + i + len + 1);
-	}
-	if (!pre_var || !key || !post_var)
-	{
-		free(pre_var);
-		free(key);
-		free(post_var);
-		return (NULL);
-	}
-	if (ft_strcmp(key, "?") == 0)
-		value = ft_itoa(data->return_code);
-	else if (ft_strcmp(key, "$") == 0)
-		value = get_env_value("MANAGERPID", data->env);
-	else
-		value = get_env_value(key, data->env);
-	if (!value)
-		value = "";
-	free(key);
-	tmp = ft_strjoin(pre_var, value);
-	result = ft_strjoin(tmp, post_var);
-	return (free(pre_var), free(post_var), free(tmp), result);
+		ex.value = get_env_value(ex.key, data->env);
+	if (!ex.value)
+		ex.value = "";
+	ex.tmp = ft_strjoin(ex.pre, ex.value);
+	ex.res = ft_strjoin(ex.tmp, ex.post);
+	return (free(ex.pre), free(ex.post), free(ex.tmp), free(ex.key), ex.res);
 }
 
 char	*expand_str(char *s, t_data *data)
@@ -93,37 +75,29 @@ char	*expand_str(char *s, t_data *data)
 
 static char	*expand_str_quotes(char *s, t_data *data)
 {
-	char	*new;
-	int		i;
-	int		len;
-	char	quotes;
+	t_expand_quotes	ex;
 
-	i = 0;
-	quotes = -1;
-	while (s && s[i] && s[i] != 34 && s[i] != 39)
-		i++;
-	while (s && s[i])
+	ex.i = 0;
+	ex.quotes = -1;
+	quotes_utils(s, &ex, 0);
+	while (s && s[ex.i])
 	{
-		if (s[i] == 34 || s[i] == 39)
+		quotes_utils(s, &ex, 1);
+		while (s && s[ex.i] && s[ex.i] != ex.quotes)
 		{
-			quotes = s[i];
-			i++;
-		}
-		while (s && s[i] && s[i] != quotes)
-		{
-			if (quotes == 34 || quotes == -1)
+			if (ex.quotes == 34 || ex.quotes == -1)
 			{
-				len = get_new_expand(s, i);
-				if (s[i] == '$' && len > 0)
+				ex.len = get_new_expand(s, ex.i);
+				if (s[ex.i] == '$' && ex.len > 0)
 				{
-					new = new_expand(s, i, len, data);
+					ex.new = new_expand(s, ex.i, ex.len, data);
 					free(s);
-					s = new;
+					s = ex.new;
 				}
 			}
-			i++;
+			ex.i++;
 		}
-		i++;
+		ex.i++;
 	}
 	return (s);
 }

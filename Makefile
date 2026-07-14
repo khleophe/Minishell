@@ -3,8 +3,8 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
-SRCS = lexer/init_tokens.c main.c builtins/unset.c lexer/lexer.c lexer/tokens.c lexer/utils_tokens.c \
-		parsing/pipe.c parsing/redirs.c lexer/expand.c clean.c\
+SRCS = lexer/init_tokens.c main.c builtins/unset.c read_line.c lexer/tokens.c lexer/utils_tokens.c \
+		parsing/pipe.c parsing/redirs.c lexer/expand.c clean.c lexer/expand_utils.c\
 		builtins/echo.c builtins/env.c builtins/cd.c \
 		builtins/exit.c builtins/export.c builtins/utils_export.c\
 		builtins/pwd.c exec/free.c exec/signals.c parsing/heredoc.c\

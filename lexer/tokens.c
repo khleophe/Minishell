@@ -6,17 +6,16 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:41:37 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:49:32 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 17:04:52 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*extract_word_quotes(char *s)
+static char	*extract_word_quotes(char *s, char *quote)
 {
 	int		i;
 	char	*dest;
-	char	quote;
 
 	i = 0;
 	while (s[i] && s[i] != 32 && (s[i] < 9 || s[i] > 13) && s[i] != '|'
@@ -24,11 +23,10 @@ static char	*extract_word_quotes(char *s)
 	{
 		if (s[i] == 34 || s[i] == 39)
 		{
-			quote = s[i];
-			i++;
-			while (s[i] && s[i] != quote)
+			*quote = s[i++];
+			while (s[i] && s[i] != *quote)
 				i++;
-			if (s[i] == quote)
+			if (s[i] == *quote)
 				i++;
 			else
 				return (NULL);
@@ -58,27 +56,13 @@ static t_token	*symbols(char *line, int *i)
 	return (NULL);
 }
 
-char	which_quotes(char *s, int *i)
-{
-	int	j;
-
-	j = *i;
-	while (s[j] && s[j] != 32 && (s[j] < 9 || s[j] > 13) && s[j] != '|'
-		&& s[j] != '<' && s[j] != '>')
-	{
-		if (s[j] == 34 || s[j] == 39)
-			return (s[j]);
-		j++;
-	}
-	return (0);
-}
-
 static t_token	*words(char *line, int *i)
 {
 	char	*word;
 	t_token	*new;
+	char	quote;
 
-	word = extract_word_quotes(&line[*i]);
+	word = extract_word_quotes(&line[*i], &quote);
 	if (!word)
 		return (NULL);
 	if (which_quotes(line, i) == 34)

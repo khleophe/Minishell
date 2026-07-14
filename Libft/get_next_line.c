@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 13:48:54 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/03/05 14:23:00 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 16:30:02 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static char	*next_line(char	*mid_tab)
 	return (next_temp);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, char *eof)
 {
 	char		*retour;
 	static char	*queen_tab[1024];
@@ -116,6 +116,8 @@ char	*get_next_line(int fd)
 	}
 	retour = return_line(queen_tab[fd]);
 	queen_tab[fd] = next_line(queen_tab[fd]);
+	if (ft_strcmp(retour, eof) == 0)
+		free(queen_tab[fd]);
 	return (retour);
 }
 

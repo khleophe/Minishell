@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:47:46 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 18:09:54 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@
 # include <unistd.h>
 
 extern int				g_flag;
+
+typedef struct s_expand
+{
+	char				*pre;
+	char				*key;
+	char				*post;
+	char				*value;
+	char				*tmp;
+	char				*res;
+}						t_expand;
+
+typedef struct s_expand_quotes
+{
+	char				*new;
+	int					i;
+	int					len;
+	char				quotes;
+}						t_expand_quotes;
 
 typedef enum e_token_type
 {
@@ -73,9 +91,11 @@ void					free_tokens(t_token *tokens);
 t_token					*new_token(t_token_type type, char *value);
 void					add_token(t_token **tokens, t_token *new);
 t_token					*lexer(char *line);
-int						verif_line(char *str);
 void					expand_all_tokens(t_token *token, t_data *data);
+void					utils_expand(char *s, int i, int len, t_expand *ex);
+void					quotes_utils(char *s, t_expand_quotes *ex, int mode);
 char					*expand_str(char *s, t_data *data);
+char					which_quotes(char *s, int *i);
 void					rm_quotes_token(t_token *tokens);
 int						check_syntax(t_data *data);
 int						is_redirs(int type);

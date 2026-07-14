@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/13 13:38:52 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:38:14 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 18:15:13 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static int	cd(t_data *data, char *path)
 {
 	char	*temp;
 
-	// exit en cas erreur malloc
 	if (chdir(path) == -1)
 	{
 		ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path);
@@ -24,17 +23,17 @@ static int	cd(t_data *data, char *path)
 	}
 	temp = ft_strjoin("OLDPWD=", data->current_dir);
 	if (!temp)
-		return (1);
+		return (clean(NULL, data, 1), 1);
 	if (export(data, temp) == 1)
-		return (free(temp), 1);
+		return (free(temp), clean(NULL, data, 1), 1);
 	free(temp);
 	if (get_pwd(data) == 1)
 		return (1);
 	temp = ft_strjoin("PWD=", data->current_dir);
 	if (!temp)
-		return (1);
+		return (clean(NULL, data, 1), 1);
 	if (export(data, temp) == 1)
-		return (free(temp), 1);
+		return (free(temp), clean(NULL, data, 1), 1);
 	free(temp);
 	return (0);
 }

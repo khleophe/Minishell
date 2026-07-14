@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 16:16:27 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:36:37 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 16:30:17 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 
-char				*get_next_line(int fd);
+char				*get_next_line(int fd, char *eof);
 char				*join_tab(char *mid_tab, char *temp);
 int					ft_putstr(char *str);
 char				**ft_freetab(char **dest);

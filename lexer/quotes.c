@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:47:43 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:43:07 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/14 16:59:49 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,21 @@ static char	*remove_quotes(char *s)
 	}
 	new[j] = '\0';
 	return (new);
+}
+
+char	which_quotes(char *s, int *i)
+{
+	int	j;
+
+	j = *i;
+	while (s[j] && s[j] != 32 && (s[j] < 9 || s[j] > 13) && s[j] != '|'
+		&& s[j] != '<' && s[j] != '>')
+	{
+		if (s[j] == 34 || s[j] == 39)
+			return (s[j]);
+		j++;
+	}
+	return (0);
 }
 
 void	rm_quotes_token(t_token *tokens)
