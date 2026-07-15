@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 18:09:54 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/15 13:42:16 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_data
 void					read_line(t_token **tokens, t_data *data);
 void					init(t_data *data, char **env);
 void					clean(char *str, t_data *data, int return_code);
+t_data					*get_data(void);
 
 /* * * * * * LEXER * * * * * */
 void					free_tokens(t_token *tokens);

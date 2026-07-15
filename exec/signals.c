@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:11:56 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:48:12 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/15 16:07:40 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	init_sign(struct sigaction *sig_int, struct sigaction *sig_quit)
 void	child_int(int signum)
 {
 	(void)signum;
-	exit(130);
+	clean("", get_data(), 130);
 }
 
 void	init_sign_heredoc(struct sigaction *sig_child_int,

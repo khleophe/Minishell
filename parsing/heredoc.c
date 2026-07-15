@@ -6,13 +6,13 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 18:13:13 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/15 16:16:33 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// gerer erreur memoire en cas de ^D  ou ^C dans le heredoc
+// close les fichiers si ^ dans signal/ rajouter fd dans data 
 
 static void	exit_heredoc(int fd[2], t_data *data)
 {
@@ -28,7 +28,7 @@ static int	print_heredoc(char *line, int fd[2], t_data *data)
 
 	expand = ft_strdup(line);
 	new = expand_str(expand, data);
-	ft_printf_fd(fd[1], "%s", new);
+	ft_printf_fd(fd[1], "%s\n", new);
 	free(new);
 	return (0);
 }
@@ -36,21 +36,16 @@ static int	print_heredoc(char *line, int fd[2], t_data *data)
 static void	read_heredoc(char *eof, int fd[2], t_data *data)
 {
 	char	*scan;
-	char	*nl;
 
-	nl = ft_strjoin(eof, "\n");
-	ft_printf_fd(1, "heredoc> ");
-	scan = get_next_line(0, nl);
-	while (scan && ft_strcmp(scan, nl) != 0)
+	ft_printf_fd(2, "heredoc> ");
+	scan = readline("");
+	while (scan && ft_strcmp(scan, eof) != 0)
 	{
 		print_heredoc(scan, fd, data);
-		ft_printf_fd(1, "heredoc> ");
+		ft_printf_fd(2, "heredoc> ");
 		free(scan);
-		scan = get_next_line(0, nl);
-		if (!scan || ft_strcmp(scan, nl) == 0)
-			break ;
+		scan = readline("");
 	}
-	free(nl);
 	free(scan);
 }
 

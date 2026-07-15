@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:19:08 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:39:22 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/15 15:52:06 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,21 @@ static void	unset(t_data *data, char *arg)
 
 static int	verif_args(char *arg)
 {
-	int	i;
+	int		i;
+	char	*eq;
 
 	i = 0;
 	if (!arg)
 		return (0);
-	if ((!ft_isalpha(arg[0]) && arg[0] != '_') || ft_strchr(arg, '-'))
-		return (printf("minishell: unset: `%s': not a valid identifier\n", arg),
-			0);
-	while (arg[i])
+	eq = ft_strchr(arg, '=');
+	if (!eq)
+		return (0);
+	if ((!ft_isalpha(arg[0]) && arg[0] != '_'))
+		return (printf("minishell: unset: `%s': not a valid identifier\n",
+				arg), 0);
+	while (arg[i] && (&arg[i] != eq))
 	{
-		if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '=')
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 			return (printf("minishell: unset: `%s': not a valid identifier\n",
 					arg), 0);
 		i++;
