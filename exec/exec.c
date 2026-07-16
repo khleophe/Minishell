@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/15 15:56:14 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:13:51 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ static char	**create_cmd(t_token *tokens)
 	len = count_args(tokens);
 	cmd = malloc(sizeof(char *) * (len + 1));
 	if (!cmd)
-		return (NULL);
+		clean("error: malloc", get_data(), 1);
 	while (tmp && tmp->type == WORD && i < len)
 	{
 		cmd[i] = ft_strdup(tmp->s);
 		if (!cmd[i])
-			return (ft_freetab(cmd), NULL);
+			return (ft_freetab(cmd), clean("error: malloc", get_data(), 1), NULL);
 		i++;
 		tmp = tmp->next;
 	}

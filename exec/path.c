@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:41:54 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:41:55 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:14:38 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ char	*path_helper(char *dir, char *cmd)
 
 	tmp = ft_strjoin(dir, "/");
 	if (!tmp)
-		return (NULL);
+		clean("error: malloc", get_data(), 1);
 	join = ft_strjoin(tmp, cmd);
 	if (!join)
 	{
 		free(tmp);
-		return (NULL);
+		clean("error: malloc", get_data(), 1);
 	}
 	if (access(join, X_OK) == 0)
 	{
