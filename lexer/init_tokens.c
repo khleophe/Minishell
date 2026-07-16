@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:40:45 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:42:38 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:22:42 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ t_token	*new_token(t_token_type type, char *value)
 
 	token = malloc(sizeof(t_token));
 	if (!token)
-		return (NULL);
+		clean("error: malloc", get_data(), 1);
 	token->type = type;
 	token->s = ft_strdup(value);
+	if (!token->s)
+		clean("error: malloc", get_data(), 1);
 	token->next = NULL;
 	return (token);
 }

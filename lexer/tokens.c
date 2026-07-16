@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:41:37 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 17:04:52 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:23:28 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*extract_word_quotes(char *s, char *quote)
 	}
 	dest = malloc(sizeof(char) * i + 1);
 	if (!dest)
-		return (NULL);
+		clean("error: malloc", get_data(), 1);
 	ft_strlcpy(dest, s, i + 1);
 	return (dest);
 }

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/16 11:18:31 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/16 11:26:23 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 		clean(NULL, data, 1);
 	if (!ex.pre || !ex.key || !ex.post)
 		return (free(ex.pre), free(ex.key), free(ex.post),
-			clean("error: malloc", get_data(), 1), NULL);
+			clean("error: malloc", data, 1), NULL);
 	if (ft_strcmp(ex.key, "?") == 0)
 		ex.value = ft_itoa(data->return_code);
 	else if (ft_strcmp(ex.key, "$") == 0)
@@ -49,11 +49,11 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 		ex.value = "";
 	ex.tmp = ft_strjoin(ex.pre, ex.value);
 	if (!ex.tmp)
-		return (free(ex.tmp), free(ex.key), clean("", get_data(), 1), NULL);
+		return (free(ex.tmp), free(ex.key), clean("", data, 1), NULL);
 	ex.res = ft_strjoin(ex.tmp, ex.post);
 	if (!ex.res)
 		return (free(ex.post), free(ex.tmp), free(ex.key),
-			clean("error: malloc", get_data(), 1), NULL);
+			clean("error: malloc", data, 1), NULL);
 	return (free(ex.pre), free(ex.post), free(ex.tmp), free(ex.key), ex.res);
 }
 

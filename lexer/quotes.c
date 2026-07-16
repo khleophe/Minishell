@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:47:43 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 16:59:49 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:23:02 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*remove_quotes(char *s)
 	j = 0;
 	new = malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!new)
-		return (NULL);
+		clean("error: malloc", get_data(), 1);
 	while (s[i])
 	{
 		if (s[i] == 34 || s[i] == 39)
