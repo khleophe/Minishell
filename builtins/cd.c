@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/13 13:38:52 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 18:15:13 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:45:55 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ static int	cd(t_data *data, char *path)
 static int	cd_dash(t_data *data, t_token **tokens)
 {
 	if (ft_strcmp((*tokens)->s, "-") == 0)
-		ft_printf_fd(1, "%s\n", get_env_value("HOME", data->env));
+		ft_printf_fd(1, "%s\n", get_env_value("OLDPWD", data->env));
 	else if (ft_strnstr((*tokens)->s, "--", 2) && (ft_strlen((*tokens)->s) > 2))
 	{
 		(*tokens) = (*tokens)->next;
 		return (ft_printf_fd(2, "minishell: cd: --: invalid option\n"), 2);
 	}
 	(*tokens) = (*tokens)->next;
-	return (cd(data, get_env_value("HOME", data->env)));
+	return (cd(data, get_env_value("OLDPWD", data->env)));
 }
 
 int	parsing_cd(t_data *data, t_token **tokens)
