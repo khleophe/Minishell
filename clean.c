@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/15 13:58:53 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 11:09:21 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	clean(char *str, t_data *data, int return_code)
 		close(data->old_stdin);
 	if (data->old_stdout != -1)
 		close(data->old_stdout);
+	if (data->heredoc_fd[0] != -1)
+		close(data->heredoc_fd[0]);
+	if (data->heredoc_fd[1] != -1)
+		close(data->heredoc_fd[1]);
 	if (data->tokens)
 		free_tokens(data->tokens);
 	if (data->env)
