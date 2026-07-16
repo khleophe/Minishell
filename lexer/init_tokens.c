@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:40:45 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:22:42 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/16 12:16:36 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_token	*new_token(t_token_type type, char *value)
 	token->type = type;
 	token->s = ft_strdup(value);
 	if (!token->s)
-		clean("error: malloc", get_data(), 1);
+		return (free(token), clean("error: malloc", get_data(), 1), NULL);
 	token->next = NULL;
 	return (token);
 }

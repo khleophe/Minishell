@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/09 19:19:13 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/14 15:37:27 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 14:40:57 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,16 @@ static int	check_n(char *str)
 	return (1);
 }
 
-static void	echo(t_token **tokens)
+static void	echo(t_token **tokens, int mode)
 {
 	while ((*tokens) && is_redirs((*tokens)->type))
 		(*tokens) = (*tokens)->next->next;
 	if ((*tokens) && (*tokens)->type == WORD)
 	{
-		ft_printf_fd(1, "%s ", (*tokens)->s);
+		if (mode == 0)
+			ft_printf_fd(1, "%s ", (*tokens)->s);
+		else
+			ft_printf_fd(1, "%s", (*tokens)->s);
 		(*tokens) = (*tokens)->next;
 	}
 }
@@ -54,8 +57,9 @@ int	parsing_echo(t_token **tokens)
 		is_n = 1;
 		(*tokens) = (*tokens)->next;
 	}
-	while ((*tokens) && (*tokens)->type != PIPE)
-		echo(tokens);
+	while ((*tokens)->next && (*tokens)->next->type != PIPE)
+		echo(tokens, 0);
+	echo(tokens, 1);
 	if (is_n == 0)
 		ft_printf_fd(1, "\n");
 	return (0);

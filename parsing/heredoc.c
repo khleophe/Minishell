@@ -6,13 +6,11 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:08:30 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/16 12:13:30 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// close les fichiers si ^ dans signal/ rajouter fd dans data
 
 static void	exit_heredoc(t_data *data)
 {

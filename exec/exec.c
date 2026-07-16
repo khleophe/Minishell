@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:13:51 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/16 15:30:39 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,23 @@
 
 static void	exec_fail(char *path, char **cmd, t_data *data)
 {
-	if (ft_strnstr(cmd[0], "/", 1))
+	perror("execve");
+	if ((ft_strnstr(cmd[0], "/", 2) && access(&cmd[0][2], F_OK) == 0))
 	{
-		ft_printf("minishell: %s: Is a directory\n", cmd[0]);
+		if (access(&cmd[0][2], F_OK | X_OK) != 0)
+			ft_printf_fd(2, "minishell: %s: permission denied\n", cmd[0]);
+		else
+			ft_printf_fd(2, "minishell: %s: Is a directory\n", cmd[0]);
 		free(path);
 		ft_freetab(cmd);
 		clean(NULL, data, 126);
 	}
 	else
 	{
-		ft_printf("%s: command not found: \n", cmd[0]);
+		if (ft_strnstr(cmd[0], "./", 2) || cmd[0][0] == '/')
+			ft_printf_fd(2, "minishell: %s: No such file or directory\n", cmd[0]);
+		else
+			ft_printf_fd(2, "minishell: %s: command not found\n", cmd[0]);
 		free(path);
 		ft_freetab(cmd);
 		clean(NULL, data, 127);
@@ -88,7 +95,8 @@ static char	**create_cmd(t_token *tokens)
 	{
 		cmd[i] = ft_strdup(tmp->s);
 		if (!cmd[i])
-			return (ft_freetab(cmd), clean("error: malloc", get_data(), 1), NULL);
+			return (ft_freetab(cmd), clean("error: malloc", get_data(), 1),
+				NULL);
 		i++;
 		tmp = tmp->next;
 	}

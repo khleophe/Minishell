@@ -52,6 +52,7 @@ SOURCES	= ./ft_isalpha.c\
 		./ft_putnbr_p_fd.c\
 		./ft_putnbr_u_fd.c\
 		./ft_splitdup.c\
+		./ft_strnstr_back.c\
 
 bonus = ./ft_lstnew.c\
         ./ft_lstadd_front.c\

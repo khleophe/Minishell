@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 18:07:34 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/15 15:42:31 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/16 14:52:11 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	verif_args_export(char *arg)
 	if (!arg)
 		return (0);
 	eq = ft_strchr(arg, '=');
-	if (!eq)
-		return (0);
 	if ((!ft_isalpha(arg[0]) && arg[0] != '_'))
 		return (printf("minishell: export: `%s': not a valid identifier\n",
 				arg), 0);
