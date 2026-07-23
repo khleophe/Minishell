@@ -14,7 +14,6 @@
 
 static void	exit_heredoc(t_data *data)
 {
-	data->flag_here = 0;
 	close(data->heredoc_fd[0]);
 	data->heredoc_fd[0] = -1;
 	close(data->heredoc_fd[1]);
@@ -34,34 +33,42 @@ static int	print_heredoc(char *line, t_data *data)
 	return (0);
 }
 
-static void	read_heredoc(char *eof, t_data *data)
+static int init_read(char **scan, char **nl, char **eof)
 {
-	char	*scan;
-	char	*nl;
 	struct termios	termios;
 
-	nl = ft_strjoin(eof, "\n");
+	*nl = ft_strjoin(*eof, "\n");
 	ft_memset(&termios, 0, sizeof(termios));
 	tcgetattr(0, &termios);
 	termios.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &termios);
 	ft_printf_fd(2, "heredoc> ");
-	scan = get_next_line(0, nl);
-	if (!scan || ft_strlen(nl) == 0)
+	*scan = get_next_line(0, *nl);
+	if (!*scan || ft_strlen(*nl) == 0)
 	{
 		ft_printf_fd(2, "\n");
-		free(nl);
-		return ;
+		free(*nl);
+		return (1);
 	}
-	while (scan && ft_strcmp(scan, eof) != 0)
+	return (0);
+}
+
+static void	read_heredoc(char *eof, t_data *data)
+{
+	char	*scan;
+	char	*nl;
+
+	if (init_read(&scan, &nl, &eof))
+		return ;
+	while (scan && ft_strcmp(scan, nl) != 0)
 	{
 		print_heredoc(scan, data);
 		ft_printf_fd(2, "heredoc> ");
 		free(scan);
 		scan = get_next_line(0, nl);
-		if (!scan || ft_strcmp(scan, nl) == 0 || ft_strlen(nl) == 0)
+		if (!scan || ft_strcmp(scan, nl) == 0 || ft_strlen(scan) == 0)
 		{
-			if (ft_strcmp(scan, nl) != 0)
+			if (!scan || ft_strlen(scan) == 0)
 				ft_printf_fd(2, "\n");
 			break ;
 		}
@@ -77,7 +84,6 @@ int	heredoc_redir(char *eof, t_data *data)
 	int		signal;
 	pid_t	pid;
 
-	data->flag_here = 1;
 	pipe(data->heredoc_fd);
 	pid = fork();
 	if (!pid)

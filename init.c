@@ -42,7 +42,6 @@ static char	**dup_env(char **env)
 
 void	init(t_data *data, char **env)
 {
-	data->flag_here = 0;
 	data->old_stdin = -1;
 	data->old_stdout = -1;
 	data->heredoc_fd[0] = -1;

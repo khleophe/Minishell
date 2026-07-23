@@ -12,14 +12,8 @@
 
 #include "minishell.h"
 
-void	clean(char *str, t_data *data, int return_code)
+static void clean_files(t_data *data)
 {
-	struct termios	termios;
-	
-	ft_memset(&termios, 0, sizeof(termios));
-	tcgetattr(0, &termios);
-	termios.c_lflag |= ECHOCTL;
-	tcsetattr(0, TCSANOW, &termios);
 	if (data->old_stdin != -1)
 		close(data->old_stdin);
 	if (data->old_stdout != -1)
@@ -28,6 +22,17 @@ void	clean(char *str, t_data *data, int return_code)
 		close(data->heredoc_fd[0]);
 	if (data->heredoc_fd[1] != -1)
 		close(data->heredoc_fd[1]);
+}
+
+void	clean(char *str, t_data *data, int return_code)
+{
+	struct termios	termios;
+
+	ft_memset(&termios, 0, sizeof(termios));
+	tcgetattr(0, &termios);
+	termios.c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSANOW, &termios);
+	clean_files(data);
 	if (data->tokens)
 		free_tokens(data->tokens);
 	if (data->env)
@@ -38,8 +43,5 @@ void	clean(char *str, t_data *data, int return_code)
 	close(0);
 	close(1);
 	close(2);
-	if (data->flag_here == 1)
-		write(2, "\n", 1);
-	data->flag_here = 0;
 	exit(return_code);
 }
