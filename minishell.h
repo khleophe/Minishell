@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <termios.h>
 
 extern int				g_flag;
 
@@ -79,6 +80,7 @@ typedef struct s_data
 	struct sigaction	sig_child_quit;
 	int					old_stdin;
 	int					old_stdout;
+	int					flag_here;
 	char				current_dir[4096];
 }						t_data;
 

@@ -112,9 +112,12 @@ char	*get_next_line(int fd, char *eof)
 	if (queen_tab[fd] == NULL)
 	{
 		free(queen_tab[fd]);
+		ft_printf_fd(2, "ICI\n");
 		return (NULL);
 	}
 	retour = return_line(queen_tab[fd]);
+	if (retour == NULL)
+		return (free(queen_tab[fd]), NULL);
 	queen_tab[fd] = next_line(queen_tab[fd]);
 	if (ft_strcmp(retour, eof) == 0)
 		free(queen_tab[fd]);
