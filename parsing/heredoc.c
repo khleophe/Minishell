@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/23 15:27:19 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/23 17:50:21 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	print_heredoc(char *line, t_data *data)
 	return (0);
 }
 
-static int init_read(char **scan, char **nl, char **eof)
+static int	init_read(char **scan, char **nl, char **eof)
 {
 	struct termios	termios;
 
@@ -44,7 +44,7 @@ static int init_read(char **scan, char **nl, char **eof)
 	tcsetattr(0, TCSANOW, &termios);
 	ft_printf_fd(2, "heredoc> ");
 	*scan = get_next_line(0, *nl);
-	if (!*scan || ft_strlen(*nl) == 0)
+	if (!*scan || ft_strlen(*scan) == 0)
 	{
 		ft_printf_fd(2, "\n");
 		free(*nl);

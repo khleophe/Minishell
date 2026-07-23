@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:11:56 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/23 15:20:36 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/23 17:48:46 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_data	*get_data(void)
+{
+	static t_data	*data = 0;
+
+	if (!data)
+	{
+		data = malloc(sizeof(*data));
+		if (!data)
+			exit(1);
+	}
+	return (data);
+}
 
 static void	handle_sigint(int sig)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 13:48:54 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 16:30:02 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/23 17:44:33 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ char	*get_next_line(int fd, char *eof)
 	if (queen_tab[fd] == NULL)
 	{
 		free(queen_tab[fd]);
-		ft_printf_fd(2, "ICI\n");
 		return (NULL);
 	}
 	retour = return_line(queen_tab[fd]);
