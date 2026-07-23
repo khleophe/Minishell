@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/23 15:00:09 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/23 15:27:19 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	print_heredoc(char *line, t_data *data)
 
 	expand = ft_strdup(line);
 	new = expand_str(expand, data);
-	ft_printf_fd(data->heredoc_fd[1], "%s", new);
+	ft_printf_fd(data->heredoc_fd[1], "%s\n", new);
 	free(new);
 	return (0);
 }
@@ -50,8 +50,10 @@ static void	read_heredoc(char *eof, t_data *data)
 		if (!scan || ft_strcmp(scan, nl) == 0)
 			break ;
 	}
-	free(nl);
-	free(scan);
+	if (nl)
+		free(nl);
+	if (scan)
+		free(scan);
 }
 
 int	heredoc_redir(char *eof, t_data *data)
