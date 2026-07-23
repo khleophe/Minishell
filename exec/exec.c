@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 15:30:39 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/23 13:34:36 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	else
 	{
 		if (ft_strnstr(cmd[0], "./", 2) || cmd[0][0] == '/')
-			ft_printf_fd(2, "minishell: %s: No such file or directory\n", cmd[0]);
+			ft_printf_fd(2, "minishell: %s: No such file or directory\n",
+				cmd[0]);
 		else
 			ft_printf_fd(2, "minishell: %s: command not found\n", cmd[0]);
 		free(path);
