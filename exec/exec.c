@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/23 13:34:36 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/23 14:53:38 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	exec_fail(char *path, char **cmd, t_data *data)
 {
-	perror("execve");
 	if ((ft_strnstr(cmd[0], "/", 2) && access(&cmd[0][2], F_OK) == 0))
 	{
 		if (access(&cmd[0][2], F_OK | X_OK) != 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 12:13:30 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/23 14:50:18 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	print_heredoc(char *line, t_data *data)
 
 	expand = ft_strdup(line);
 	new = expand_str(expand, data);
-	ft_printf_fd(data->heredoc_fd[1], "%s\n", new);
+	ft_printf_fd(data->heredoc_fd[1], "%s", new);
 	free(new);
 	return (0);
 }
@@ -36,18 +36,39 @@ static int	print_heredoc(char *line, t_data *data)
 static void	read_heredoc(char *eof, t_data *data)
 {
 	char	*scan;
+	char	*nl;
 
+	nl = ft_strjoin(eof, "\n");
 	ft_printf_fd(2, "heredoc> ");
-	scan = readline("");
+	scan = get_next_line(0, nl);
 	while (scan && ft_strcmp(scan, eof) != 0)
 	{
 		print_heredoc(scan, data);
 		ft_printf_fd(2, "heredoc> ");
 		free(scan);
-		scan = readline("");
+		scan = get_next_line(0, nl);
+		if (!scan || ft_strcmp(scan, nl) == 0)
+			break ;
 	}
+	free(nl);
 	free(scan);
 }
+
+// static void	read_heredoc(char *eof, t_data *data)
+// {
+// 	char	*scan;
+
+// 	ft_printf_fd(2, "heredoc> ");
+// 	scan = readline("");
+// 	while (scan && ft_strcmp(scan, eof) != 0)
+// 	{
+// 		print_heredoc(scan, data);
+// 		ft_printf_fd(2, "heredoc> ");
+// 		free(scan);
+// 		scan = readline("");
+// 	}
+// 	free(scan);
+// }
 
 int	heredoc_redir(char *eof, t_data *data)
 {
