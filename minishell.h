@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/23 17:45:49 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/24 18:26:43 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <unistd.h>
 # include <termios.h>
+# include <unistd.h>
 
 extern int				g_flag;
 
 typedef struct s_expand
 {
+	int					free_value;
 	char				*pre;
 	char				*key;
 	char				*post;
@@ -96,6 +97,7 @@ void					add_token(t_token **tokens, t_token *new);
 t_token					*lexer(char *line);
 void					expand_all_tokens(t_token *token, t_data *data);
 void					utils_expand(char *s, int i, int len, t_expand *ex);
+void					define_ex_value(t_data *data, t_expand *ex);
 void					quotes_utils(char *s, t_expand_quotes *ex, int mode);
 char					*expand_str(char *s, t_data *data);
 char					which_quotes(char *s, int *i);

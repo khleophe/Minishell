@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 18:08:09 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:15:06 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/24 18:26:59 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,19 @@ void	quotes_utils(char *s, t_expand_quotes *ex, int mode)
 		if (s[ex->i] == 34 || s[ex->i] == 39)
 			ex->quotes = s[ex->i++];
 	}
+}
+
+void	define_ex_value(t_data *data, t_expand *ex)
+{
+	if (ft_strcmp(ex->key, "?") == 0)
+	{
+		ex->value = ft_itoa(data->return_code);
+		ex->free_value = 1;
+	}
+	else if (ft_strcmp(ex->key, "$") == 0)
+		ex->value = get_env_value("MANAGERPID", data->env);
+	else
+		ex->value = get_env_value(ex->key, data->env);
+	if (!ex->value)
+		ex->value = "";
 }

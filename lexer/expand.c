@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/24 17:58:59 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/24 18:27:26 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 {
 	t_expand	ex;
 
+	ex.free_value = 0;
 	ex.pre = ft_substr(s, 0, i);
 	utils_expand(s, i, len, &ex);
 	if (ex.post == NULL || ex.key == NULL)
@@ -39,16 +40,9 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	if (!ex.pre || !ex.key || !ex.post)
 		return (free(ex.pre), free(ex.key), free(ex.post),
 			clean("error: malloc", data, 1), NULL);
-	if (ft_strcmp(ex.key, "?") == 0)
-		ex.value = ft_itoa(data->return_code);
-	else if (ft_strcmp(ex.key, "$") == 0)
-		ex.value = get_env_value("MANAGERPID", data->env);
-	else
-		ex.value = get_env_value(ex.key, data->env);
-	if (!ex.value)
-		ex.value = "";
+	define_ex_value(data, &ex);
 	ex.tmp = ft_strjoin(ex.pre, ex.value);
-	if (ft_strcmp(ex.value, "") == 0)
+	if (ex.free_value == 1)
 		free(ex.value);
 	if (!ex.tmp)
 		return (free(ex.tmp), free(ex.key), clean("", data, 1), NULL);
