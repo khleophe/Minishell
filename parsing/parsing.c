@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:44:20 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/24 17:53:18 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 		return (return_code);
 	while (tokens && tokens->type != PIPE)
 	{
-		if (is_redirs(tokens->type))
+		while (tokens && is_redirs(tokens->type))
 			tokens = tokens->next->next;
 		if (tokens && tokens->type == WORD)
 		{

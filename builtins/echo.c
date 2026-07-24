@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/09 19:19:13 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/16 14:40:57 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:54:00 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,17 @@ int	parsing_echo(t_token **tokens)
 
 	is_n = 0;
 	(*tokens) = (*tokens)->next;
-	while ((*tokens) && is_redirs((*tokens)->type))
+	while (*tokens && is_redirs((*tokens)->type))
 		(*tokens) = (*tokens)->next->next;
 	while ((*tokens) && check_n((*tokens)->s))
 	{
 		is_n = 1;
 		(*tokens) = (*tokens)->next;
 	}
-	while ((*tokens)->next && (*tokens)->next->type != PIPE)
+	while (*tokens && (*tokens)->next && (*tokens)->next->type != PIPE)
 		echo(tokens, 0);
-	echo(tokens, 1);
+	if (*tokens)
+		echo(tokens, 1);
 	if (is_n == 0)
 		ft_printf_fd(1, "\n");
 	return (0);
