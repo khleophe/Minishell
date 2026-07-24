@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/16 11:29:35 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:58:59 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	if (!ex.value)
 		ex.value = "";
 	ex.tmp = ft_strjoin(ex.pre, ex.value);
+	if (ft_strcmp(ex.value, "") == 0)
+		free(ex.value);
 	if (!ex.tmp)
 		return (free(ex.tmp), free(ex.key), clean("", data, 1), NULL);
 	ex.res = ft_strjoin(ex.tmp, ex.post);
