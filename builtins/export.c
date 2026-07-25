@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:38:54 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:38:55 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/07/25 20:41:08 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	parsing_export(t_data *data, t_token **tokens)
 
 	return_code = 0;
 	(*tokens) = (*tokens)->next;
-	if (!(*tokens))
+	if (!(*tokens) || (*tokens)->type == PIPE)
 		return (print_export(data, 1), 0);
 	while ((*tokens) && (*tokens)->type == WORD)
 	{

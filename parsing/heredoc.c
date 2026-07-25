@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/23 17:50:21 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/25 20:03:29 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ static void	read_heredoc(char *lim, int fd)
 
 int	heredoc_redir(char *eof, t_data *data)
 {
+	if (data->heredoc_fd[0] != -1)
+	{
+		close(data->heredoc_fd[0]);
+		data->heredoc_fd[0] = -1;
+	}
+	if (data->heredoc_fd[1] != -1)
+	{
+		close(data->heredoc_fd[1]);
+		data->heredoc_fd[1] = -1;
+	}
 	if (pipe(data->heredoc_fd) != 0)
 		return (1);
 	sigaction(SIGINT, &data->sig_child_int, 0);

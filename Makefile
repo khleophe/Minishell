@@ -29,6 +29,9 @@ $(LIBFT):
 $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) -L/opt/homebrew/opt/readline/lib $(OBJS) $(LIBFT) -D_DEFAULT_SOURCE -Iinclude -lreadline -g3 -o $(NAME)
 
+jo: re
+	make clean
+
 clean:
 	rm -f $(OBJS)
 	@make -C $(LIBFT_DIR) clean

@@ -6,13 +6,13 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:25:03 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/25 20:38:05 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exit_pipe(t_data *data, int pipe_fd[2], int return_value, char *s)
+void	exit_pipe(t_data *data, int pipe_fd[2], int return_value, char *s)
 {
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
@@ -21,31 +21,30 @@ static void	exit_pipe(t_data *data, int pipe_fd[2], int return_value, char *s)
 
 static int	create_child(t_data *data, t_token **token)
 {
-	pid_t	child;
-	int		pipe_fd[2];
 	int		return_code;
 
 	return_code = 0;
-	if (pipe(pipe_fd) == -1)
-		clean("error: pipe", data, 1);
-	child = fork();
-	if (!child)
-	{
-		if (dup2(pipe_fd[1], 1) < 0)
-			exit_pipe(data, pipe_fd, return_code, "dup2: error");
-		return_code = parsing_cmd(data, *token);
-		exit_pipe(data, pipe_fd, return_code, NULL);
-	}
-	else if (child != -1)
-	{
-		if (dup2(pipe_fd[0], 0) < 0)
-			exit_pipe(data, pipe_fd, return_code, "dup2: error");
+	// if (pipe(pipe_fd) == -1)
+	// 	clean("error: pipe", data, 1);
+	return_code = parsing_cmd(data, *token);
+	// child = fork();
+	// if (!child)
+	// {
+	// 	if (dup2(pipe_fd[1], 1) < 0)
+	// 		exit_pipe(data, pipe_fd, return_code, "dup2: error");
+	// 	return_code = parsing_cmd(data, *token);
+	// 	exit_pipe(data, pipe_fd, return_code, NULL);
+	// }
+	// else if (child != -1)
+	// {
+	// 	if (dup2(pipe_fd[0], 0) < 0)
+	// 		exit_pipe(data, pipe_fd, return_code, "dup2: error");
 		while ((*token) && (*token)->type != PIPE)
 			(*token) = (*token)->next;
 		if ((*token)->type == PIPE)
 			(*token) = (*token)->next;
-	}
-	return (close(pipe_fd[1]), close(pipe_fd[0]), 0);
+	// }
+	return (return_code);
 }
 
 int	exec_pipe(t_data *data)

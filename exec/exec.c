@@ -41,9 +41,12 @@ static int	execute(t_data *data, char *path, char **cmd)
 {
 	pid_t	pid;
 	int		status;
+	int pipe_fd[2];
 
+	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+		pipe(pipe_fd);
 	pid = fork();
-	if (!pid)
+	if (pid == 0)
 	{
 		if (data->pipe_done == 0 && data->heredoc_fd[0] > -1)
 		{
@@ -56,6 +59,13 @@ static int	execute(t_data *data, char *path, char **cmd)
 			close(data->heredoc_fd[0]);
 			data->heredoc_fd[0] = -1;
 		}
+		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+		{
+			if (dup2(pipe_fd[1], 1) < 0)
+				clean("error: dup2", data, 1);
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+		}
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -64,12 +74,23 @@ static int	execute(t_data *data, char *path, char **cmd)
 	}
 	else
 	{
-		close(data->heredoc_fd[0]);
-		data->heredoc_fd[0] = -1;
+		if (data->heredoc_fd[0] != -1)
+		{
+			close(data->heredoc_fd[0]);
+			data->heredoc_fd[0] = -1;
+		}
 		waitpid(pid, &status, 0);
+		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+		{
+			if (dup2(pipe_fd[0], 0) < 0)
+				clean("error: dup2", data, 1);
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+		}
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 	}
+	//fork peut envoyer -1
 	return (0);
 }
 
@@ -117,13 +138,13 @@ static char	**create_cmd(t_token *tokens)
 	return (cmd);
 }
 
-int	exec(t_data *data, t_token *tokens)
+int	exec(t_data *data, t_token **tokens)
 {
 	char	**cmd;
 	char	*path;
 
 	(void)data;
-	cmd = create_cmd(tokens);
+	cmd = create_cmd((*tokens));
 	if (!cmd)
 		return (1);
 	path = find_path(cmd[0], data->env);

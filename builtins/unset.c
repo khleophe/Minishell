@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:19:08 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 14:48:19 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/25 20:41:56 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ static int	verif_args(char *arg)
 	if (!arg)
 		return (0);
 	if ((!ft_isalpha(arg[0]) && arg[0] != '_'))
-		return (printf("minishell: unset: `%s': not a valid identifier\n",
+		return (ft_printf_fd(2, "minishell: unset: `%s': not a valid identifier\n",
 				arg), 0);
 	while (arg[i])
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (printf("minishell: unset: `%s': not a valid identifier\n",
+			return (ft_printf_fd(2, "minishell: unset: `%s': not a valid identifier\n",
 					arg), 0);
 		i++;
 	}

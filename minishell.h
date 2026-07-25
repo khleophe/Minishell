@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/24 18:26:43 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/07/25 20:37:20 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,10 @@ int						apply_redirs(t_token *tokens, int *return_code,
 							t_data *data);
 int						heredoc_redir(char *eof, t_data *data);
 
+void	exit_pipe(t_data *data, int pipe_fd[2], int return_value, char *s);
+
 /* * * * * * EXECUTION * * * * * */
-int						exec(t_data *data, t_token *tokens);
+int						exec(t_data *data, t_token **tokens);
 char					*get_env_value(char *key, char **env);
 char					*find_path(char *cmd, char **env);
 char					*access_path(char *cmd);
