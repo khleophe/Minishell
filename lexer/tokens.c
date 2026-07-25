@@ -14,20 +14,22 @@
 
 static t_token	*filter_quotes(char *line, int *line_index)
 {
-	char	quote_chr;
+	char	quote_char;
 	char	*dest;
 	t_token	*new;
 	size_t	i;
 
 	i = 1;
-	quote_chr = line[0];
-	while (line[i] != quote_chr)
+	quote_char = line[0];
+	while (line[i] && line[i] != quote_char)
 		i++;
+	if (!line[i])
+		return (NULL);
 	dest = malloc(sizeof(char) * i);
 	if (!dest)
 		clean("error: malloc", get_data(), 1);
 	ft_strlcpy(dest, &line[1], i);
-	if (quote_chr == '\'')
+	if (quote_char == '\'')
 		new = new_token(S_QUOTE, dest);
 	else
 		new = new_token(D_QUOTE, dest);
@@ -76,7 +78,6 @@ static t_token	*words(char *line, int *i)
 	t_token	*new;
 
 	word = extract_word(&line[*i]);
-	printf("%s :: %s\n", __FUNCTION__, &line[*i]);
 	if (word)
 	{
 		*i += ft_strlen(word);
