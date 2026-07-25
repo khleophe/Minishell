@@ -40,7 +40,12 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	if (!ex.pre || !ex.key || !ex.post)
 		return (free(ex.pre), free(ex.key), free(ex.post),
 			clean("error: malloc", data, 1), NULL);
-	define_ex_value(data, &ex);
+	if (ft_strcmp(ex.key, "?") == 0)
+		ex.value = ft_itoa(data->return_code);
+	else
+		ex.value = get_env_value(ex.key, data->env);
+	if (!ex.value)
+		ex.value = "";
 	ex.tmp = ft_strjoin(ex.pre, ex.value);
 	if (ex.free_value == 1)
 		free(ex.value);

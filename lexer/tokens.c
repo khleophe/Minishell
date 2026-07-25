@@ -12,32 +12,46 @@
 
 #include "minishell.h"
 
-static char	*extract_word_quotes(char *s, char *quote)
+static t_token	*filter_quotes(char *line, int *line_index)
+{
+	char	quote_chr;
+	char	*dest;
+	t_token	*new;
+	size_t	i;
+
+	i = 1;
+	quote_chr = line[0];
+	while (line[i] != quote_chr)
+		i++;
+	dest = malloc(sizeof(char) * i);
+	if (!dest)
+		clean("error: malloc", get_data(), 1);
+	ft_strlcpy(dest, &line[1], i);
+	if (quote_chr == '\'')
+		new = new_token(S_QUOTE, dest);
+	else
+		new = new_token(D_QUOTE, dest);
+	free(dest);
+	*line_index += i + 1;
+	return (new);
+}
+
+static char	*extract_word(char *s)
 {
 	int		i;
 	char	*dest;
 
 	i = 0;
 	while (s[i] && s[i] != 32 && (s[i] < 9 || s[i] > 13) && s[i] != '|'
-		&& s[i] != '<' && s[i] != '>')
-	{
-		if (s[i] == 34 || s[i] == 39)
-		{
-			*quote = s[i++];
-			while (s[i] && s[i] != *quote)
-				i++;
-			if (s[i] == *quote)
-				i++;
-			else
-				return (NULL);
-		}
-		else
-			i++;
-	}
+		&& s[i] != '<' && s[i] != '>' && s[i] != 34 && s[i] != 39)
+		i++;
+	if (i == 0)
+		return (NULL);
 	dest = malloc(sizeof(char) * i + 1);
 	if (!dest)
 		clean("error: malloc", get_data(), 1);
 	ft_strlcpy(dest, s, i + 1);
+	i++;
 	return (dest);
 }
 
@@ -60,22 +74,17 @@ static t_token	*words(char *line, int *i)
 {
 	char	*word;
 	t_token	*new;
-	char	quote;
 
-	word = extract_word_quotes(&line[*i], &quote);
-	if (!word)
-		return (NULL);
-	if (which_quotes(line, i) == 34)
-		new = new_token(D_QUOTE, word);
-	else if (which_quotes(line, i) == 39)
-		new = new_token(S_QUOTE, word);
-	else
+	word = extract_word(&line[*i]);
+	printf("%s :: %s\n", __FUNCTION__, &line[*i]);
+	if (word)
+	{
+		*i += ft_strlen(word);
 		new = new_token(WORD, word);
-	if (!new)
-		return (free(word), NULL);
-	*i += ft_strlen(word);
-	free(word);
-	return (new);
+		free(word);
+		return (new);
+	}
+	return (filter_quotes(&line[*i], i));
 }
 
 t_token	*lexer(char *line)

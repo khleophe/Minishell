@@ -49,7 +49,7 @@ char	which_quotes(char *s, int *i)
 	while (s[j] && s[j] != 32 && (s[j] < 9 || s[j] > 13) && s[j] != '|'
 		&& s[j] != '<' && s[j] != '>')
 	{
-		if (s[j] == 34 || s[j] == 39)
+		if (s[j] == '"' || s[j] == '\'')
 			return (s[j]);
 		j++;
 	}
