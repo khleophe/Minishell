@@ -49,7 +49,7 @@ void	read_line(t_token **tokens, t_data *data)
 		data->pipe_nb = 0;
 		line = readline("minishell>");
 		if (line == NULL)
-			clean(NULL, data, 1);
+			clean(NULL, data, 0);
 		if (verif_line(line))
 		{
 			g_flag = 1;

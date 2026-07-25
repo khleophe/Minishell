@@ -45,6 +45,17 @@ static int	execute(t_data *data, char *path, char **cmd)
 	pid = fork();
 	if (!pid)
 	{
+		if (data->pipe_done == 0 && data->heredoc_fd[0] > -1)
+		{
+			if (dup2(data->heredoc_fd[0], 0) < 0)
+			{
+				close(data->heredoc_fd[0]);
+				data->heredoc_fd[0] = -1;
+				return (1);
+			}
+			close(data->heredoc_fd[0]);
+			data->heredoc_fd[0] = -1;
+		}
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -53,6 +64,8 @@ static int	execute(t_data *data, char *path, char **cmd)
 	}
 	else
 	{
+		close(data->heredoc_fd[0]);
+		data->heredoc_fd[0] = -1;
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));

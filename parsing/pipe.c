@@ -36,7 +36,7 @@ static int	create_child(t_data *data, t_token **token)
 		return_code = parsing_cmd(data, *token);
 		exit_pipe(data, pipe_fd, return_code, NULL);
 	}
-	else
+	else if (child != -1)
 	{
 		if (dup2(pipe_fd[0], 0) < 0)
 			exit_pipe(data, pipe_fd, return_code, "dup2: error");
@@ -51,16 +51,15 @@ static int	create_child(t_data *data, t_token **token)
 int	exec_pipe(t_data *data)
 {
 	t_token	*tmp;
-	int		pipe_done;
 
-	pipe_done = 0;
+	data->pipe_done = 0;
 	tmp = data->tokens;
-	while (pipe_done < data->pipe_nb)
+	while (data->pipe_done < data->pipe_nb)
 	{
 		data->return_code = create_child(data, &tmp);
 		if (data->return_code != 0)
 			return (data->return_code);
-		pipe_done++;
+		data->pipe_done++;
 	}
 	data->return_code = parsing_cmd(data, tmp);
 	return (data->return_code);

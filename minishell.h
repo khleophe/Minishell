@@ -78,10 +78,12 @@ typedef struct s_data
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
 	struct sigaction	sig_child_int;
+	int					pipe_done;
 	struct sigaction	sig_child_quit;
 	int					old_stdin;
 	int					old_stdout;
 	char				current_dir[4096];
+	pid_t				children[4096];
 }						t_data;
 
 /* * * * * * INITIALISATION * * * * * */
