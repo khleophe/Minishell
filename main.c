@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		g_flag = 0;
+int	g_flag = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
