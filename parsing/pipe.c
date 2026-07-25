@@ -51,16 +51,16 @@ static int	create_child(t_data *data, t_token **token)
 int	exec_pipe(t_data *data)
 {
 	t_token	*tmp;
-	int		pipeddone;
+	int		pipe_done;
 
-	pipeddone = 0;
+	pipe_done = 0;
 	tmp = data->tokens;
-	while (pipeddone < data->pipe_nb)
+	while (pipe_done < data->pipe_nb)
 	{
 		data->return_code = create_child(data, &tmp);
 		if (data->return_code != 0)
 			return (data->return_code);
-		pipeddone++;
+		pipe_done++;
 	}
 	data->return_code = parsing_cmd(data, tmp);
 	return (data->return_code);

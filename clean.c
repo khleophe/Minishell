@@ -39,7 +39,7 @@ void	clean(char *str, t_data *data, int return_code)
 		ft_freetab(data->env);
 	if (str)
 		ft_printf_fd(2, "%s\n", str);
-	free(data);
+	free(get_data());
 	close(0);
 	close(1);
 	close(2);

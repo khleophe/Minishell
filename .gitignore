@@ -1,0 +1,4 @@
+*.o
+/minishell
+/.idea/
+/Libft/libft.a

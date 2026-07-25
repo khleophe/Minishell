@@ -12,98 +12,36 @@
 
 #include "minishell.h"
 
-static void	exit_heredoc(t_data *data)
-{
-	close(data->heredoc_fd[0]);
-	data->heredoc_fd[0] = -1;
-	close(data->heredoc_fd[1]);
-	data->heredoc_fd[1] = -1;
-	clean(NULL, data, 0);
-}
 
-static int	print_heredoc(char *line, t_data *data)
+static void	read_heredoc(char *lim, int fd)
 {
-	char	*expand;
-	char	*new;
-
-	expand = ft_strdup(line);
-	new = expand_str(expand, data);
-	ft_printf_fd(data->heredoc_fd[1], "%s", new);
-	free(new);
-	return (0);
-}
-
-static int	init_read(char **scan, char **nl, char **eof)
-{
+	char	*scan;
 	struct termios	termios;
 
-	*nl = ft_strjoin(*eof, "\n");
-	ft_memset(&termios, 0, sizeof(termios));
 	tcgetattr(0, &termios);
 	termios.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &termios);
-	ft_printf_fd(2, "heredoc> ");
-	*scan = get_next_line(0, *nl);
-	if (!*scan || ft_strlen(*scan) == 0)
+	scan = malloc(1);
+	while (scan && ft_strcmp(scan, lim) != 0)
 	{
-		ft_printf_fd(2, "\n");
-		free(*nl);
-		return (1);
+		free(scan);
+		scan = readline("heredoc> ");
+		if (scan && ft_strcmp(scan, lim) != 0)
+			ft_printf_fd(fd, "%s\n", scan);
 	}
-	return (0);
 }
-
-static void	read_heredoc(char *eof, t_data *data)
-{
-	char	*scan;
-	char	*nl;
-
-	if (init_read(&scan, &nl, &eof))
-		return ;
-	while (scan && ft_strcmp(scan, nl) != 0)
-	{
-		print_heredoc(scan, data);
-		ft_printf_fd(2, "heredoc> ");
-		free(scan);
-		scan = get_next_line(0, nl);
-		if (!scan || ft_strcmp(scan, nl) == 0 || ft_strlen(scan) == 0)
-		{
-			if (!scan || ft_strlen(scan) == 0)
-				ft_printf_fd(2, "\n");
-			break ;
-		}
-	}
-	if (nl)
-		free(nl);
-	if (scan)
-		free(scan);
-d}
 
 int	heredoc_redir(char *eof, t_data *data)
 {
-	int		signal;
-	pid_t	pid;
-
 	pipe(data->heredoc_fd);
-	pid = fork();
-	if (!pid)
-	{
-		sigaction(SIGINT, &data->sig_child_int, 0);
-		sigaction(SIGQUIT, &data->sig_child_quit, 0);
-		read_heredoc(eof, data);
-		ft_printf_fd(data->heredoc_fd[1], "\0");
-		exit_heredoc(data);
-	}
-	else
-	{
-		waitpid(pid, &signal, 0);
-		close(data->heredoc_fd[1]);
-		data->heredoc_fd[1] = -1;
-		if (dup2(data->heredoc_fd[0], 0) < 0)
-			return (close(data->heredoc_fd[0]), data->heredoc_fd[0] = -1, 1);
-		if (WIFEXITED(signal))
-			return (close(data->heredoc_fd[0]), data->heredoc_fd[0] = -1,
-				WEXITSTATUS(signal));
-	}
+	sigaction(SIGINT, &data->sig_child_int, 0);
+	sigaction(SIGQUIT, &data->sig_child_quit, 0);
+	read_heredoc(eof, data->heredoc_fd[1]);
+	sigaction(SIGINT, &data->sig_int, NULL);
+	sigaction(SIGQUIT, &data->sig_quit, NULL);
+	close(data->heredoc_fd[1]);
+	data->heredoc_fd[1] = -1;
+	if (dup2(data->heredoc_fd[0], 0) < 0)
+		return (close(data->heredoc_fd[0]), data->heredoc_fd[0] = -1, 1);
 	return (close(data->heredoc_fd[0]), data->heredoc_fd[0] = -1, 0);
 }

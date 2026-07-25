@@ -49,8 +49,12 @@ void	init_sign(struct sigaction *sig_int, struct sigaction *sig_quit)
 
 void	child_int(int signum)
 {
-	(void)signum;
-	clean("", get_data(), 130);
+	g_flag = signum;
+	close(STDIN_FILENO);
+	rl_on_new_line();
+	rl_redisplay();
+	write(1, "\n", 1);
+	get_data()->return_code = 130;
 }
 
 void	init_sign_heredoc(struct sigaction *sig_child_int,
