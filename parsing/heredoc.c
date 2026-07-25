@@ -14,12 +14,12 @@
 
 static void	read_heredoc(char *lim, int fd)
 {
-	char	*scan;
+	char			*scan;
+	struct termios	termios;
 
-	// struct termios	termios;
-	// tcgetattr(0, &termios);
-	// termios.c_lflag &= ~ECHOCTL;
-	// tcsetattr(0, TCSANOW, &termios);
+	tcgetattr(0, &termios);
+	termios.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &termios);
 	scan = readline("heredoc> ");
 	while (scan && ft_strcmp(scan, lim) != 0)
 	{
