@@ -58,40 +58,17 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	return (free(ex.pre), free(ex.post), free(ex.tmp), free(ex.key), ex.res);
 }
 
-char	*expand_str(char *s, t_data *data)
-{
-	char	*new;
-	int		i;
-	int		len;
-
-	i = 0;
-	while (s && s[i])
-	{
-		len = get_new_expand(s, i);
-		if (s[i] == '$' && len > 0)
-		{
-			new = new_expand(s, i, len, data);
-			free(s);
-			s = new;
-		}
-		else
-			i++;
-	}
-	return (s);
-}
-
-static char	*expand_str_quotes(char *s, t_data *data)
+char	*expand_str_quotes(char *s, t_data *data)
 {
 	t_expand_quotes	ex;
 
 	ex.i = 0;
 	ex.quotes = -1;
-	quotes_utils(s, &ex, 0);
 	while (s && s[ex.i])
 	{
-		quotes_utils(s, &ex, 1);
 		while (s && s[ex.i] && s[ex.i] != ex.quotes)
 		{
+			quotes_utils(s, &ex, 1);
 			if (ex.quotes == 34 || ex.quotes == -1)
 			{
 				ex.len = get_new_expand(s, ex.i);
@@ -104,6 +81,7 @@ static char	*expand_str_quotes(char *s, t_data *data)
 			}
 			ex.i++;
 		}
+		ex.quotes = -1;
 		ex.i++;
 	}
 	return (s);
@@ -112,16 +90,20 @@ static char	*expand_str_quotes(char *s, t_data *data)
 void	expand_all_tokens(t_token *token, t_data *data)
 {
 	t_token	*tmp;
+	t_token *tmp2;
 
 	if (!token)
 		return ;
 	tmp = token;
+	tmp2 = token;
+	while (tmp2)
+	{
+		ft_printf_fd(2, "%s\n, %i\n", tmp2->s, tmp->type);
+		tmp2 = tmp2->next;
+	}
 	while (tmp)
 	{
-		if (tmp->type == D_QUOTE || tmp->type == S_QUOTE)
-			tmp->s = expand_str_quotes(tmp->s, data);
-		else
-			tmp->s = expand_str(tmp->s, data);
+		tmp->s = expand_str_quotes(tmp->s, data);
 		tmp = tmp->next;
 	}
 	rm_quotes_token(token);

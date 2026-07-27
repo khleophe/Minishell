@@ -12,9 +12,10 @@
 
 #include "minishell.h"
 
-static void	read_heredoc(char *lim, int fd)
+static void	read_heredoc(char *lim, int fd, t_data *data)
 {
 	char			*scan;
+	char			*quotes;
 	struct termios	termios;
 
 	tcgetattr(0, &termios);
@@ -23,9 +24,12 @@ static void	read_heredoc(char *lim, int fd)
 	scan = readline("heredoc> ");
 	while (scan && ft_strcmp(scan, lim) != 0)
 	{
+		scan = expand_str_quotes(scan, data);
+		quotes = remove_quotes(scan);
 		if (scan && ft_strcmp(scan, lim) != 0)
-			ft_printf_fd(fd, "%s\n", scan);
+			ft_printf_fd(fd, "%s\n", quotes);
 		free(scan);
+		free(quotes);
 		scan = readline("heredoc> ");
 	}
 	free(scan);
@@ -47,7 +51,7 @@ int	heredoc_redir(char *eof, t_data *data)
 		return (1);
 	sigaction(SIGINT, &data->sig_child_int, 0);
 	sigaction(SIGQUIT, &data->sig_child_quit, 0);
-	read_heredoc(eof, data->heredoc_fd[1]);
+	read_heredoc(eof, data->heredoc_fd[1], data);
 	sigaction(SIGINT, &data->sig_int, NULL);
 	sigaction(SIGQUIT, &data->sig_quit, NULL);
 	close(data->heredoc_fd[1]);

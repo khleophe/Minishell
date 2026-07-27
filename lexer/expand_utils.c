@@ -48,7 +48,7 @@ void	quotes_utils(char *s, t_expand_quotes *ex, int mode)
 	}
 	else
 	{
-		if (s[ex->i] == 34 || s[ex->i] == 39)
+		if ((s[ex->i] == 34 || s[ex->i] == 39) && ex->quotes == -1)
 			ex->quotes = s[ex->i++];
 	}
 }

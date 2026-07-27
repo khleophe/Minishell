@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*remove_quotes(char *s)
+char	*remove_quotes(char *s)
 {
 	int		i;
 	int		j;

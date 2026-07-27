@@ -45,7 +45,7 @@ static char	*extract_word(char *s)
 
 	i = 0;
 	while (s[i] && s[i] != 32 && (s[i] < 9 || s[i] > 13) && s[i] != '|'
-		&& s[i] != '<' && s[i] != '>' && s[i] != 34 && s[i] != 39)
+		&& s[i] != '<' && s[i] != '>')
 		i++;
 	if (i == 0)
 		return (NULL);

@@ -101,9 +101,10 @@ void					expand_all_tokens(t_token *token, t_data *data);
 void					utils_expand(char *s, int i, int len, t_expand *ex);
 void					define_ex_value(t_data *data, t_expand *ex);
 void					quotes_utils(char *s, t_expand_quotes *ex, int mode);
-char					*expand_str(char *s, t_data *data);
+char	*expand_str_quotes(char *s, t_data *data);
 char					which_quotes(char *s, int *i);
 void					rm_quotes_token(t_token *tokens);
+char	*remove_quotes(char *s);
 int						check_syntax(t_data *data);
 int						is_redirs(int type);
 
