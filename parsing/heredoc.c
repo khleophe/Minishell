@@ -77,7 +77,7 @@ static void	read_heredoc(char *eof, t_data *data)
 		free(nl);
 	if (scan)
 		free(scan);
-}
+d}
 
 int	heredoc_redir(char *eof, t_data *data)
 {
