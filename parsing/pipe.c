@@ -23,7 +23,7 @@ int	exec_pipe(t_data *data)
 		data->return_code = parsing_cmd(data, tmp);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
-		if (tmp->type == PIPE)
+		if (tmp && tmp->type == PIPE)
 			tmp = tmp->next;
 		if (data->return_code != 0)
 			return (data->return_code);
