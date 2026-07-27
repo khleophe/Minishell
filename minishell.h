@@ -30,6 +30,11 @@
 
 extern int				g_flag;
 
+//verifier valgrind heredoc expand
+//verifier valgrind expand
+//cat | ls
+//<lol | cat
+
 typedef struct s_expand
 {
 	int					free_value;

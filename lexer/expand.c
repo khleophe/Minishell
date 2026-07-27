@@ -90,17 +90,10 @@ char	*expand_str_quotes(char *s, t_data *data)
 void	expand_all_tokens(t_token *token, t_data *data)
 {
 	t_token	*tmp;
-	t_token *tmp2;
 
 	if (!token)
 		return ;
 	tmp = token;
-	tmp2 = token;
-	while (tmp2)
-	{
-		ft_printf_fd(2, "%s\n, %i\n", tmp2->s, tmp->type);
-		tmp2 = tmp2->next;
-	}
 	while (tmp)
 	{
 		tmp->s = expand_str_quotes(tmp->s, data);
