@@ -96,7 +96,11 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 	while (tokens && tokens->type != PIPE)
 	{
 		while (tokens && is_redirs(tokens->type))
-			tokens = tokens->next->next;
+		{
+			tokens = tokens->next;
+			if (tokens->next)
+				tokens = tokens->next;
+		}
 		if (tokens && tokens->type == WORD)
 		{
 			return_code = parsing_builtin(data, &tokens);

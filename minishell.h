@@ -128,8 +128,6 @@ int						apply_redirs(t_token *tokens, int *return_code,
 							t_data *data);
 int						heredoc_redir(char *eof, t_data *data);
 
-void	exit_pipe(t_data *data, int pipe_fd[2], int return_value, char *s);
-
 /* * * * * * EXECUTION * * * * * */
 int						exec(t_data *data, t_token **tokens);
 char					*get_env_value(char *key, char **env);
