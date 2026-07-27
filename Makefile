@@ -1,7 +1,7 @@
 NAME = minishell
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g --std=gnu89
+CC = clang
+CFLAGS = -Wall -Wextra -Werror -g3 --std=gnu89
 
 SRCS = lexer/init_tokens.c main.c builtins/unset.c read_line.c lexer/tokens.c lexer/utils_tokens.c \
 		parsing/pipe.c parsing/redirs.c lexer/expand.c clean.c lexer/expand_utils.c\

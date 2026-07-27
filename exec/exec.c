@@ -43,7 +43,7 @@ static int	execute(t_data *data, char *path, char **cmd)
 	int		status;
 	int pipe_fd[2];
 
-	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		pipe(pipe_fd);
 	pid = fork();
 	if (pid == 0)
@@ -80,7 +80,7 @@ static int	execute(t_data *data, char *path, char **cmd)
 			data->heredoc_fd[0] = -1;
 		}
 		waitpid(pid, &status, 0);
-		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		{
 			if (dup2(pipe_fd[0], 0) < 0)
 				clean("error: dup2", data, 1);

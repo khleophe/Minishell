@@ -38,13 +38,14 @@ static int builtin_pipe(t_data *data, t_token **token, int mode)
 	int		return_code;
 	int		pipe_fd[2];
 	
-	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 	{
 		pipe(pipe_fd);
 		child = fork();
 		if (child == 0)
 		{
-			dup2(pipe_fd[1], 1);
+			if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+				dup2(pipe_fd[1], 1);
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
 			return_code = apply_bultin(data, token, mode);

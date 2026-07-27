@@ -15,15 +15,16 @@
 int	parsing_exit(t_data *data, t_token **tokens)
 {
 	(*tokens) = (*tokens)->next;
-	ft_printf_fd(1, "exit\n");
+	if (data->pipe_nb == 0)
+		ft_printf_fd(1, "exit\n");
 	if (!(*tokens) || (*tokens)->type != WORD)
-		exit(0);
-	if ((*tokens)->next && (*tokens)->next->type == WORD)
+		clean(NULL, data, data->return_code);
+	if (*tokens && (*tokens)->next && (*tokens)->next->type == WORD)
 	{
 		ft_printf_fd(2, "minishell: exit: too many arguments\n");
 		return (1);
 	}
-	if (ft_atol((*tokens)->s) == EXIT_FAILURE)
+	if (*tokens && ft_atol((*tokens)->s) == EXIT_FAILURE)
 	{
 		ft_printf_fd(2, "minishell: exit: %s: numeric argument required\n",
 			(*tokens)->s);
