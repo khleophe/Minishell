@@ -15,9 +15,12 @@
 int	exec_pipe(t_data *data)
 {
 	t_token	*tmp;
+	int		i;
+	int		status;
 
 	data->pipe_done = 0;
 	tmp = data->tokens;
+	ft_memset(data->children, 0, sizeof(data->children));
 	while (data->pipe_done < data->pipe_nb)
 	{
 		data->return_code = parsing_cmd(data, tmp);
@@ -30,5 +33,14 @@ int	exec_pipe(t_data *data)
 		data->pipe_done++;
 	}
 	data->return_code = parsing_cmd(data, tmp);
+	i = 0;
+	status = 0;
+	while (i < data->pipe_nb)
+	{
+		waitpid(data->children[i], &status, 0);
+		if (WIFEXITED(status))
+			data->return_code = WEXITSTATUS(status);
+		i++;
+	}
 	return (data->return_code);
 }

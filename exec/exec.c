@@ -40,8 +40,7 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 static int	execute(t_data *data, char *path, char **cmd)
 {
 	pid_t	pid;
-	int		status;
-	int pipe_fd[2];
+	int		pipe_fd[2];
 
 	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		pipe(pipe_fd);
@@ -79,7 +78,6 @@ static int	execute(t_data *data, char *path, char **cmd)
 			close(data->heredoc_fd[0]);
 			data->heredoc_fd[0] = -1;
 		}
-		waitpid(pid, &status, 0);
 		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		{
 			if (dup2(pipe_fd[0], 0) < 0)
@@ -87,10 +85,9 @@ static int	execute(t_data *data, char *path, char **cmd)
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
 		}
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
+		data->children[data->pipe_done] = pid;
 	}
-	//fork peut envoyer -1
+	// fork peut envoyer -1
 	return (0);
 }
 
@@ -148,7 +145,7 @@ int	exec(t_data *data, t_token **tokens)
 	if (!cmd)
 		return (1);
 	path = find_path(cmd[0], data->env);
-	data->return_code = execute(data, path, cmd);
+	execute(data, path, cmd); // HANDLE ERROR HERE
 	ft_freetab(cmd);
 	free(path);
 	return (data->return_code);
