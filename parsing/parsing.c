@@ -6,7 +6,7 @@
 /*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/04 17:39:44 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/04 17:52:21 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 {
 	int	return_code;
 
-	return_code = 0;
+	return_code = -1;
 	if (apply_redirs(tokens, &return_code, data))
 		return (return_code);
 	while (tokens && tokens->type != PIPE)
@@ -119,6 +119,11 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 		}
 		else if (tokens && tokens->type != WORD && tokens->type != PIPE)
 			tokens = tokens->next;
+	}		
+	if (return_code == -1)
+	{
+		
+		return_code = 0;
 	}
 	return (return_code);
 }
