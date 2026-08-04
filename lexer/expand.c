@@ -82,7 +82,8 @@ char	*expand_str_quotes(char *s, t_data *data)
 			ex.i++;
 		}
 		ex.quotes = -1;
-		ex.i++;
+		if (s[ex.i])
+			ex.i++;
 	}
 	return (s);
 }

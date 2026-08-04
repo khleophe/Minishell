@@ -73,7 +73,8 @@ int	parsing_echo(t_token **tokens)
 		is_n = 1;
 		(*tokens) = (*tokens)->next;
 	}
-	while (*tokens && (*tokens)->next && (*tokens)->next->type != PIPE)
+	while (*tokens && (*tokens)->type != PIPE && (*tokens)->next
+		&& (*tokens)->next->type != PIPE)
 		echo(tokens, 0);
 	if (*tokens)
 		echo(tokens, 1);
