@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/24 18:27:26 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:14:54 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ static int	get_new_expand(char *s, int i)
 		len = j - i;
 	}
 	return (len);
+}
+
+static void	free_ex(t_expand *ex)
+{
+	free(ex->post);
+	free(ex->tmp);
+	free(ex->key);
 }
 
 static char	*new_expand(char *s, int i, int len, t_data *data)
@@ -53,8 +60,7 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 		return (free(ex.tmp), free(ex.key), clean("", data, 1), NULL);
 	ex.res = ft_strjoin(ex.tmp, ex.post);
 	if (!ex.res)
-		return (free(ex.post), free(ex.tmp), free(ex.key),
-			clean("error: malloc", data, 1), NULL);
+		return (free_ex(&ex), clean("error: malloc", data, 1), NULL);
 	return (free(ex.pre), free(ex.post), free(ex.tmp), free(ex.key), ex.res);
 }
 
@@ -63,9 +69,9 @@ char	*expand_str_quotes(char *s, t_data *data)
 	t_expand_quotes	ex;
 
 	ex.i = 0;
-	ex.quotes = -1;
 	while (s && s[ex.i])
 	{
+		ex.quotes = -1;
 		while (s && s[ex.i] && s[ex.i] != ex.quotes)
 		{
 			quotes_utils(s, &ex, 1);
@@ -81,7 +87,6 @@ char	*expand_str_quotes(char *s, t_data *data)
 			}
 			ex.i++;
 		}
-		ex.quotes = -1;
 		if (s[ex.i])
 			ex.i++;
 	}

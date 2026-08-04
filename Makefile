@@ -31,6 +31,12 @@ $(NAME): $(LIBFT) $(OBJS)
 
 jo: re
 	make clean
+	@echo
+	@echo
+	@echo JOJO IS IN THE HOUSE
+
+so: jo
+	@echo AND SOSO IS HOOOOT
 
 clean:
 	rm -f $(OBJS)

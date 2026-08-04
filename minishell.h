@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/25 20:37:20 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:03:09 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 
 extern int				g_flag;
 
-//verifier valgrind heredoc expand
-//verifier valgrind expand
-//cat | ls
+// verifier valgrind heredoc expand
+// verifier valgrind expand
+// cat | ls
 //<lol | cat
 
 typedef struct s_expand
@@ -106,10 +106,10 @@ void					expand_all_tokens(t_token *token, t_data *data);
 void					utils_expand(char *s, int i, int len, t_expand *ex);
 void					define_ex_value(t_data *data, t_expand *ex);
 void					quotes_utils(char *s, t_expand_quotes *ex, int mode);
-char	*expand_str_quotes(char *s, t_data *data);
+char					*expand_str_quotes(char *s, t_data *data);
 char					which_quotes(char *s, int *i);
 void					rm_quotes_token(t_token *tokens);
-char	*remove_quotes(char *s);
+char					*remove_quotes(char *s);
 int						check_syntax(t_data *data);
 int						is_redirs(int type);
 

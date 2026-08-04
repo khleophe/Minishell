@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:19:08 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/25 20:41:56 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:01:04 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,20 @@ static void	unset(t_data *data, char *arg)
 
 static int	verif_args(char *arg)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (!arg)
 		return (0);
 	if ((!ft_isalpha(arg[0]) && arg[0] != '_'))
-		return (ft_printf_fd(2, "minishell: unset: `%s': not a valid identifier\n",
-				arg), 0);
+		return (ft_printf_fd(2,
+				"minishell: unset: `%s': not a valid identifier\n", arg), 0);
 	while (arg[i])
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (ft_printf_fd(2, "minishell: unset: `%s': not a valid identifier\n",
-					arg), 0);
+			return (ft_printf_fd(2,
+					"minishell: unset: `%s': not a valid identifier\n", arg),
+				0);
 		i++;
 	}
 	return (1);

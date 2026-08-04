@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/24 17:53:18 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:39:44 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int apply_bultin(t_data *data, t_token **token, int mode)
+static int	apply_bultin(t_data *data, t_token **token, int mode)
 {
 	if (mode == 0)
 		return (parsing_env(data, token));
@@ -31,26 +31,38 @@ static int apply_bultin(t_data *data, t_token **token, int mode)
 	return (1);
 }
 
-static int builtin_pipe(t_data *data, t_token **token, int mode)
+static void	child_builtin(t_data *data, t_token **token, int mode,
+		int pipe_fd[2])
+{
+	int	return_code;
+
+	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+	{
+		if (dup2(pipe_fd[1], 1) < 0)
+		{
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+			clean("error: dup2", data, 1);
+		}
+	}
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	return_code = apply_bultin(data, token, mode);
+	clean(NULL, data, return_code);
+}
+
+static int	builtin_pipe(t_data *data, t_token **token, int mode)
 {
 	pid_t	child;
 	int		status;
-	int		return_code;
 	int		pipe_fd[2];
-	
+
 	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 	{
 		pipe(pipe_fd);
 		child = fork();
 		if (child == 0)
-		{
-			if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
-				dup2(pipe_fd[1], 1);
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-			return_code = apply_bultin(data, token, mode);
-			clean(NULL, data, return_code);
-		}
+			child_builtin(data, token, mode, pipe_fd);
 		else
 		{
 			waitpid(child, &status, 0);
