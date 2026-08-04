@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/25 20:38:05 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/04 14:02:26 by sdabbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exec_pipe(t_data *data)
 	data->return_code = parsing_cmd(data, tmp);
 	i = 0;
 	status = 0;
-	while (i < data->pipe_nb)
+	while (i <= data->pipe_nb)
 	{
 		waitpid(data->children[i], &status, 0);
 		if (WIFEXITED(status))
