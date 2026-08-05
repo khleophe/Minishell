@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 15:43:08 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:28:14 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	if ((ft_strnstr(cmd[0], "/", 2) && access(&cmd[0][2], F_OK) == 0))
 	{
 		if (access(&cmd[0][2], F_OK | X_OK) != 0)
-			ft_printf_fd(2, "minishell: %s: permission denied\n", cmd[0]);
+			ft_putstr_fd("minishell: : permission denied\n", 2);
+			// ft_printf_fd(2, "minishell: %s: permission denied\n", cmd[0]);
 		else
-			ft_printf_fd(2, "minishell: %s: Is a directory\n", cmd[0]);
+			ft_putstr_fd("minishell: : Is a directory\n", 2);
+			// ft_printf_fd(2, "minishell: %s: Is a directory\n", cmd[0]);
 		free(path);
 		ft_freetab(cmd);
 		clean(NULL, data, 126);
@@ -27,10 +29,11 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	else
 	{
 		if (ft_strnstr(cmd[0], "./", 2) || cmd[0][0] == '/')
-			ft_printf_fd(2, "minishell: %s: No such file or directory\n",
-				cmd[0]);
+			ft_putstr_fd("minishell: : No such file or directory\n", 2);
+			// ft_printf_fd(2, "minishell: %s: No such file or directory\n",
+			// 	cmd[0]);
 		else
-			ft_printf_fd(2, "minishell: %s: command not found\n", cmd[0]);
+			ft_putstr_fd("minishell: : command not found\n", 2);
 		free(path);
 		ft_freetab(cmd);
 		clean(NULL, data, 127);
@@ -58,11 +61,15 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		{
 			if (dup2(pipe_fd[1], 1) < 0)
 				clean("error: dup2", data, 1);
-		}		
+
+		}
+		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
+		{
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+		}
 		if (apply_redir(r) == 1)
 			clean("error: dup2", get_data(), 1);
-		// close(pipe_fd[1]);
-		// close(pipe_fd[0]);
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -150,6 +157,8 @@ int	exec(t_data *data, t_token **tokens, t_redirections *r)
 	if (!cmd)
 		return (1);
 	path = find_path(cmd[0], data->env);
+	// if (access(path, F_OK | X_OK) != 0)
+	// 	exec_fail()
 	execute(data, path, cmd, r); // HANDLE ERROR HERE
 	ft_freetab(cmd);
 	free(path);

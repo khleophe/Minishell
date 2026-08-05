@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/08/05 13:41:28 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:02:45 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static char	**dup_env(char **env)
 void	init(t_data *data, char **env)
 {
 	data->current_stdin = 0;
-	data->old_stdout = -1;
 	data->heredoc_fd[0] = -1;
 	data->heredoc_fd[1] = -1;
 	data->mode_builtin = -1;
@@ -51,12 +50,6 @@ void	init(t_data *data, char **env)
 	data->env = dup_env(env);
 	if (!data->env)
 		clean("error: dup_env", data, 1);
-	// data->current_stdin = dup(STDIN_FILENO);
-	// if (data->current_stdin == -1)
-	// 	clean("error: dup", data, 1);
-	// data->old_stdout = dup(STDOUT_FILENO);
-	// if (data->old_stdout == -1)
-		// clean("error: dup", data, 1);
 	data->return_code = 0;
 	init_sign(&data->sig_int, &data->sig_quit);
 	init_sign_heredoc(&data->sig_child_int, &data->sig_child_quit);

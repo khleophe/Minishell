@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 14:46:16 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:38:42 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ static void	child_builtin(t_data *data, t_token **token, int pipe_fd[2],
 {
 	int	return_code;
 
-	if (dup2(data->current_stdin, 0) < 0)
-		clean("error: dup2", get_data(), 1);
+	if (data->current_stdin > 0)
+	{
+		if (dup2(data->current_stdin, 0) < 0)
+			clean("error: dup2", get_data(), 1);
+	}
 	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
 	{
 		if (dup2(pipe_fd[1], 1) < 0)
@@ -63,6 +66,8 @@ static int	builtin_pipe(t_data *data, t_token **token, int mode,
 	int		pipe_fd[2];
 
 	data->mode_builtin = mode;
+	if (data->pipe_nb == 0)
+		return (apply_bultin(data, token, mode));
 	pipe(pipe_fd);
 	child = fork();
 	if (child == 0)
@@ -79,7 +84,7 @@ static int	builtin_pipe(t_data *data, t_token **token, int mode,
 		while ((*token) && (*token)->type != PIPE)
 			(*token) = (*token)->next;
 		if (WIFEXITED(status))
-			return (close(pipe_fd[1]), close(pipe_fd[0]), WEXITSTATUS(status));
+			return (close(pipe_fd[1]), WEXITSTATUS(status));
 	}
 	return (close(pipe_fd[1]), close(pipe_fd[0]), 0);
 }
