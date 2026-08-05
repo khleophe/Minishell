@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/04 17:03:09 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/05 11:31:24 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_data
 	struct sigaction	sig_child_quit;
 	int					old_stdin;
 	int					old_stdout;
+	int					mode_builtin;
 	char				current_dir[4096];
 	pid_t				children[4096];
 }						t_data;
@@ -147,8 +148,9 @@ int						parsing_cd(t_data *data, t_token **tokens);
 /* * * * * * * PARSING * * * * * */
 int						exec_pipe(t_data *data);
 int						parsing_cmd(t_data *data, t_token *tokens);
-int						apply_redirs(t_token *tokens, t_redirections *r);
+int						create_redirs(t_token *tokens, t_redirections *r);
 int						heredoc_redir(char *eof, t_data *data);
+int		apply_redir(t_redirections *r);
 
 /* * * * * * EXECUTION * * * * * */
 int						exec(t_data *data, t_token **tokens, t_redirections *r);

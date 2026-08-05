@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/08/04 16:51:18 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/05 11:31:37 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	init(t_data *data, char **env)
 	data->old_stdout = -1;
 	data->heredoc_fd[0] = -1;
 	data->heredoc_fd[1] = -1;
+	data->mode_builtin = -1;
 	data->tokens = NULL;
 	data->env = dup_env(env);
 	if (!data->env)

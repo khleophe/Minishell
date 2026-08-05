@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:44:37 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/05 11:24:15 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,24 @@ static int	append_redir(char *file, t_redirections *r)
 	return (0);
 }
 
-int	apply_redirs(t_token *tokens, t_redirections *r)
+int		apply_redir(t_redirections *r)
+{
+	if (r->in_mode != DEFAULT)
+	{
+		if (dup2(r->infd, STDIN_FILENO) < 0)
+			return (1);
+		close(r->infd);
+	}
+	if (r->out_mode != DEFAULT)
+	{
+		if (dup2(r->outfd, STDOUT_FILENO) < 0)
+			return (1);
+		close(r->outfd);
+	}
+	return (0);
+}
+
+int	create_redirs(t_token *tokens, t_redirections *r)
 {
 	t_token	*tmp;
 	int		ret;

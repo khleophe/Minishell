@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/04 17:09:45 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/05 11:26:12 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,8 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (r->in_mode)
-		{
-			dup2(r->infd, STDIN_FILENO);
-			close(r->infd);
-		}
-		if (r->out_mode)
-		{
-			dup2(r->outfd, STDOUT_FILENO);
-			close(r->outfd);
-		}
+		if (apply_redir(r) == 1)
+			clean("error: dup2", get_data(), 1);
 		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
 		{
 			if (dup2(pipe_fd[1], 1) < 0)
@@ -67,10 +59,8 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
-		{
 			execve(path, cmd, data->env);
-			exec_fail(path, cmd, data);
-		}
+		exec_fail(path, cmd, data);
 		clean(NULL, get_data(), 0);
 	}
 	else
