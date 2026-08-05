@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 14:14:46 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 14:38:55 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,26 @@ int	parsing_builtin(t_data *data, t_token **token, t_redirections *r)
 		return (0);
 }
 
+int	little_pipe(t_data *data, t_redirections *r)
+{
+	pid_t child;
+	int	fd[2];
+
+	pipe(fd);
+	child = fork();
+	if (child == 0)
+	{
+		if (dup2(fd[1], 1) < 0)
+			return (clean("error: dup2", data, 1), 1);
+		if (apply_redir(r) == 1)
+			return (clean("error: dup2", data, 1), 1);
+		clean(NULL, data, 0);
+	}
+	else
+		data->current_stdin = fd[0];
+	return (0);
+}	
+
 int	parsing_cmd(t_data *data, t_token *tokens)
 {
 	int				return_code;
@@ -116,6 +136,7 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 	return_code = create_redirs(tokens, &redirections);
 	if (return_code)
 		return (return_code);
+	return_code = -1;
 	while (tokens && tokens->type != PIPE)
 	{
 		while (tokens && is_redirs(tokens->type))
@@ -131,6 +152,8 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 		else if (tokens && tokens->type != WORD && tokens->type != PIPE)
 			tokens = tokens->next;
 	}
+	if (return_code == -1)
+		little_pipe(data, &redirections);
 	if (redirections.in_mode != DEFAULT)
 		close(redirections.infd);
 	if (redirections.out_mode != DEFAULT)
@@ -138,21 +161,4 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 	return (return_code);
 }
 
-// int	little_pipe(t_data *data, t_redirections *r)
-// {
-// 	pid_t child;
-// 	int	fd[2];
 
-// 	pipe(fd);
-// 	child = fork();
-// 	if (child == 0)
-// 	{
-// 		if (dup2(fd[1], 1) < 0)
-// 			return (clean("error: dup2", data, 1), 1);
-// 		if (apply_redir(r) == 1)
-// 			return (clean("error: dup2", data, 1), 1);
-// 		clean(NULL, data, 0);
-// 	}
-// 	else
-		
-}	
