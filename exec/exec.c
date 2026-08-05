@@ -37,7 +37,7 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	}
 }
 
-static int	execute(t_data *data, char *path, char **cmd)
+static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
@@ -47,32 +47,38 @@ static int	execute(t_data *data, char *path, char **cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (data->pipe_done == 0 && data->heredoc_fd[0] > -1)
+		if (r->in_mode)
 		{
-			if (dup2(data->heredoc_fd[0], 0) < 0)
-			{
-				close(data->heredoc_fd[0]);
-				data->heredoc_fd[0] = -1;
-				return (1);
-			}
-			close(data->heredoc_fd[0]);
-			data->heredoc_fd[0] = -1;
+			dup2(r->infd, STDIN_FILENO);
+			close(r->infd);
+		}
+		if (r->out_mode)
+		{
+			dup2(r->outfd, STDOUT_FILENO);
+			close(r->outfd);
 		}
 		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
 		{
 			if (dup2(pipe_fd[1], 1) < 0)
 				clean("error: dup2", data, 1);
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
 		}
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
+		{
 			execve(path, cmd, data->env);
-		exec_fail(path, cmd, data);
+			exec_fail(path, cmd, data);
+		}
+		clean(NULL, get_data(), 0);
 	}
 	else
 	{
+		if (r->in_mode)
+			close(r->infd);
+		if (r->out_mode)
+			close(r->outfd);
 		if (data->heredoc_fd[0] != -1)
 		{
 			close(data->heredoc_fd[0]);
@@ -80,8 +86,6 @@ static int	execute(t_data *data, char *path, char **cmd)
 		}
 		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		{
-			if (dup2(pipe_fd[0], 0) < 0)
-				clean("error: dup2", data, 1);
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
 		}
@@ -135,7 +139,7 @@ static char	**create_cmd(t_token *tokens)
 	return (cmd);
 }
 
-int	exec(t_data *data, t_token **tokens)
+int	exec(t_data *data, t_token **tokens, t_redirections *r)
 {
 	char	**cmd;
 	char	*path;
@@ -145,7 +149,7 @@ int	exec(t_data *data, t_token **tokens)
 	if (!cmd)
 		return (1);
 	path = find_path(cmd[0], data->env);
-	execute(data, path, cmd); // HANDLE ERROR HERE
+	execute(data, path, cmd, r); // HANDLE ERROR HERE
 	ft_freetab(cmd);
 	free(path);
 	return (data->return_code);

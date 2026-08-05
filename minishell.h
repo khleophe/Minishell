@@ -35,6 +35,23 @@ extern int				g_flag;
 // cat | ls
 //<lol | cat
 
+typedef enum e_redir_mode
+{
+	DEFAULT = 0,
+	OUT_OVERWRITE,
+	OUT_APPEND,
+	IN_HEREDOC,
+	IN_FILE,
+}						t_redir_mode;
+
+typedef struct s_redirections
+{
+	int					infd;
+	enum e_redir_mode	in_mode;
+	int					outfd;
+	enum e_redir_mode	out_mode;
+}						t_redirections;
+
 typedef struct s_expand
 {
 	int					free_value;
@@ -130,12 +147,11 @@ int						parsing_cd(t_data *data, t_token **tokens);
 /* * * * * * * PARSING * * * * * */
 int						exec_pipe(t_data *data);
 int						parsing_cmd(t_data *data, t_token *tokens);
-int						apply_redirs(t_token *tokens, int *return_code,
-							t_data *data);
+int						apply_redirs(t_token *tokens, t_redirections *r);
 int						heredoc_redir(char *eof, t_data *data);
 
 /* * * * * * EXECUTION * * * * * */
-int						exec(t_data *data, t_token **tokens);
+int						exec(t_data *data, t_token **tokens, t_redirections *r);
 char					*get_env_value(char *key, char **env);
 char					*find_path(char *cmd, char **env);
 char					*access_path(char *cmd);

@@ -36,67 +36,75 @@ static int	file_check(char *fd_arg, int mode)
 	return (fd);
 }
 
-static int	input_redir(char *file)
+static int	input_redir(char *file, t_redirections *r)
 {
 	int	fd;
 
 	fd = file_check(file, 0);
 	if (fd < 0)
 		return (fd * -1);
-	if (dup2(fd, STDIN_FILENO) < 0)
-		return (1);
-	if (close(fd) < 0)
-		return (1);
+	if (r->infd > 0)
+		close(r->infd);
+	r->infd = fd;
+	r->in_mode = IN_FILE;
 	return (0);
 }
 
-static int	output_redir(char *file)
+static int	output_redir(char *file, t_redirections *r)
 {
 	int	fd;
 
 	fd = file_check(file, 2);
 	if (fd < 0)
 		return (fd * -1);
-	if (dup2(fd, STDOUT_FILENO) < 0)
-		return (1);
-	if (close(fd) < 0)
-		return (1);
+	if (r->outfd > 1)
+		close(r->outfd);
+	r->outfd = fd;
+	r->out_mode = OUT_OVERWRITE;
 	return (0);
 }
 
-static int	append_redir(char *file)
+static int	append_redir(char *file, t_redirections *r)
 {
 	int	fd;
 
 	fd = file_check(file, 1);
 	if (fd < 0)
 		return (fd * -1);
-	if (dup2(fd, STDOUT_FILENO) < 0)
-		return (1);
-	if (close(fd) < 0)
-		return (1);
+	if (r->outfd > 1)
+		close(r->outfd);
+	r->outfd = fd;
+	r->out_mode = OUT_APPEND;
 	return (0);
 }
 
-int	apply_redirs(t_token *tokens, int *return_code, t_data *data)
+int	apply_redirs(t_token *tokens, t_redirections *r)
 {
 	t_token	*tmp;
+	int		ret;
 
+	ret = 0;
 	tmp = tokens;
 	while (tmp && tmp->type != PIPE)
 	{
 		if (is_redirs(tmp->type))
 		{
 			if (tmp->type == APPEND)
-				*return_code = append_redir(tmp->next->s);
+				ret = append_redir(tmp->next->s, r);
 			else if (tmp->type == REDIR_IN)
-				*return_code = input_redir(tmp->next->s);
+				ret = input_redir(tmp->next->s, r);
 			else if (tmp->type == REDIR_OUT)
-				*return_code = output_redir(tmp->next->s);
+				ret = output_redir(tmp->next->s, r);
 			else if (tmp->type == HEREDOC)
-				*return_code = heredoc_redir(tmp->next->s, data);
+			{
+				ret = heredoc_redir(tmp->next->s, get_data());
+				if (r->infd > 0)
+					close(r->infd);
+				r->infd = get_data()->heredoc_fd[0];
+				r->in_mode = IN_HEREDOC;
+			}
 		}
 		tmp = tmp->next;
 	}
-	return (*return_code);
+	return (ret);
 }

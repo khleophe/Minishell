@@ -100,10 +100,15 @@ int	parsing_builtin(t_data *data, t_token **token)
 
 int	parsing_cmd(t_data *data, t_token *tokens)
 {
-	int	return_code;
+	int				return_code;
+	t_redirections	redirections;
 
+	ft_memset(&redirections, 0, sizeof(redirections));
+	redirections.infd = 0;
+	redirections.outfd = 1;
 	return_code = -1;
-	if (apply_redirs(tokens, &return_code, data))
+	return_code = apply_redirs(tokens, &redirections);
+	if (return_code)
 		return (return_code);
 	while (tokens && tokens->type != PIPE)
 	{
@@ -113,17 +118,12 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 		{
 			return_code = parsing_builtin(data, &tokens);
 			if (tokens && tokens->type == WORD)
-				return_code = exec(data, &tokens);
+				return_code = exec(data, &tokens, &redirections);
 			while (tokens && tokens->type == WORD)
 				tokens = tokens->next;
 		}
 		else if (tokens && tokens->type != WORD && tokens->type != PIPE)
 			tokens = tokens->next;
-	}		
-	if (return_code == -1)
-	{
-		
-		return_code = 0;
 	}
 	return (return_code);
 }
