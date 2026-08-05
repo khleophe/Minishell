@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 11:53:43 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 12:53:08 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (data->old_stdin > 0)
+		{
+			if (dup2(data->old_stdin, 0) < 0)
+				clean("error: dup2", data, 1);
+		}
 		if (apply_redir(r) == 1)
 			clean("error: dup2", get_data(), 1);
 		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
@@ -54,8 +59,7 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 			if (dup2(pipe_fd[1], 1) < 0)
 				clean("error: dup2", data, 1);
 		}
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		// close(pipe_fd[1]);
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -65,9 +69,9 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 	}
 	else
 	{
-		if (r->in_mode)
+		if (r->in_mode != DEFAULT)
 			close(r->infd);
-		if (r->out_mode)
+		if (r->out_mode != DEFAULT)
 			close(r->outfd);
 		if (data->heredoc_fd[0] != -1)
 		{
@@ -76,7 +80,9 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		}
 		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		{
-			close(pipe_fd[0]);
+			if (data->old_stdin > 0)
+				close(data->old_stdin);
+			data->old_stdin = pipe_fd[0];
 			close(pipe_fd[1]);
 		}
 		data->children[data->pipe_done] = pid;

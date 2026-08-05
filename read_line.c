@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 16:52:07 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/05 12:45:27 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@ static void	read_line_next(t_token **tokens, t_data *data)
 	expand_all_tokens(*tokens, data);
 	if (tokens)
 		exec_pipe(data);
-	if (dup2(data->old_stdin, STDIN_FILENO) == -1)
-		clean("error: dup2", data, 1);
-	if (dup2(data->old_stdout, STDOUT_FILENO) == -1)
-		clean("error: dup2", data, 1);
+	if (data->old_stdin > 0)
+		close(data->old_stdin);
+	data->old_stdin = -1;
 	free_tokens(*tokens);
 	*tokens = NULL;
 }

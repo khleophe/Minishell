@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 11:24:15 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 12:47:28 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int		apply_redir(t_redirections *r)
 	{
 		if (dup2(r->infd, STDIN_FILENO) < 0)
 			return (1);
-		close(r->infd);
 	}
 	if (r->out_mode != DEFAULT)
 	{
