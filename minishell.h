@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 13:13:02 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 13:41:28 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef struct s_data
 	struct sigaction	sig_child_int;
 	int					pipe_done;
 	struct sigaction	sig_child_quit;
-	int					old_stdin;
+	int					current_stdin;
 	int					old_stdout;
 	int					mode_builtin;
 	char				current_dir[4096];

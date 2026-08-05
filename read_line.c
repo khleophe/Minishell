@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 12:45:27 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 13:41:28 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static void	read_line_next(t_token **tokens, t_data *data)
 	expand_all_tokens(*tokens, data);
 	if (tokens)
 		exec_pipe(data);
-	if (data->old_stdin > 0)
-		close(data->old_stdin);
-	data->old_stdin = -1;
+	if (data->current_stdin > 0)
+		close(data->current_stdin);
+	data->current_stdin = -1;
 	free_tokens(*tokens);
 	*tokens = NULL;
 }

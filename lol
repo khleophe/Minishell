@@ -1,0 +1,15 @@
+builtins
+clean.c
+exec
+init.c
+lexer
+Libft
+lol
+main.c
+Makefile
+minishell
+minishell.h
+parsing
+read_line.c
+readline.supp
+README.md
