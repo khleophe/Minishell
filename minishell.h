@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 11:31:24 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 13:13:02 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ extern int				g_flag;
 // verifier valgrind heredoc expand
 // verifier valgrind expand
 // cat | ls
-//<lol | cat
 
 typedef enum e_redir_mode
 {

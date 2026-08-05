@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 12:53:08 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 13:20:53 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		{
 			if (dup2(data->old_stdin, 0) < 0)
 				clean("error: dup2", data, 1);
+			close(data->old_stdin);
+			data->old_stdin = 0;
 		}
 		if (apply_redir(r) == 1)
 			clean("error: dup2", get_data(), 1);
@@ -60,6 +62,7 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 				clean("error: dup2", data, 1);
 		}
 		// close(pipe_fd[1]);
+		// close(pipe_fd[0]);
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -71,8 +74,10 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 	{
 		if (r->in_mode != DEFAULT)
 			close(r->infd);
+		r->in_mode = DEFAULT;
 		if (r->out_mode != DEFAULT)
 			close(r->outfd);
+		r->out_mode = DEFAULT;
 		if (data->heredoc_fd[0] != -1)
 		{
 			close(data->heredoc_fd[0]);
