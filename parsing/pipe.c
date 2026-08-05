@@ -35,6 +35,11 @@ int	exec_pipe(t_data *data)
 	data->pipe_done = 0;
 	tmp = data->tokens;
 	ft_memset(data->children, 0, sizeof(data->children));
+	ft_memset(&data->pipeline, 0, sizeof(data->pipeline));
+	if (pipe(data->pipeline.previous))
+		perror("pipe");
+	dprintf(2, "[shell] previous pipe {%d, %d}\n", data->pipeline.previous[0],
+		data->pipeline.previous[1]);
 	while (data->pipe_done < data->pipe_nb)
 	{
 		data->return_code = parsing_cmd(data, tmp);

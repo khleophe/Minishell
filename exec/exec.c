@@ -40,10 +40,12 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 {
 	pid_t	pid;
-	int		pipe_fd[2];
 
-	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
-		pipe(pipe_fd);
+	if (data->pipe_nb > 0)
+	{
+		if (pipe(data->pipeline.next))
+			clean("error: pipe", data, 1);
+	}
 	pid = fork();
 	if (pid == 0)
 	{
@@ -57,13 +59,41 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 			dup2(r->outfd, STDOUT_FILENO);
 			close(r->outfd);
 		}
-		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+		if (data->pipe_nb)
 		{
-			if (dup2(pipe_fd[1], 1) < 0)
-				clean("error: dup2", data, 1);
+			if (data->pipe_done > 0)
+			{
+				dup2(data->pipeline.previous[0], STDIN_FILENO);
+				close(data->pipeline.previous[0]);
+				close(data->pipeline.previous[1]);
+				data->pipeline.previous[0] = -1;
+				data->pipeline.previous[1] = -1;
+			}
+			if (data->pipe_done < data->pipe_nb)
+			{
+				dup2(data->pipeline.next[1], STDOUT_FILENO);
+				close(data->pipeline.next[0]);
+				close(data->pipeline.next[1]);
+				data->pipeline.next[0] = -1;
+				data->pipeline.next[1] = -1;
+			}
+			else
+			{
+				if (r->out_mode)
+				{
+					dup2(r->outfd, STDOUT_FILENO);
+					close(r->outfd);
+				}
+				else
+				{
+					dup2(data->old_stdout, STDOUT_FILENO);
+					close(data->old_stdout);
+					data->old_stdout = -1;
+				}
+				close(data->pipeline.next[0]);
+				close(data->pipeline.next[1]);
+			}
 		}
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -84,10 +114,20 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 			close(data->heredoc_fd[0]);
 			data->heredoc_fd[0] = -1;
 		}
-		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
+		if (data->pipe_nb > 0)
 		{
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
+			if (data->pipe_done > 0)
+			{
+				close(data->pipeline.previous[0]);
+				close(data->pipeline.previous[1]);
+			}
+			if (data->pipe_done < data->pipe_nb)
+			{
+				dup2(data->pipeline.next[0], data->pipeline.previous[0]);
+				dup2(data->pipeline.next[1], data->pipeline.previous[1]);
+			}
+			close(data->pipeline.next[0]);
+			close(data->pipeline.next[1]);
 		}
 		data->children[data->pipe_done] = pid;
 	}
@@ -137,6 +177,11 @@ static char	**create_cmd(t_token *tokens)
 	}
 	cmd[i] = NULL;
 	return (cmd);
+}
+
+int	empty_exec(t_redirections *r)
+{
+	return (execute(get_data(), NULL, NULL, r));
 }
 
 int	exec(t_data *data, t_token **tokens, t_redirections *r)

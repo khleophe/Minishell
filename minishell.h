@@ -90,10 +90,17 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
+typedef struct s_pipe_pair
+{
+	int					previous[2];
+	int					next[2];
+}						t_pipe_pair;
+
 typedef struct s_data
 {
 	char				**env;
 	int					heredoc_fd[2];
+	t_pipe_pair			pipeline;
 	int					return_code;
 	t_token				*tokens;
 	int					pipe_nb;
@@ -152,6 +159,7 @@ int						heredoc_redir(char *eof, t_data *data);
 
 /* * * * * * EXECUTION * * * * * */
 int						exec(t_data *data, t_token **tokens, t_redirections *r);
+int						empty_exec(t_redirections *r);
 char					*get_env_value(char *key, char **env);
 char					*find_path(char *cmd, char **env);
 char					*access_path(char *cmd);

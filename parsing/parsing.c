@@ -102,7 +102,9 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 {
 	int				return_code;
 	t_redirections	redirections;
+	int				cmd_found;
 
+	cmd_found = 0;
 	ft_memset(&redirections, 0, sizeof(redirections));
 	redirections.infd = 0;
 	redirections.outfd = 1;
@@ -116,12 +118,15 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 			tokens = tokens->next->next;
 		if (tokens && tokens->type == WORD && tokens->type != PIPE)
 		{
+			cmd_found = 1;
 			return_code = parsing_builtin(data, &tokens);
 			if (tokens && tokens->type == WORD)
 				return_code = exec(data, &tokens, &redirections);
 			while (tokens && tokens->type == WORD)
 				tokens = tokens->next;
 		}
+		if (!cmd_found)
+			return_code = empty_exec(&redirections);
 		else if (tokens && tokens->type != WORD && tokens->type != PIPE)
 			tokens = tokens->next;
 	}
