@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 14:38:55 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/05 14:46:16 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	little_pipe(t_data *data, t_redirections *r)
 	else
 		data->current_stdin = fd[0];
 	return (0);
-}	
+}
 
 int	parsing_cmd(t_data *data, t_token *tokens)
 {
