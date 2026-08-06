@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 21:48:47 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 01:37:49 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	}
 }
 
-static int	set_stdin_stdout(t_data *data, t_redirections *r, int pipe_fd[2])
+int	set_stdin_stdout(t_data *data, t_redirections *r, int pipe_fd[2])// on close peu etre pas si on ne retnre dans aucune condition
 {
 	if (data->current_stdin > 0)
 	{
@@ -63,7 +63,7 @@ static int	set_stdin_stdout(t_data *data, t_redirections *r, int pipe_fd[2])
 	return (0);
 }
 
-static void	reset_after_child_and_change_stdin(t_data *data, t_redirections *r,
+void	reset_after_child_and_change_stdin(t_data *data, t_redirections *r,
 		int pipe_fd[2], pid_t pid)
 {
 	clean_redirs(r);

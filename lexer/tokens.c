@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:41:37 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/07 01:05:52 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 01:09:35 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ static char	*extract_word(char *s)
 			if (!s[i])
 				return (NULL);
 		}
-		if (s[i])
-			i++;
+		i++;
 	}
 	if (i == 0)
 		return (NULL);
@@ -65,7 +64,6 @@ static char	*extract_word(char *s)
 	if (!dest)
 		clean("error: malloc", get_data(), 1);
 	ft_strlcpy(dest, s, i + 1);
-	i++;
 	return (dest);
 }
 

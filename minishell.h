@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/07 00:16:37 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 01:38:13 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,5 +169,9 @@ void					init_sign(struct sigaction *sig_int,
 void					init_sign_heredoc(struct sigaction *sig_child_int,
 							struct sigaction *sig_child_quit);
 char					**create_cmd(t_token *tokens);
+int						set_stdin_stdout(t_data *data, t_redirections *r,
+							int pipe_fd[2]);
+void					reset_after_child_and_change_stdin(t_data *data,
+							t_redirections *r, int pipe_fd[2], pid_t pid);
 
 #endif
