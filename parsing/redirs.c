@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:47:40 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 23:41:15 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,11 @@ int	create_redirs(t_token *tokens, t_redirections *r)
 			else if (tmp->type == REDIR_OUT)
 				ret = output_redir(tmp->next->s, r);
 			else if (tmp->type == HEREDOC)
+			{
 				ret = parsing_heredoc(r, tmp->next->s);
+				if (get_data()->stdin_open == 0)
+					return (get_data()->return_code);
+			}
 		}
 		tmp = tmp->next;
 	}

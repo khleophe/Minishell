@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 22:22:13 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 23:20:43 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	clean(char *str, t_data *data, int return_code)
 	tcgetattr(0, &termios);
 	termios.c_lflag |= ECHOCTL;
 	tcsetattr(0, TCSANOW, &termios);
+	if (data->old_stdin != -1)
+		close(data->old_stdin);
 	clean_files(data);
 	if (data->tokens)
 		free_tokens(data->tokens);

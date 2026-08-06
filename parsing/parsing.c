@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 22:25:02 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 23:34:39 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	parsing_cmd(t_data *data, t_token *tokens, int return_code)
 	redirections.outfd = 1;
 	return_code = create_redirs(tokens, &redirections);
 	if (return_code != 0)
-		return (return_code);
+		return (clean_redirs(&redirections), return_code);
 	return_code = -1;
 	while (tokens && tokens->type != PIPE)
 	{
@@ -65,7 +65,7 @@ int	parsing_cmd(t_data *data, t_token *tokens, int return_code)
 				tokens = tokens->next;
 		}
 	}
-	if (return_code == -1)
+	if (return_code == -1 && data->pipe_nb > 0)
 		return_code = little_pipe(data, &redirections);
 	return (clean_redirs(&redirections), return_code);
 }

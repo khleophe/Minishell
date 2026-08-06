@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 22:26:43 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 23:31:19 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	read_heredoc(char *lim, int fd, t_data *data)
 	char			*quotes;
 	struct termios	termios;
 
+	ft_memset(&termios, 0, sizeof(termios));
 	tcgetattr(0, &termios);
 	termios.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &termios);
@@ -56,9 +57,20 @@ int	parsing_heredoc(t_redirections *r, char *eof)
 
 	ret = 0;
 	ret = heredoc_redir(eof, get_data(), heredoc_fd);
-	if (r->infd != 0)
-		close(r->infd);
-	r->infd = heredoc_fd[0];
-	r->in_mode = IN_HEREDOC;
+	if (ret == 1)
+		return (1);
+	if (heredoc_fd[1] == -1)
+	{
+		if (r->infd > 0)
+			close(r->infd);
+		r->infd = heredoc_fd[0];
+		r->in_mode = IN_HEREDOC;
+	}
+	else
+	{
+		close(heredoc_fd[1]);
+		heredoc_fd[1] = -1;
+		ret = 1;
+	}
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:45:36 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 23:40:58 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	exec_pipe(t_data *data)
 	while (data->pipe_done < data->pipe_nb)
 	{
 		data->return_code = parsing_cmd(data, tmp, return_code);
+		if (data->stdin_open == 0)
+			return (data->return_code);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		if (tmp && tmp->type == PIPE)
