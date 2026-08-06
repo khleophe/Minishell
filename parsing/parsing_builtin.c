@@ -6,13 +6,14 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 18:49:30 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/08/06 21:48:21 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 00:14:34 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	apply_bultin(t_data *data, t_token **token, int mode)
+static int	apply_bultin(t_data *data, t_token **token, int mode,
+		t_redirections *r)
 {
 	if (mode == 0)
 		return (parsing_env(data, token));
@@ -23,7 +24,7 @@ static int	apply_bultin(t_data *data, t_token **token, int mode)
 	if (mode == 3)
 		return (parsing_export(data, token));
 	if (mode == 4)
-		return (parsing_exit(data, token));
+		return (parsing_exit(data, token, r));
 	if (mode == 5)
 		return (parsing_echo(token));
 	if (mode == 6)
@@ -57,7 +58,7 @@ static void	child_builtin(t_data *data, t_token **token, int pipe_fd[2],
 	}
 	if (apply_redir(r) == 1)
 		clean("error: dup2", data, 1);
-	data->return_code = apply_bultin(data, token, data->mode_builtin);
+	data->return_code = apply_bultin(data, token, data->mode_builtin, r);
 	clean(NULL, data, data->return_code);
 }
 
@@ -69,7 +70,7 @@ static int	builtin_pipe(t_data *data, t_token **token, int mode,
 
 	data->mode_builtin = mode;
 	if (data->pipe_nb == 0)
-		return (data->one_built = 1, apply_bultin(data, token, mode));
+		return (data->one_built = 1, apply_bultin(data, token, mode, r));
 	pipe(pipe_fd);
 	child = fork();
 	if (child == -1)

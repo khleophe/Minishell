@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:26:31 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 23:21:00 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 00:17:37 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	read_line_next(t_token **tokens, t_data *data)
 	if (data->current_stdin > 0)
 		close(data->current_stdin);
 	data->current_stdin = -1;
-	dup2(data->old_stdin, STDIN_FILENO);// a proteger
+	if (dup2(data->old_stdin, STDIN_FILENO) < 0)
+		clean("error", data, 1);
 	data->stdin_open = 1;
 	free_tokens(*tokens);
 	*tokens = NULL;

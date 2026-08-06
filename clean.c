@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 23:20:43 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 00:15:07 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	clean(char *str, t_data *data, int return_code)
 	if (data->env)
 		ft_freetab(data->env);
 	if (str)
-	ft_putstr_fd(str, 2);
-	if (data->stdin_open == 1)	
+		ft_putstr_fd(str, 2);
+	if (data->stdin_open == 1)
 		close(0);
 	free(get_data());
 	close(1);

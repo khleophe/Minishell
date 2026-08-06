@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/08/06 23:19:52 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 00:16:15 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ void	init(t_data *data, char **env)
 	data->stdin_open = 1;
 	data->tokens = NULL;
 	data->env = dup_env(env);
-	data->old_stdin = dup(STDIN_FILENO);// a proteger
+	data->old_stdin = dup(STDIN_FILENO);
+	if (data->old_stdin == -1)
+		clean("error: dup", data, 1);
 	if (!data->env)
 		clean("error: dup_env", data, 1);
 	data->return_code = 0;

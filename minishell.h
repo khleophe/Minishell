@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 23:17:05 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 00:16:37 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,8 @@ int						parsing_export(t_data *data, t_token **tokens);
 int						print_export(t_data *data, int option);
 int						verif_args_export(char *arg);
 int						is_dash(char *arg);
-int						parsing_exit(t_data *data, t_token **tokens);
+int						parsing_exit(t_data *data, t_token **tokens,
+							t_redirections *r);
 int						parsing_echo(t_token **tokens);
 int						parsing_cd(t_data *data, t_token **tokens);
 
