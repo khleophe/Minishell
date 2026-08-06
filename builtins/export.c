@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:38:54 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 15:04:52 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 21:21:28 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static int	already_exist(t_data *data, char *arg)
 		}
 		i++;
 	}
-	free(temp);
+	if (temp)
+		free(temp);
 	return (0);
 }
 

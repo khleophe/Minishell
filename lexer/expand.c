@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/08/04 17:14:54 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/06 21:21:41 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ static int	get_new_expand(char *s, int i)
 
 static void	free_ex(t_expand *ex)
 {
-	free(ex->post);
-	free(ex->tmp);
-	free(ex->key);
+	if (ex->post)
+		free(ex->post);
+	if (ex->tmp)
+		free(ex->tmp);
+	if (ex->key)
+		free(ex->key);
+	if (ex->pre)
+		free(ex->pre);
 }
 
 static char	*new_expand(char *s, int i, int len, t_data *data)
@@ -45,8 +50,7 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	if (ex.post == NULL || ex.key == NULL)
 		clean(NULL, data, 1);
 	if (!ex.pre || !ex.key || !ex.post)
-		return (free(ex.pre), free(ex.key), free(ex.post),
-			clean("error: malloc", data, 1), NULL);
+		return (free_ex(&ex), clean("error: malloc", data, 1), NULL);
 	if (ft_strcmp(ex.key, "?") == 0)
 		ex.value = ft_itoa(data->return_code);
 	else
@@ -54,14 +58,12 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	if (!ex.value)
 		ex.value = "";
 	ex.tmp = ft_strjoin(ex.pre, ex.value);
-	if (ex.free_value == 1)
-		free(ex.value);
 	if (!ex.tmp)
-		return (free(ex.tmp), free(ex.key), clean("", data, 1), NULL);
+		return (free_ex(&ex), clean("", data, 1), NULL);
 	ex.res = ft_strjoin(ex.tmp, ex.post);
 	if (!ex.res)
 		return (free_ex(&ex), clean("error: malloc", data, 1), NULL);
-	return (free(ex.pre), free(ex.post), free(ex.tmp), free(ex.key), ex.res);
+	return (free_ex(&ex), ex.res);
 }
 
 char	*expand_str_quotes(char *s, t_data *data)
@@ -102,7 +104,9 @@ void	expand_all_tokens(t_token *token, t_data *data)
 	tmp = token;
 	while (tmp)
 	{
+		tmp->is = 0;
 		tmp->s = expand_str_quotes(tmp->s, data);
+		tmp->is = 1;
 		tmp = tmp->next;
 	}
 	rm_quotes_token(token);

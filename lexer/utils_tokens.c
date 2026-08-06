@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:42:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/14 15:43:41 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/06 21:05:08 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ void	free_tokens(t_token *tokens)
 	while (tokens)
 	{
 		tmp = tokens->next;
-		free(tokens->s);
-		free(tokens);
+		if (tokens->is == 1 && tokens->s)
+			free(tokens->s);
+		if (tokens)
+			free(tokens);
 		tokens = tmp;
 	}
 	tokens = NULL;

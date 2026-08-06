@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:55:47 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 20:52:27 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_token
 {
 	t_token_type		type;
 	char				*s;
+	int					is;
 	struct s_token		*next;
 }						t_token;
 
