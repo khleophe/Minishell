@@ -6,13 +6,13 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 17:33:17 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:19:23 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	wait_all(t_data *data)
+void	wait_all(t_data *data)
 {
 	int	i;
 	int	status;
@@ -44,12 +44,9 @@ int	exec_pipe(t_data *data)
 			tmp = tmp->next;
 		if (tmp && tmp->type == PIPE)
 			tmp = tmp->next;
-		if (data->return_code != 0)
-			return (data->return_code);
 		data->pipe_done++;
 	}
 	return_code = 0;
 	data->return_code = parsing_cmd(data, tmp, return_code);
-	wait_all(data);
 	return (data->return_code);
 }

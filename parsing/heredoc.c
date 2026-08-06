@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/04 16:37:12 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/06 18:25:45 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,17 @@ int	heredoc_redir(char *eof, t_data *data)
 	close(data->heredoc_fd[1]);
 	data->heredoc_fd[1] = -1;
 	return (0);
+}
+
+int	parsing_heredoc(t_redirections *r, char *eof)
+{
+	int ret;
+
+	ret = 0;
+	ret = heredoc_redir(eof, get_data());
+	if (r->infd > 0)
+		close(r->infd);
+	r->infd = get_data()->heredoc_fd[0];
+	r->in_mode = IN_HEREDOC;
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/08/06 15:11:07 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:21:57 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,19 @@ static char	**dup_env(char **env)
 	}
 	dup[n] = NULL;
 	return (dup);
+}
+
+t_data	*get_data(void)
+{
+	static t_data	*data = 0;
+
+	if (!data)
+	{
+		data = malloc(sizeof(*data));
+		if (!data)
+			exit(1);
+	}
+	return (data);
 }
 
 void	init(t_data *data, char **env)

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 17:32:18 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:26:04 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ void					init(t_data *data, char **env);
 void					clean(char *str, t_data *data, int return_code);
 t_data					*get_data(void);
 void					clean_redirs(t_redirections *r);
-void	change_current_stdin(t_data *data, int pipe_fd[2]);
-
+void					change_current_stdin(t_data *data, int pipe_fd[2]);
 
 /* * * * * * LEXER * * * * * */
 void					free_tokens(t_token *tokens);
@@ -145,10 +144,13 @@ int						parsing_cd(t_data *data, t_token **tokens);
 
 /* * * * * * * PARSING * * * * * */
 int						exec_pipe(t_data *data);
-int						parsing_cmd(t_data *data, t_token *tokens, int return_code);
+int						parsing_cmd(t_data *data, t_token *tokens,
+							int return_code);
 int						create_redirs(t_token *tokens, t_redirections *r);
 int						heredoc_redir(char *eof, t_data *data);
-int		apply_redir(t_redirections *r);
+int						apply_redir(t_redirections *r);
+void					wait_all(t_data *data);
+int						parsing_heredoc(t_redirections *r, char *eof);
 
 /* * * * * * EXECUTION * * * * * */
 int						exec(t_data *data, t_token **tokens, t_redirections *r);
