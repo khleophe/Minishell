@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 22:12:54 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 22:25:02 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ int	parsing_cmd(t_data *data, t_token *tokens, int return_code)
 				tokens = tokens->next;
 		}
 	}
-	if (return_code == -1 && data->pipe_nb > 0
-		&& data->pipe_done < data->pipe_nb)
+	if (return_code == -1)
 		return_code = little_pipe(data, &redirections);
 	return (clean_redirs(&redirections), return_code);
 }
