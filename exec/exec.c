@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:53:56 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 21:48:47 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,6 @@ static void	reset_after_child_and_change_stdin(t_data *data, t_redirections *r,
 		int pipe_fd[2], pid_t pid)
 {
 	clean_redirs(r);
-	if (data->heredoc_fd[0] != -1)
-	{
-		close(data->heredoc_fd[0]);
-		data->heredoc_fd[0] = -1;
-	}
 	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		change_current_stdin(data, pipe_fd);
 	data->children[data->pipe_done] = pid;

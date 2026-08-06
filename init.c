@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/08/06 18:21:57 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 21:48:03 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ t_data	*get_data(void)
 void	init(t_data *data, char **env)
 {
 	data->current_stdin = 0;
-	data->heredoc_fd[0] = -1;
-	data->heredoc_fd[1] = -1;
 	data->mode_builtin = -1;
 	data->one_built = 0;
 	data->tokens = NULL;

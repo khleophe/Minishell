@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:45:18 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 21:49:29 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,39 +35,30 @@ static void	read_heredoc(char *lim, int fd, t_data *data)
 	free(scan);
 }
 
-int	heredoc_redir(char *eof, t_data *data)
+int	heredoc_redir(char *eof, t_data *data, int heredoc_fd[2])
 {
-	if (data->heredoc_fd[0] != -1)
-	{
-		close(data->heredoc_fd[0]);
-		data->heredoc_fd[0] = -1;
-	}
-	if (data->heredoc_fd[1] != -1)
-	{
-		close(data->heredoc_fd[1]);
-		data->heredoc_fd[1] = -1;
-	}
-	if (pipe(data->heredoc_fd) != 0)
+	if (pipe(heredoc_fd) != 0)
 		return (1);
 	sigaction(SIGINT, &data->sig_child_int, 0);
 	sigaction(SIGQUIT, &data->sig_child_quit, 0);
-	read_heredoc(eof, data->heredoc_fd[1], data);
+	read_heredoc(eof, heredoc_fd[1], data);
 	sigaction(SIGINT, &data->sig_int, NULL);
 	sigaction(SIGQUIT, &data->sig_quit, NULL);
-	close(data->heredoc_fd[1]);
-	data->heredoc_fd[1] = -1;
+	close(heredoc_fd[1]);
+	heredoc_fd[1] = -1;
 	return (0);
 }
 
 int	parsing_heredoc(t_redirections *r, char *eof)
 {
 	int	ret;
+	int	heredoc_fd[2];
 
 	ret = 0;
-	ret = heredoc_redir(eof, get_data());
-	if (r->infd > 0)
+	ret = heredoc_redir(eof, get_data(), heredoc_fd);
+	if (r->infd != 0)
 		close(r->infd);
-	r->infd = get_data()->heredoc_fd[0];
+	r->infd = heredoc_fd[0];
 	r->in_mode = IN_HEREDOC;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:50:51 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 21:52:12 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ static int	little_pipe(t_data *data, t_redirections *r)
 				1);
 		close(fd[0]);
 		close(fd[1]);
+		clean_redirs(r);
 		clean(NULL, data, 0);
 	}
 	else
+	{
+		if (data->current_stdin != 0)
+			close(data->current_stdin);
 		data->current_stdin = fd[0];
+	}
 	close(fd[1]);
 	return (0);
 }

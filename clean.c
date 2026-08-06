@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 21:11:20 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 21:47:21 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ static void	clean_files(t_data *data)
 	if (data->current_stdin > 0)
 		close(data->current_stdin);
 	data->current_stdin = -1;
-	if (data->heredoc_fd[0] != -1)
-		close(data->heredoc_fd[0]);
-	if (data->heredoc_fd[1] != -1)
-		close(data->heredoc_fd[1]);
 }
 
 void	clean_redirs(t_redirections *r)
