@@ -1,0 +1,24 @@
+total 228
+drwxr-xr-x. 8 jdelmott jdelmott   4096 Aug  6 17:33 .
+drwxr-xr-x. 3 jdelmott jdelmott     23 Aug  5 15:32 ..
+drwxr-xr-x. 2 jdelmott jdelmott   4096 Aug  6 17:33 builtins
+-rw-r--r--. 1 jdelmott jdelmott   1781 Aug  6 15:10 clean.c
+-rw-r--r--. 1 jdelmott jdelmott  11232 Aug  6 17:33 clean.o
+drwxr-xr-x. 2 jdelmott jdelmott    124 Aug  6 17:33 exec
+drwxr-xr-x. 7 jdelmott jdelmott   4096 Aug  5 16:47 .git
+-rw-r--r--. 1 jdelmott jdelmott     30 Aug  5 15:32 .gitignore
+-rw-r--r--. 1 jdelmott jdelmott   2011 Aug  6 15:11 init.c
+-rw-r--r--. 1 jdelmott jdelmott  10464 Aug  6 17:33 init.o
+drwxr-xr-x. 2 jdelmott jdelmott   4096 Aug  6 17:33 lexer
+drwxr-xr-x. 2 jdelmott jdelmott   4096 Aug  6 17:33 Libft
+-rwxr-xr-x. 1 jdelmott jdelmott      0 Aug  6 17:33 lol
+-rw-r--r--. 1 jdelmott jdelmott   1145 Aug  5 15:44 main.c
+-rw-r--r--. 1 jdelmott jdelmott   8728 Aug  6 17:33 main.o
+-rw-r--r--. 1 jdelmott jdelmott   1189 Aug  5 15:32 Makefile
+-rwxr-xr-x. 1 jdelmott jdelmott 120488 Aug  6 17:33 minishell
+-rw-r--r--. 1 jdelmott jdelmott   4799 Aug  6 17:32 minishell.h
+drwxr-xr-x. 2 jdelmott jdelmott    134 Aug  6 17:33 parsing
+-rw-r--r--. 1 jdelmott jdelmott   1831 Aug  5 15:44 read_line.c
+-rw-r--r--. 1 jdelmott jdelmott  10512 Aug  6 17:33 read_line.o
+-rw-r--r--. 1 jdelmott jdelmott    226 Aug  5 15:32 readline.supp
+-rw-r--r--. 1 jdelmott jdelmott   3559 Aug  5 15:32 README.md

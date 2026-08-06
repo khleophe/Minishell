@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 16:52:50 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/07/14 15:39:13 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/06 14:45:17 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	get_pwd(t_data *data)
 {
 	if (!getcwd(data->current_dir, 4096))
 	{
-		ft_printf_fd(2, "error: getcwd\n");
+		ft_putstr_fd("error: getcwd\n", 2);
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/13 13:38:52 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:45:55 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 14:43:13 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	cd(t_data *data, char *path)
 
 	if (chdir(path) == -1)
 	{
-		ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path);
+		ft_putstr_fd("minishell: cd: : No such file or directory\n", 2);
 		return (1);
 	}
 	temp = ft_strjoin("OLDPWD=", data->current_dir);
@@ -45,7 +45,7 @@ static int	cd_dash(t_data *data, t_token **tokens)
 	else if (ft_strnstr((*tokens)->s, "--", 2) && (ft_strlen((*tokens)->s) > 2))
 	{
 		(*tokens) = (*tokens)->next;
-		return (ft_printf_fd(2, "minishell: cd: --: invalid option\n"), 2);
+		return (ft_putstr_fd("minishell: cd: --: invalid option\n", 2), 2);
 	}
 	(*tokens) = (*tokens)->next;
 	return (cd(data, get_env_value("OLDPWD", data->env)));
@@ -62,7 +62,7 @@ int	parsing_cd(t_data *data, t_token **tokens)
 	{
 		while ((*tokens) && (*tokens)->type == WORD)
 			(*tokens) = (*tokens)->next;
-		return (ft_printf_fd(2, "minishell: cd: too many arguments\n"), 1);
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	}
 	if (ft_strcmp((*tokens)->s, "~") == 0 || ft_strcmp((*tokens)->s, "-") == 0
 		|| ft_strnstr((*tokens)->s, "--", 2))

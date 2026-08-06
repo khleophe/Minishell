@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:38:54 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 16:40:00 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 15:04:52 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	add_arg(t_data *data, char *arg)
 int	export(t_data *data, char *arg)
 {
 	if (!data->env)
-		return (ft_printf_fd(2, "error: export: no env\n"), 1);
+		return (ft_putstr_fd("error: export: no env\n", 2), 1);
 	if (already_exist(data, arg))
 		return (0);
 	return (add_arg(data, arg));
@@ -83,7 +83,7 @@ int	parsing_export(t_data *data, t_token **tokens)
 				return (1);
 		}
 		else
-			return_code = 1;
+			return_code = 2;
 		(*tokens) = (*tokens)->next;
 	}
 	return (return_code);

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 16:02:25 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 15:10:04 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,16 @@ static void	clean_files(t_data *data)
 		close(data->heredoc_fd[1]);
 }
 
+void	clean_redirs(t_redirections *r)
+{
+	if (r->in_mode != DEFAULT)
+		close(r->infd);
+	r->in_mode = DEFAULT;
+	if (r->out_mode != DEFAULT)
+		close(r->outfd);
+	r->out_mode = DEFAULT;
+}
+
 void	clean(char *str, t_data *data, int return_code)
 {
 	struct termios	termios;
@@ -37,7 +47,7 @@ void	clean(char *str, t_data *data, int return_code)
 	if (data->env)
 		ft_freetab(data->env);
 	if (str)
-		ft_printf_fd(2, "%s\n", str);
+		ft_putstr_fd(str, 2);
 	free(get_data());
 	close(0);
 	close(1);

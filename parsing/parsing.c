@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 16:38:42 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 17:31:59 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ static int	apply_bultin(t_data *data, t_token **token, int mode)
 static void	child_builtin(t_data *data, t_token **token, int pipe_fd[2],
 		t_redirections *r)
 {
-	int	return_code;
-
 	if (data->current_stdin > 0)
 	{
 		if (dup2(data->current_stdin, 0) < 0)
 			clean("error: dup2", get_data(), 1);
+		close(data->current_stdin);
+		data->current_stdin = 0;
 	}
 	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
 	{
@@ -49,42 +49,42 @@ static void	child_builtin(t_data *data, t_token **token, int pipe_fd[2],
 			close(pipe_fd[1]);
 			clean("error: dup2", data, 1);
 		}
-	}	
+	}
+	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
 	if (apply_redir(r) == 1)
 		clean("error: dup2", data, 1);
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	return_code = apply_bultin(data, token, data->mode_builtin);
-	clean(NULL, data, return_code);
+	data->return_code = apply_bultin(data, token, data->mode_builtin);
+	clean(NULL, data, data->return_code);
 }
 
 static int	builtin_pipe(t_data *data, t_token **token, int mode,
 		t_redirections *r)
 {
 	pid_t	child;
-	int		status;
 	int		pipe_fd[2];
 
 	data->mode_builtin = mode;
 	if (data->pipe_nb == 0)
-		return (apply_bultin(data, token, mode));
+		return (data->one_built = 1, apply_bultin(data, token, mode));
 	pipe(pipe_fd);
 	child = fork();
+	if (child == -1)
+		return (close(pipe_fd[0]), close(pipe_fd[1]), clean("no", data, 1), 1);
 	if (child == 0)
 		child_builtin(data, token, pipe_fd, r);
 	else
 	{
-		waitpid(child, &status, 0);
-		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
-		{
-			if (data->current_stdin > 0)
-				close(data->current_stdin);
-			data->current_stdin = pipe_fd[0];
-		}
+		clean_redirs(r);
+		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
+			change_current_stdin(data, pipe_fd);
 		while ((*token) && (*token)->type != PIPE)
 			(*token) = (*token)->next;
-		if (WIFEXITED(status))
-			return (close(pipe_fd[1]), WEXITSTATUS(status));
+		data->children[data->pipe_done] = child;
+		return (0);
 	}
 	return (close(pipe_fd[1]), close(pipe_fd[0]), 0);
 }
@@ -119,29 +119,30 @@ int	little_pipe(t_data *data, t_redirections *r)
 	if (child == 0)
 	{
 		if (dup2(fd[1], 1) < 0)
-			return (clean("error: dup2", data, 1), 1);
+			return (close(fd[0]), close(fd[1]), clean("error: dup2", data, 1), 1);
 		if (apply_redir(r) == 1)
-			return (clean("error: dup2", data, 1), 1);
+			return (close(fd[0]), close(fd[1]), clean("error: dup2", data, 1), 1);
+		close(fd[0]);
+		close(fd[1]);
 		clean(NULL, data, 0);
 	}
 	else
 		data->current_stdin = fd[0];
+	close(fd[1]);
 	return (0);
 }
 
-int	parsing_cmd(t_data *data, t_token *tokens)
+int	parsing_cmd(t_data *data, t_token *tokens, int return_code)
 {
-	int				return_code;
 	t_redirections	redirections;
 
 	ft_memset(&redirections, 0, sizeof(redirections));
 	redirections.infd = 0;
 	redirections.outfd = 1;
-	return_code = -1;
 	return_code = create_redirs(tokens, &redirections);
-	if (return_code)
+	if (return_code != 0)
 		return (return_code);
-	return_code = -1;
+	return_code = -1;		
 	while (tokens && tokens->type != PIPE)
 	{
 		while (tokens && is_redirs(tokens->type))
@@ -154,16 +155,10 @@ int	parsing_cmd(t_data *data, t_token *tokens)
 			while (tokens && tokens->type == WORD)
 				tokens = tokens->next;
 		}
-		else if (tokens && tokens->type != WORD && tokens->type != PIPE)
-			tokens = tokens->next;
 	}
 	if (return_code == -1)
-		little_pipe(data, &redirections);
-	if (redirections.in_mode != DEFAULT)
-		close(redirections.infd);
-	if (redirections.out_mode != DEFAULT)
-		close(redirections.outfd);
-	return (return_code);
+		return_code = little_pipe(data, &redirections);
+	return (clean_redirs(&redirections), return_code);
 }
 
 

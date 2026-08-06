@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/09 18:57:04 by soraya            #+#    #+#             */
-/*   Updated: 2026/07/25 20:44:25 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 14:40:01 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ int	parsing_exit(t_data *data, t_token **tokens)
 		clean(NULL, data, data->return_code);
 	if (*tokens && (*tokens)->next && (*tokens)->next->type == WORD)
 	{
-		ft_printf_fd(2, "minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
 	if (*tokens && ft_atol((*tokens)->s) == EXIT_FAILURE)
 	{
-		ft_printf_fd(2, "minishell: exit: %s: numeric argument required\n",
-			(*tokens)->s);
+		ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
 		clean(NULL, data, 2);
 	}
 	clean(NULL, data, ft_atol((*tokens)->s) % 256);

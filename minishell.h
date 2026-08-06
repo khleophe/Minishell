@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 16:02:34 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 17:32:18 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@
 # include <unistd.h>
 
 extern int				g_flag;
-
-// verifier valgrind heredoc expand
-// verifier valgrind expand
-// cat | ls
 
 typedef enum e_redir_mode
 {
@@ -95,6 +91,7 @@ typedef struct s_data
 	int					heredoc_fd[2];
 	int					return_code;
 	t_token				*tokens;
+	int					one_built;
 	int					pipe_nb;
 	struct sigaction	sig_int;
 	struct sigaction	sig_quit;
@@ -112,6 +109,9 @@ void					read_line(t_token **tokens, t_data *data);
 void					init(t_data *data, char **env);
 void					clean(char *str, t_data *data, int return_code);
 t_data					*get_data(void);
+void					clean_redirs(t_redirections *r);
+void	change_current_stdin(t_data *data, int pipe_fd[2]);
+
 
 /* * * * * * LEXER * * * * * */
 void					free_tokens(t_token *tokens);
@@ -145,7 +145,7 @@ int						parsing_cd(t_data *data, t_token **tokens);
 
 /* * * * * * * PARSING * * * * * */
 int						exec_pipe(t_data *data);
-int						parsing_cmd(t_data *data, t_token *tokens);
+int						parsing_cmd(t_data *data, t_token *tokens, int return_code);
 int						create_redirs(t_token *tokens, t_redirections *r);
 int						heredoc_redir(char *eof, t_data *data);
 int		apply_redir(t_redirections *r);

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/05 16:28:14 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 16:13:52 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	{
 		if (access(&cmd[0][2], F_OK | X_OK) != 0)
 			ft_putstr_fd("minishell: : permission denied\n", 2);
-			// ft_printf_fd(2, "minishell: %s: permission denied\n", cmd[0]);
 		else
 			ft_putstr_fd("minishell: : Is a directory\n", 2);
-			// ft_printf_fd(2, "minishell: %s: Is a directory\n", cmd[0]);
 		free(path);
 		ft_freetab(cmd);
 		clean(NULL, data, 126);
@@ -30,8 +28,6 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	{
 		if (ft_strnstr(cmd[0], "./", 2) || cmd[0][0] == '/')
 			ft_putstr_fd("minishell: : No such file or directory\n", 2);
-			// ft_printf_fd(2, "minishell: %s: No such file or directory\n",
-			// 	cmd[0]);
 		else
 			ft_putstr_fd("minishell: : command not found\n", 2);
 		free(path);
@@ -47,7 +43,10 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 
 	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		pipe(pipe_fd);
+	data->one_built = 0;
 	pid = fork();
+	if (pid == -1)
+		return (close(pipe_fd[0]), close(pipe_fd[1]), clean("no", data, 1), 1);
 	if (pid == 0)
 	{
 		if (data->current_stdin > 0)
@@ -60,8 +59,11 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
 		{
 			if (dup2(pipe_fd[1], 1) < 0)
+			{
+				close(pipe_fd[0]);
+				close(pipe_fd[1]);
 				clean("error: dup2", data, 1);
-
+			}
 		}
 		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		{
@@ -79,27 +81,16 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 	}
 	else
 	{
-		if (r->in_mode != DEFAULT)
-			close(r->infd);
-		r->in_mode = DEFAULT;
-		if (r->out_mode != DEFAULT)
-			close(r->outfd);
-		r->out_mode = DEFAULT;
+		clean_redirs(r);
 		if (data->heredoc_fd[0] != -1)
 		{
 			close(data->heredoc_fd[0]);
 			data->heredoc_fd[0] = -1;
 		}
 		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
-		{
-			if (data->current_stdin > 0)
-				close(data->current_stdin);
-			data->current_stdin = pipe_fd[0];
-			close(pipe_fd[1]);
-		}
+			change_current_stdin(data, pipe_fd);
 		data->children[data->pipe_done] = pid;
 	}
-	// fork peut envoyer -1
 	return (0);
 }
 
@@ -157,8 +148,6 @@ int	exec(t_data *data, t_token **tokens, t_redirections *r)
 	if (!cmd)
 		return (1);
 	path = find_path(cmd[0], data->env);
-	// if (access(path, F_OK | X_OK) != 0)
-	// 	exec_fail()
 	execute(data, path, cmd, r); // HANDLE ERROR HERE
 	ft_freetab(cmd);
 	free(path);

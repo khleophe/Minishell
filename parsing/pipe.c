@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdabbas <sdabbas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 13:27:13 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/04 17:33:22 by sdabbas          ###   ########.fr       */
+/*   Updated: 2026/08/06 17:33:17 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	wait_all(t_data *data)
 
 	i = 0;
 	status = 0;
-	while (i <= data->pipe_nb)
+	while (data->one_built == 0 && i <= data->pipe_nb)
 	{
 		waitpid(data->children[i], &status, 0);
 		if (WIFEXITED(status))
@@ -31,13 +31,15 @@ static void	wait_all(t_data *data)
 int	exec_pipe(t_data *data)
 {
 	t_token	*tmp;
+	int		return_code;
 
+	return_code = 0;
 	data->pipe_done = 0;
 	tmp = data->tokens;
 	ft_memset(data->children, 0, sizeof(data->children));
 	while (data->pipe_done < data->pipe_nb)
-	{
-		data->return_code = parsing_cmd(data, tmp);
+	{				
+		data->return_code = parsing_cmd(data, tmp, return_code);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;
 		if (tmp && tmp->type == PIPE)
@@ -46,7 +48,8 @@ int	exec_pipe(t_data *data)
 			return (data->return_code);
 		data->pipe_done++;
 	}
-	data->return_code = parsing_cmd(data, tmp);
+	return_code = 0;
+	data->return_code = parsing_cmd(data, tmp, return_code);
 	wait_all(data);
 	return (data->return_code);
 }
