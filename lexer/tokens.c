@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 15:41:37 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/16 11:23:28 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 01:05:52 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,23 @@ static char	*extract_word(char *s)
 {
 	int		i;
 	char	*dest;
+	char	quote;
 
 	i = 0;
 	while (s[i] && s[i] != 32 && (s[i] < 9 || s[i] > 13) && s[i] != '|'
 		&& s[i] != '<' && s[i] != '>')
-		i++;
+	{
+		if (s[i] && (s[i] == '\'' || s[i] == '\"'))
+		{
+			quote = s[i++];
+			while (s[i] && s[i] != quote)
+				i++;
+			if (!s[i])
+				return (NULL);
+		}
+		if (s[i])
+			i++;
+	}
 	if (i == 0)
 		return (NULL);
 	dest = malloc(sizeof(char) * i + 1);

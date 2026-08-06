@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/08/06 21:21:41 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 00:58:15 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ void	expand_all_tokens(t_token *token, t_data *data)
 	while (tmp)
 	{
 		tmp->is = 0;
-		tmp->s = expand_str_quotes(tmp->s, data);
+		if (tmp->s)
+			tmp->s = expand_str_quotes(tmp->s, data);
 		tmp->is = 1;
 		tmp = tmp->next;
 	}
