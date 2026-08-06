@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 21:47:55 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 22:15:05 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_data
 {
 	char				**env;
 	int					return_code;
+	int					stdin_open;
 	t_token				*tokens;
 	int					one_built;
 	int					pipe_nb;
@@ -147,7 +148,8 @@ int						exec_pipe(t_data *data);
 int						parsing_cmd(t_data *data, t_token *tokens,
 							int return_code);
 int						create_redirs(t_token *tokens, t_redirections *r);
-int						heredoc_redir(char *eof, t_data *data, int heredoc_fd[2]);
+int						heredoc_redir(char *eof, t_data *data,
+							int heredoc_fd[2]);
 int						apply_redir(t_redirections *r);
 void					wait_all(t_data *data);
 int						parsing_heredoc(t_redirections *r, char *eof);

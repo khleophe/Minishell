@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 15:11:56 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:21:41 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 22:22:56 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	child_int(int signum)
 {
 	g_flag = signum;
 	close(STDIN_FILENO);
+	get_data()->stdin_open = 0;
 	rl_on_new_line();
 	rl_redisplay();
 	write(1, "\n", 1);

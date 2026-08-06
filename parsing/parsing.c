@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 21:52:12 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 22:12:54 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ static int	little_pipe(t_data *data, t_redirections *r)
 				1);
 		close(fd[0]);
 		close(fd[1]);
-		clean_redirs(r);
-		clean(NULL, data, 0);
+		return (clean_redirs(r), clean(NULL, data, 0), 1);
 	}
 	else
 	{
@@ -66,7 +65,8 @@ int	parsing_cmd(t_data *data, t_token *tokens, int return_code)
 				tokens = tokens->next;
 		}
 	}
-	if (return_code == -1)
+	if (return_code == -1 && data->pipe_nb > 0
+		&& data->pipe_done < data->pipe_nb)
 		return_code = little_pipe(data, &redirections);
 	return (clean_redirs(&redirections), return_code);
 }

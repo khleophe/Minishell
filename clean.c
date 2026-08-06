@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 21:47:21 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 22:22:13 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static void	clean_files(t_data *data)
 
 void	clean_redirs(t_redirections *r)
 {
-	if (r->in_mode != DEFAULT)
+	if (r->in_mode != DEFAULT && r->infd != 0)
 		close(r->infd);
 	r->in_mode = DEFAULT;
-	if (r->out_mode != DEFAULT)
+	if (r->out_mode != DEFAULT && r->outfd != 1)
 		close(r->outfd);
 	r->out_mode = DEFAULT;
 }
@@ -43,9 +43,10 @@ void	clean(char *str, t_data *data, int return_code)
 	if (data->env)
 		ft_freetab(data->env);
 	if (str)
-		ft_putstr_fd(str, 2);
+	ft_putstr_fd(str, 2);
+	if (data->stdin_open == 1)	
+		close(0);
 	free(get_data());
-	close(0);
 	close(1);
 	close(2);
 	exit(return_code);

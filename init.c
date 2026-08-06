@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 11:37:37 by nolwenng          #+#    #+#             */
-/*   Updated: 2026/08/06 21:48:03 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 22:15:18 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	init(t_data *data, char **env)
 	data->current_stdin = 0;
 	data->mode_builtin = -1;
 	data->one_built = 0;
+	data->stdin_open = 1;
 	data->tokens = NULL;
 	data->env = dup_env(env);
 	if (!data->env)
