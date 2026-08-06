@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:26:04 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:55:47 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ int						heredoc_redir(char *eof, t_data *data);
 int						apply_redir(t_redirections *r);
 void					wait_all(t_data *data);
 int						parsing_heredoc(t_redirections *r, char *eof);
+int						parsing_builtin(t_data *data, t_token **token,
+							t_redirections *r);
 
 /* * * * * * EXECUTION * * * * * */
 int						exec(t_data *data, t_token **tokens, t_redirections *r);
@@ -162,5 +164,6 @@ void					init_sign(struct sigaction *sig_int,
 							struct sigaction *sig_quit);
 void					init_sign_heredoc(struct sigaction *sig_child_int,
 							struct sigaction *sig_child_quit);
+char					**create_cmd(t_token *tokens);
 
 #endif

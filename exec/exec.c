@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:14:58 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:53:56 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,47 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 	}
 }
 
+static int	set_stdin_stdout(t_data *data, t_redirections *r, int pipe_fd[2])
+{
+	if (data->current_stdin > 0)
+	{
+		if (dup2(data->current_stdin, 0) < 0)
+			return (close(pipe_fd[0]), close(pipe_fd[1]), clean("error: dup2",
+					data, 1), 1);
+		close(data->current_stdin);
+		data->current_stdin = 0;
+	}
+	if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
+	{
+		if (dup2(pipe_fd[1], 1) < 0)
+			return (close(pipe_fd[0]), close(pipe_fd[1]), clean("error: dup2",
+					data, 1), 1);
+	}
+	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
+	if (apply_redir(r) == 1)
+		return (close(pipe_fd[0]), close(pipe_fd[1]), clean("error: dup2",
+				get_data(), 1), 1);
+	return (0);
+}
+
+static void	reset_after_child_and_change_stdin(t_data *data, t_redirections *r,
+		int pipe_fd[2], pid_t pid)
+{
+	clean_redirs(r);
+	if (data->heredoc_fd[0] != -1)
+	{
+		close(data->heredoc_fd[0]);
+		data->heredoc_fd[0] = -1;
+	}
+	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
+		change_current_stdin(data, pipe_fd);
+	data->children[data->pipe_done] = pid;
+}
+
 static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 {
 	pid_t	pid;
@@ -49,29 +90,7 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		return (close(pipe_fd[0]), close(pipe_fd[1]), clean("no", data, 1), 1);
 	if (pid == 0)
 	{
-		if (data->current_stdin > 0)
-		{
-			if (dup2(data->current_stdin, 0) < 0)
-				clean("error: dup2", data, 1);
-			close(data->current_stdin);
-			data->current_stdin = 0;
-		}
-		if (data->pipe_nb > 0 && data->pipe_done < data->pipe_nb)
-		{
-			if (dup2(pipe_fd[1], 1) < 0)
-			{
-				close(pipe_fd[0]);
-				close(pipe_fd[1]);
-				clean("error: dup2", data, 1);
-			}
-		}
-		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
-		{
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-		}
-		if (apply_redir(r) == 1)
-			clean("error: dup2", get_data(), 1);
+		set_stdin_stdout(data, r, pipe_fd);
 		data->sig_quit.sa_handler = SIG_DFL;
 		sigaction(SIGQUIT, &data->sig_quit, 0);
 		if (path)
@@ -80,62 +99,8 @@ static int	execute(t_data *data, char *path, char **cmd, t_redirections *r)
 		clean(NULL, get_data(), 0);
 	}
 	else
-	{
-		clean_redirs(r);
-		if (data->heredoc_fd[0] != -1)
-		{
-			close(data->heredoc_fd[0]);
-			data->heredoc_fd[0] = -1;
-		}
-		if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
-			change_current_stdin(data, pipe_fd);
-		data->children[data->pipe_done] = pid;
-	}
+		reset_after_child_and_change_stdin(data, r, pipe_fd, pid);
 	return (0);
-}
-
-static int	count_args(t_token *tokens)
-{
-	t_token	*tmp;
-	int		count;
-
-	tmp = tokens;
-	count = 0;
-	if (tmp)
-	{
-		while (tmp && tmp->type == WORD)
-		{
-			count++;
-			tmp = tmp->next;
-		}
-	}
-	return (count);
-}
-
-static char	**create_cmd(t_token *tokens)
-{
-	char	**cmd;
-	int		len;
-	t_token	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = tokens;
-	len = count_args(tokens);
-	cmd = malloc(sizeof(char *) * (len + 1));
-	if (!cmd)
-		clean("error: malloc", get_data(), 1);
-	while (tmp && tmp->type == WORD && i < len)
-	{
-		cmd[i] = ft_strdup(tmp->s);
-		if (!cmd[i])
-			return (ft_freetab(cmd), clean("error: malloc", get_data(), 1),
-				NULL);
-		i++;
-		tmp = tmp->next;
-	}
-	cmd[i] = NULL;
-	return (cmd);
 }
 
 int	exec(t_data *data, t_token **tokens, t_redirections *r)
@@ -148,7 +113,7 @@ int	exec(t_data *data, t_token **tokens, t_redirections *r)
 	if (!cmd)
 		return (1);
 	path = find_path(cmd[0], data->env);
-	execute(data, path, cmd, r); // HANDLE ERROR HERE
+	execute(data, path, cmd, r);
 	ft_freetab(cmd);
 	free(path);
 	return (data->return_code);

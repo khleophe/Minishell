@@ -5,10 +5,10 @@ CFLAGS = -Wall -Wextra -Werror -g3 --std=gnu89
 
 SRCS = lexer/init_tokens.c main.c builtins/unset.c read_line.c lexer/tokens.c lexer/utils_tokens.c \
 		parsing/pipe.c parsing/redirs.c lexer/expand.c clean.c lexer/expand_utils.c\
-		builtins/echo.c builtins/env.c builtins/cd.c \
+		builtins/echo.c builtins/env.c builtins/cd.c exec/exec_utils.c\
 		builtins/exit.c builtins/export.c builtins/utils_export.c\
-		builtins/pwd.c exec/free.c exec/signals.c parsing/heredoc.c\
-		exec/path.c lexer/quotes.c lexer/syntax.c init.c exec/exec.c parsing/parsing.c
+		builtins/pwd.c exec/free.c exec/signals.c parsing/heredoc.c parsing/parsing_builtin.c\
+		exec/path.c lexer/quotes.c lexer/syntax.c init.c exec/exec.c parsing/parsing.c parsing/apply_redir.c
 		
 
 OBJS = $(SRCS:.c=.o)

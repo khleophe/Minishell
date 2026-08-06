@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/24 16:51:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:28:09 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:47:40 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,6 @@ static int	append_redir(char *file, t_redirections *r)
 		close(r->outfd);
 	r->outfd = fd;
 	r->out_mode = OUT_APPEND;
-	return (0);
-}
-
-int		apply_redir(t_redirections *r)
-{
-	if (r->in_mode != DEFAULT)
-	{
-		if (dup2(r->infd, STDIN_FILENO) < 0)
-			return (1);
-	}
-	if (r->out_mode != DEFAULT)
-	{
-		if (dup2(r->outfd, STDOUT_FILENO) < 0)
-			return (1);
-		close(r->outfd);
-	}
 	return (0);
 }
 

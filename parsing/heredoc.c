@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 15:04:30 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 18:25:45 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/06 18:45:18 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	heredoc_redir(char *eof, t_data *data)
 
 int	parsing_heredoc(t_redirections *r, char *eof)
 {
-	int ret;
+	int	ret;
 
 	ret = 0;
 	ret = heredoc_redir(eof, get_data());
