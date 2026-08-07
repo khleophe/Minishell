@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 18:49:30 by jdelmott          #+#    #+#             */
-/*   Updated: 2026/08/07 03:29:35 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 04:25:16 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static int	builtin_pipe(t_data *data, t_token **token, int mode,
 
 	data->mode_builtin = mode;
 	if (data->pipe_nb == 0)
-		return (apply_redir(r), data->one_built = 1, apply_bultin(data, token, mode, r));
+		return (apply_redir(r), data->one_built = 1, apply_bultin(data, token,
+				mode, r));
 	if (data->pipe_nb > 0 && data->pipe_done <= data->pipe_nb)
 		pipe(pipe_fd);
 	child = fork();

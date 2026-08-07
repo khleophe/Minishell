@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/08/07 03:57:36 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 04:10:53 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	free_ex(t_expand *ex)
 		free(ex->key);
 	if (ex->pre)
 		free(ex->pre);
-	if (ft_strcmp(ex->value, "") != 0)
+	if (ex->free_value == 1)
 		free(ex->value);
 }
 
@@ -54,7 +54,10 @@ static char	*new_expand(char *s, int i, int len, t_data *data)
 	if (!ex.pre || !ex.key || !ex.post)
 		return (free_ex(&ex), clean("error: malloc", data, 1), NULL);
 	if (ft_strcmp(ex.key, "?") == 0)
+	{
 		ex.value = ft_itoa(data->return_code);
+		ex.free_value = 1;
+	}
 	else
 		ex.value = get_env_value(ex.key, data->env);
 	if (!ex.value)
