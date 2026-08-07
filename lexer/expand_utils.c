@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 18:08:09 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/07/24 18:26:59 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 02:38:17 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ void	quotes_utils(char *s, t_expand_quotes *ex, int mode)
 	else
 	{
 		if ((s[ex->i] == 34 || s[ex->i] == 39) && ex->quotes == -1)
-			ex->quotes = s[ex->i++];
+		{
+			ex->quotes = s[ex->i];
+			if (s && s[ex->i] && s[ex->i + 1] && s[ex->i + 1] != ex->quotes)
+				ex->i++;
+		}
 	}
 }
 
@@ -66,4 +70,10 @@ void	define_ex_value(t_data *data, t_expand *ex)
 		ex->value = get_env_value(ex->key, data->env);
 	if (!ex->value)
 		ex->value = "";
+}
+
+void	add_ex_i(char *s, t_expand_quotes *ex)
+{
+	if (s && s[ex->i])
+		ex->i++;
 }

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 10:27:17 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/07 01:38:13 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 02:39:12 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void					rm_quotes_token(t_token *tokens);
 char					*remove_quotes(char *s);
 int						check_syntax(t_data *data);
 int						is_redirs(int type);
+void					add_ex_i(char *s, t_expand_quotes *ex);
 
 /* * * * * * BUILTINS * * * * * */
 int						parsing_unset(t_data *data, t_token **tokens);

@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/08/07 00:58:15 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 02:38:50 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,16 @@ char	*expand_str_quotes(char *s, t_data *data)
 			if (ex.quotes == 34 || ex.quotes == -1)
 			{
 				ex.len = get_new_expand(s, ex.i);
-				if (s[ex.i] == '$' && ex.len > 0)
+				if (s && s[ex.i] && s[ex.i] == '$' && ex.len > 0)
 				{
 					ex.new = new_expand(s, ex.i, ex.len, data);
 					free(s);
 					s = ex.new;
 				}
 			}
-			ex.i++;
+			add_ex_i(s, &ex);
 		}
-		if (s[ex.i])
-			ex.i++;
+		add_ex_i(s, &ex);
 	}
 	return (s);
 }
