@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 15:11:19 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/07 02:55:07 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 02:56:15 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	exec_fail(char *path, char **cmd, t_data *data)
 }
 
 int	set_stdin_stdout(t_data *data, t_redirections *r, int pipe_fd[2])
-		// on close peu etre pas si on ne retnre dans aucune condition
 {
 	if (data->current_stdin > 0)
 	{

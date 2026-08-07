@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:03 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/06 23:34:39 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 03:30:33 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	parsing_cmd(t_data *data, t_token *tokens, int return_code)
 	ft_memset(&redirections, 0, sizeof(redirections));
 	redirections.infd = 0;
 	redirections.outfd = 1;
-	return_code = create_redirs(tokens, &redirections);
-	if (return_code != 0)
+	return_code = create_redirs(tokens, &redirections); 
+	if (return_code != 0 || data->one_built == 1)
 		return (clean_redirs(&redirections), return_code);
 	return_code = -1;
 	while (tokens && tokens->type != PIPE)

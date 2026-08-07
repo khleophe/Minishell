@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 14:59:10 by soraya            #+#    #+#             */
-/*   Updated: 2026/08/07 02:38:50 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 03:57:36 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	free_ex(t_expand *ex)
 		free(ex->key);
 	if (ex->pre)
 		free(ex->pre);
+	if (ft_strcmp(ex->value, "") != 0)
+		free(ex->value);
 }
 
 static char	*new_expand(char *s, int i, int len, t_data *data)

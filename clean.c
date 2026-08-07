@@ -6,7 +6,7 @@
 /*   By: jdelmott <jdelmott@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/14 14:57:58 by sdabbas           #+#    #+#             */
-/*   Updated: 2026/08/07 00:15:07 by jdelmott         ###   ########.fr       */
+/*   Updated: 2026/08/07 03:19:22 by jdelmott         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	clean(char *str, t_data *data, int return_code)
 	tcsetattr(0, TCSANOW, &termios);
 	if (data->old_stdin != -1)
 		close(data->old_stdin);
+	if (data->old_stdout != -1)
+		close(data->old_stdout);
 	clean_files(data);
 	if (data->tokens)
 		free_tokens(data->tokens);
